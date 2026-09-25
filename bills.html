@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FINZO - Bill Payments</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f5f7fb;
+      color: #172033;
+      min-height: 100vh;
+      transition: 0.3s;
+    }
+
+    body.dark {
+      background: #10131a;
+      color: #f5f7fb;
+    }
+
+    .header {
+      background: #111827;
+      color: white;
+      padding: 16px 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      font-size: 25px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .brand span {
+      color: #ef4444;
+    }
+
+    .demo {
+      font-size: 10px;
+      background: #ef4444;
+      padding: 4px 7px;
+      border-radius: 5px;
+      margin-left: 5px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .header-actions button {
+      border: none;
+      background: #1f2937;
+      color: white;
+      padding: 9px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .container {
+      width: 92%;
+      max-width: 900px;
+      margin: 35px auto 50px;
+    }
+
+    .title {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .title h1 {
+      font-size: 30px;
+      margin-bottom: 8px;
+    }
+
+    .title p {
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    body.dark .title p {
+      color: #9ca3af;
+    }
+
+    .balance-card {
+      background: linear-gradient(135deg, #991b1b, #dc2626);
+      color: white;
+      border-radius: 20px;
+      padding: 23px;
+      margin-bottom: 22px;
+      box-shadow: 0 12px 30px rgba(127, 29, 29, 0.22);
+    }
+
+    .balance-label {
+      font-size: 12px;
+      opacity: 0.85;
+    }
+
+    .balance {
+      font-size: 32px;
+      font-weight: 800;
+      margin-top: 8px;
+    }
+
+    .bill-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-bottom: 24px;
+    }
+
+    .bill-type {
+      background: white;
+      border: 2px solid transparent;
+      border-radius: 17px;
+      padding: 20px 12px;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 0 7px 22px rgba(0,0,0,0.05);
+      transition: 0.2s;
+    }
+
+    body.dark .bill-type {
+      background: #181c25;
+      box-shadow: none;
+    }
+
+    .bill-type:hover {
+      transform: translateY(-3px);
+    }
+
+    .bill-type.active {
+      border-color: #dc2626;
+    }
+
+    .bill-icon {
+      font-size: 30px;
+      margin-bottom: 9px;
+    }
+
+    .bill-type h3 {
+      font-size: 14px;
+    }
+
+    .bill-type p {
+      color: #6b7280;
+      font-size: 11px;
+      margin-top: 5px;
+    }
+
+    body.dark .bill-type p {
+      color: #9ca3af;
+    }
+
+    .payment-card {
+      background: white;
+      border-radius: 22px;
+      padding: 28px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.07);
+    }
+
+    body.dark .payment-card {
+      background: #181c25;
+      box-shadow: none;
+    }
+
+    .selected-service {
+      text-align: center;
+      margin-bottom: 22px;
+    }
+
+    .selected-icon {
+      font-size: 38px;
+      margin-bottom: 8px;
+    }
+
+    .selected-service h2 {
+      font-size: 21px;
+    }
+
+    .selected-service p {
+      color: #6b7280;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    body.dark .selected-service p {
+      color: #9ca3af;
+    }
+
+    label {
+      display: block;
+      color: #6b7280;
+      font-size: 12px;
+      margin-bottom: 7px;
+    }
+
+    body.dark label {
+      color: #9ca3af;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      font-size: 14px;
+      outline: none;
+      background: white;
+      color: #111827;
+      margin-bottom: 17px;
+    }
+
+    body.dark input,
+    body.dark select {
+      background: #202530;
+      color: white;
+      border-color: #374151;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #dc2626;
+    }
+
+    .quick-title {
+      color: #6b7280;
+      font-size: 12px;
+      margin-bottom: 9px;
+    }
+
+    body.dark .quick-title {
+      color: #9ca3af;
+    }
+
+    .quick {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .quick button {
+      border: 1px solid #e5e7eb;
+      background: #f9fafb;
+      padding: 10px 5px;
+      border-radius: 9px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    body.dark .quick button {
+      background: #202530;
+      color: white;
+      border-color: #303746;
+    }
+
+    .quick button:hover {
+      border-color: #dc2626;
+      color: #dc2626;
+    }
+
+    .pay-btn {
+      width: 100%;
+      border: none;
+      background: linear-gradient(135deg, #dc2626, #991b1b);
+      color: white;
+      padding: 15px;
+      border-radius: 11px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .message {
+      text-align: center;
+      min-height: 18px;
+      margin-top: 14px;
+      font-size: 13px;
+    }
+
+    .error {
+      color: #dc2626;
+    }
+
+    .success {
+      color: #16a34a;
+    }
+
+    .pin-screen,
+    .processing,
+    .success-screen {
+      display: none;
+    }
+
+    .pin-screen {
+      text-align: center;
+    }
+
+    .pin-icon {
+      font-size: 45px;
+      margin-bottom: 12px;
+    }
+
+    .pin-screen p,
+    .processing p,
+    .success-screen p {
+      color: #6b7280;
+      font-size: 13px;
+      margin-top: 7px;
+    }
+
+    body.dark .pin-screen p,
+    body.dark .processing p,
+    body.dark .success-screen p {
+      color: #9ca3af;
+    }
+
+    .pin-input {
+      margin-top: 22px;
+      text-align: center;
+      font-size: 25px;
+      letter-spacing: 9px;
+    }
+
+    .confirm-btn {
+      width: 100%;
+      border: none;
+      background: #111827;
+      color: white;
+      padding: 14px;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .back-btn {
+      width: 100%;
+      border: 1px solid #d1d5db;
+      background: transparent;
+      color: inherit;
+      padding: 12px;
+      border-radius: 10px;
+      margin-top: 9px;
+      cursor: pointer;
+    }
+
+    .processing {
+      text-align: center;
+      padding: 35px 10px;
+    }
+
+    .loader {
+      width: 48px;
+      height: 48px;
+      border: 5px solid #fee2e2;
+      border-top-color: #dc2626;
+      border-radius: 50%;
+      margin: 0 auto 20px;
+      animation: spin 0.9s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .success-screen {
+      text-align: center;
+    }
+
+    .success-icon {
+      width: 75px;
+      height: 75px;
+      border-radius: 50%;
+      background: #dcfce7;
+      color: #16a34a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 17px;
+      font-size: 38px;
+      font-weight: bold;
+    }
+
+    .receipt {
+      margin-top: 22px;
+      background: #f8fafc;
+      padding: 17px;
+      border-radius: 13px;
+      text-align: left;
+    }
+
+    body.dark .receipt {
+      background: #202530;
+    }
+
+    .receipt-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      padding: 9px 0;
+      border-bottom: 1px solid #e5e7eb;
+      font-size: 12px;
+    }
+
+    body.dark .receipt-row {
+      border-color: #303746;
+    }
+
+    .receipt-row:last-child {
+      border-bottom: none;
+    }
+
+    .receipt-row span {
+      color: #6b7280;
+    }
+
+    body.dark .receipt-row span {
+      color: #9ca3af;
+    }
+
+    .action-links {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+      margin-top: 18px;
+    }
+
+    .action-links a {
+      text-align: center;
+      background: #111827;
+      color: white;
+      padding: 13px;
+      border-radius: 10px;
+      font-size: 13px;
+    }
+
+    .demo-note {
+      margin-top: 22px;
+      padding: 14px;
+      border-radius: 11px;
+      background: #fff7ed;
+      color: #9a3412;
+      font-size: 11px;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    body.dark .demo-note {
+      background: #2a1d16;
+      color: #fdba74;
+    }
+
+    @media (max-width: 700px) {
+      .bill-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        width: 94%;
+        margin-top: 25px;
+      }
+
+      .payment-card {
+        padding: 21px;
+      }
+
+      .bill-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .quick {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .action-links {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="header">
+
+    <div class="brand">
+      FINZO
+      <span class="demo">DEMO</span>
+    </div>
+
+    <div class="header-actions">
+      <button onclick="toggleTheme()">🌙</button>
+      <button onclick="goBack()">← Back</button>
+    </div>
+
+  </header>
+
+
+  <main class="container">
+
+    <div class="title">
+      <h1>Bill Payments</h1>
+      <p>Pay your everyday bills in one simple demo screen</p>
+    </div>
+
+
+    <div class="balance-card">
+
+      <div class="balance-label">
+        Available FINZO Demo Balance
+      </div>
+
+      <div
+        class="balance"
+        id="balance"
+      >
+        ₹0
+      </div>
+
+    </div>
+
+
+    <div class="bill-grid">
+
+      <div
+        class="bill-type active"
+        onclick="selectBill('Mobile Recharge', '📱', this)"
+      >
+        <div class="bill-icon">📱</div>
+        <h3>Mobile</h3>
+        <p>Recharge</p>
+      </div>
+
+      <div
+        class="bill-type"
+        onclick="selectBill('Electricity Bill', '💡', this)"
+      >
+        <div class="bill-icon">💡</div>
+        <h3>Electricity</h3>
+        <p>Bill Payment</p>
+      </div>
+
+      <div
+        class="bill-type"
+        onclick="selectBill('DTH Recharge', '📺', this)"
+      >
+        <div class="bill-icon">📺</div>
+        <h3>DTH</h3>
+        <p>Recharge</p>
+      </div>
+
+      <div
+        class="bill-type"
+        onclick="selectBill('Broadband Bill', '🌐', this)"
+      >
+        <div class="bill-icon">🌐</div>
+        <h3>Broadband</h3>
+        <p>Bill Payment</p>
+      </div>
+
+      <div
+        class="bill-type"
+        onclick="selectBill('Water Bill', '🚰', this)"
+      >
+        <div class="bill-icon">🚰</div>
+        <h3>Water</h3>
+        <p>Bill Payment</p>
+      </div>
+
+      <div
+        class="bill-type"
+        onclick="selectBill('Gas Bill', '🔥', this)"
+      >
+        <div class="bill-icon">🔥</div>
+        <h3>Gas</h3>
+        <p>Bill Payment</p>
+      </div>
+
+    </div>
+
+
+    <div class="payment-card">
+
+      <!-- FORM -->
+
+      <div id="paymentForm">
+
+        <div class="selected-service">
+
+          <div
+            class="selected-icon"
+            id="selectedIcon"
+          >
+            📱
+          </div>
+
+          <h2 id="selectedTitle">
+            Mobile Recharge
+          </h2>
+
+          <p>
+            Demo payment service
+          </p>
+
+        </div>
+
+
+        <label id="numberLabel">
+          Mobile Number
+        </label>
+
+        <input
+          type="text"
+          id="customerNumber"
+          placeholder="Enter mobile number"
+          maxlength="10"
+        >
+
+
+        <label>
+          Operator
+        </label>
+
+        <select id="operator">
+
+          <option>Demo Airtel</option>
+          <option>Demo Jio</option>
+          <option>Demo Vi</option>
+          <option>Demo BSNL</option>
+
+        </select>
+
+
+        <label>
+          Amount
+        </label>
+
+        <input
+          type="number"
+          id="amount"
+          placeholder="Enter amount"
+          min="1"
+          max="100000"
+        >
+
+
+        <div class="quick-title">
+          Quick Amount
+        </div>
+
+        <div class="quick">
+
+          <button onclick="setAmount(199)">
+            ₹199
+          </button>
+
+          <button onclick="setAmount(299)">
+            ₹299
+          </button>
+
+          <button onclick="setAmount(499)">
+            ₹499
+          </button>
+
+          <button onclick="setAmount(999)">
+            ₹999
+          </button>
+
+        </div>
+
+
+        <button
+          class="pay-btn"
+          onclick="continuePayment()"
+        >
+          Continue to Pay
+        </button>
+
+
+        <div
+          id="formMessage"
+          class="message"
+        ></div>
+
+      </div>
+
+
+      <!-- PIN -->
+
+      <div
+        id="pinScreen"
+        class="pin-screen"
+      >
+
+        <div class="pin-icon">
+          🔐
+        </div>
+
+        <h2>Confirm Payment</h2>
+
+        <p>
+          Enter any 4-digit PIN for this demo.
+        </p>
+
+        <input
+          type="password"
+          id="pin"
+          class="pin-input"
+          maxlength="4"
+          inputmode="numeric"
+          placeholder="••••"
+        >
+
+        <button
+          class="confirm-btn"
+          onclick="confirmPayment()"
+        >
+          Confirm Payment
+        </button>
+
+        <button
+          class="back-btn"
+          onclick="backToForm()"
+        >
+          ← Back
+        </button>
+
+        <div
+          id="pinMessage"
+          class="message"
+        ></div>
+
+      </div>
+
+
+      <!-- PROCESSING -->
+
+      <div
+        id="processing"
+        class="processing"
+      >
+
+        <div class="loader"></div>
+
+        <h2>Processing Payment</h2>
+
+        <p>
+          Please wait while your demo payment is processed.
+        </p>
+
+      </div>
+
+
+      <!-- SUCCESS -->
+
+      <div
+        id="successScreen"
+        class="success-screen"
+      >
+
+        <div class="success-icon">
+          ✓
+        </div>
+
+        <h2>Payment Successful</h2>
+
+        <p>
+          Your demo bill payment was completed.
+        </p>
+
+
+        <div class="receipt">
+
+          <div class="receipt-row">
+            <span>Service</span>
+            <strong id="receiptService">-</strong>
+          </div>
+
+          <div class="receipt-row">
+            <span>Customer</span>
+            <strong id="receiptCustomer">-</strong>
+          </div>
+
+          <div class="receipt-row">
+            <span>Amount</span>
+            <strong id="receiptAmount">₹0</strong>
+          </div>
+
+          <div class="receipt-row">
+            <span>Transaction ID</span>
+            <strong id="receiptTxn">-</strong>
+          </div>
+
+          <div class="receipt-row">
+            <span>Date</span>
+            <strong id="receiptDate">-</strong>
+          </div>
+
+        </div>
+
+
+        <div class="action-links">
+
+          <a href="transactions.html">
+            View Transactions
+          </a>
+
+          <a href="dashboard.html">
+            Dashboard
+          </a>
+
+        </div>
+
+      </div>
+
+
+      <div class="demo-note">
+        ⚠️ <strong>Demo Only:</strong>
+        FINZO does not connect to real mobile operators,
+        electricity boards, DTH providers, broadband,
+        water or gas services. Do not enter real payment
+        or personal information.
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <script>
+
+    let selectedService = "Mobile Recharge";
+    let selectedIcon = "📱";
+
+    let paymentAmount = 0;
+    let customerNumber = "";
+
+
+    function getBalance() {
+
+      return Number(
+        localStorage.getItem("finzoBalance")
+      ) || 0;
+    }
+
+
+    function formatMoney(amount) {
+
+      return "₹" +
+        Number(amount || 0).toLocaleString("en-IN");
+    }
+
+
+    function getTransactions() {
+
+      try {
+
+        return JSON.parse(
+          localStorage.getItem(
+            "finzoTransactions"
+          ) || "[]"
+        );
+
+      } catch (error) {
+
+        return [];
+      }
+    }
+
+
+    function saveTransactions(transactions) {
+
+      localStorage.setItem(
+        "finzoTransactions",
+        JSON.stringify(transactions)
+      );
+    }
+
+
+    function updateBalance() {
+
+      document.getElementById("balance")
+        .textContent =
+        formatMoney(getBalance());
+    }
+
+
+    function selectBill(
+      service,
+      icon,
+      element
+    ) {
+
+      selectedService = service;
+      selectedIcon = icon;
+
+      document.querySelectorAll(
+        ".bill-type"
+      ).forEach(function(item) {
+
+        item.classList.remove("active");
+
+      });
+
+      element.classList.add("active");
+
+      document.getElementById(
+        "selectedIcon"
+      ).textContent = icon;
+
+      document.getElementById(
+        "selectedTitle"
+      ).textContent = service;
+
+
+      const label =
+        document.getElementById(
+          "numberLabel"
+        );
+
+      const input =
+        document.getElementById(
+          "customerNumber"
+        );
+
+      const operator =
+        document.getElementById(
+          "operator"
+        );
+
+
+      if (service === "Mobile Recharge") {
+
+        label.textContent =
+          "Mobile Number";
+
+        input.placeholder =
+          "Enter 10-digit mobile number";
+
+        operator.style.display =
+          "block";
+
+      } else {
+
+        label.textContent =
+          "Consumer / Customer Number";
+
+        input.placeholder =
+          "Enter demo customer number";
+
+        operator.style.display =
+          "none";
+      }
+
+      clearMessages();
+    }
+
+
+    function setAmount(value) {
+
+      document.getElementById(
+        "amount"
+      ).value = value;
+
+      clearMessages();
+    }
+
+
+    function continuePayment() {
+
+      const number =
+        document.getElementById(
+          "customerNumber"
+        ).value.trim();
+
+      const amount =
+        Number(
+          document.getElementById(
+            "amount"
+          ).value
+        );
+
+      const message =
+        document.getElementById(
+          "formMessage"
+        );
+
+      message.className =
+        "message";
+
+
+      if (!number) {
+
+        message.textContent =
+          "Please enter customer number.";
+
+        message.classList.add("error");
+
+        return;
+      }
+
+
+      if (
+        selectedService ===
+        "Mobile Recharge"
+      ) {
+
+        if (!/^\d{10}$/.test(number)) {
+
+          message.textContent =
+            "Enter a valid 10-digit demo mobile number.";
+
+          message.classList.add("error");
+
+          return;
+        }
+      }
+
+
+      if (!amount || amount <= 0) {
+
+        message.textContent =
+          "Please enter a valid amount.";
+
+        message.classList.add("error");
+
+        return;
+      }
+
+
+      if (amount > 100000) {
+
+        message.textContent =
+          "Maximum demo payment is ₹1,00,000.";
+
+        message.classList.add("error");
+
+        return;
+      }
+
+
+      if (amount > getBalance()) {
+
+        message.textContent =
+          "Insufficient demo balance.";
+
+        message.classList.add("error");
+
+        return;
+      }
+
+
+      paymentAmount = amount;
+      customerNumber = number;
+
+
+      document.getElementById(
+        "paymentForm"
+      ).style.display = "none";
+
+      document.getElementById(
+        "pinScreen"
+      ).style.display = "block";
+
+      document.getElementById(
+        "pin"
+      ).value = "";
+
+      document.getElementById(
+        "pin"
+      ).focus();
+    }
+
+
+    function backToForm() {
+
+      document.getElementById(
+        "pinScreen"
+      ).style.display = "none";
+
+      document.getElementById(
+        "paymentForm"
+      ).style.display = "block";
+
+      clearMessages();
+    }
+
+
+    function confirmPayment() {
+
+      const pin =
+        document.getElementById(
+          "pin"
+        ).value.trim();
+
+      const message =
+        document.getElementById(
+          "pinMessage"
+        );
+
+      message.className =
+        "message";
+
+
+      if (!/^\d{4}$/.test(pin)) {
+
+        message.textContent =
+          "Enter any 4-digit demo PIN.";
+
+        message.classList.add("error");
+
+        return;
+      }
+
+
+      if (paymentAmount > getBalance()) {
+
+        message.textContent =
+          "Insufficient demo balance.";
+
+        message.classList.add("error");
+
+        return;
+      }
+
+
+      document.getElementById(
+        "pinScreen"
+      ).style.display = "none";
+
+      document.getElementById(
+        "processing"
+      ).style.display = "block";
+
+
+      setTimeout(function() {
+
+        completePayment();
+
+      }, 1600);
+    }
+
+
+    function completePayment() {
+
+      const oldBalance =
+        getBalance();
+
+      const newBalance =
+        oldBalance - paymentAmount;
+
+
+      localStorage.setItem(
+        "finzoBalance",
+        String(newBalance)
+      );
+
+      localStorage.setItem(
+        "finzoDisplayedBalance",
+        String(newBalance)
+      );
+
+
+      const transactionId =
+        "TXN" + Date.now();
+
+
+      const transaction = {
+
+        id: transactionId,
+
+        type: "Debit",
+
+        title:
+          selectedService,
+
+        name:
+          customerNumber,
+
+        amount:
+          paymentAmount,
+
+        date:
+          new Date().toLocaleString("en-IN")
+
+      };
+
+
+      const transactions =
+        getTransactions();
+
+      transactions.push(transaction);
+
+      saveTransactions(transactions);
+
+
+      createNotification(
+        selectedService,
+        paymentAmount
+      );
+
+
+      document.getElementById(
+        "processing"
+      ).style.display = "none";
+
+      document.getElementById(
+        "successScreen"
+      ).style.display = "block";
+
+
+      document.getElementById(
+        "receiptService"
+      ).textContent =
+        selectedService;
+
+
+      document.getElementById(
+        "receiptCustomer"
+      ).textContent =
+        customerNumber;
+
+
+      document.getElementById(
+        "receiptAmount"
+      ).textContent =
+        formatMoney(paymentAmount);
+
+
+      document.getElementById(
+        "receiptTxn"
+      ).textContent =
+        transactionId;
+
+
+      document.getElementById(
+        "receiptDate"
+      ).textContent =
+        new Date().toLocaleString("en-IN");
+
+
+      updateBalance();
+    }
+
+
+    function createNotification(
+      service,
+      amount
+    ) {
+
+      let notifications = [];
+
+      try {
+
+        notifications =
+          JSON.parse(
+            localStorage.getItem(
+              "finzoNotifications"
+            ) || "[]"
+          );
+
+      } catch (error) {
+
+        notifications = [];
+      }
+
+
+      notifications.push({
+
+        id:
+          "NOT" + Date.now(),
+
+        title:
+          "Bill Payment Successful",
+
+        message:
+          formatMoney(amount) +
+          " demo payment made for " +
+          service,
+
+        date:
+          new Date().toLocaleString("en-IN"),
+
+        read: false
+
+      });
+
+
+      localStorage.setItem(
+        "finzoNotifications",
+        JSON.stringify(
+          notifications
+        )
+      );
+    }
+
+
+    function clearMessages() {
+
+      document.getElementById(
+        "formMessage"
+      ).textContent = "";
+
+      document.getElementById(
+        "pinMessage"
+      ).textContent = "";
+
+      document.getElementById(
+        "formMessage"
+      ).className = "message";
+
+      document.getElementById(
+        "pinMessage"
+      ).className = "message";
+    }
+
+
+    function toggleTheme() {
+
+      const dark =
+        document.body.classList.toggle(
+          "dark"
+        );
+
+      localStorage.setItem(
+        "finzoTheme",
+        dark ? "dark" : "light"
+      );
+    }
+
+
+    function loadTheme() {
+
+      if (
+        localStorage.getItem(
+          "finzoTheme"
+        ) === "dark"
+      ) {
+
+        document.body.classList.add(
+          "dark"
+        );
+      }
+    }
+
+
+    function goBack() {
+
+      window.location.href =
+        "dashboard.html";
+    }
+
+
+    loadTheme();
+    updateBalance();
+
+  </script>
+
+</body>
+</html>

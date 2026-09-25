@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FINZO - Create Account</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #07111f, #0d1b2a, #102a43);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 15px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 480px;
+    }
+
+    .brand {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .brand h1 {
+      font-size: 38px;
+      letter-spacing: 2px;
+      color: #00d4ff;
+    }
+
+    .brand p {
+      color: #9fb3c8;
+      margin-top: 5px;
+      font-size: 14px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(15px);
+      border-radius: 22px;
+      padding: 30px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+    }
+
+    .card h2 {
+      text-align: center;
+      font-size: 25px;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #a9b8c8;
+      font-size: 14px;
+      margin-bottom: 25px;
+    }
+
+    .form-group {
+      margin-bottom: 17px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 14px;
+      color: #dce7f2;
+      font-weight: 600;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 11px;
+      background: rgba(0, 0, 0, 0.25);
+      color: white;
+      font-size: 15px;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    input::placeholder {
+      color: #8191a3;
+    }
+
+    input:focus {
+      border-color: #00d4ff;
+      box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.12);
+    }
+
+    .password-wrapper {
+      position: relative;
+    }
+
+    .password-wrapper input {
+      padding-right: 85px;
+    }
+
+    .show-btn {
+      position: absolute;
+      right: 8px;
+      top: 7px;
+      border: none;
+      background: transparent;
+      color: #00d4ff;
+      cursor: pointer;
+      padding: 7px;
+      font-size: 13px;
+    }
+
+    .strength-box {
+      margin-top: 8px;
+    }
+
+    .strength-bar {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .strength-fill {
+      height: 100%;
+      width: 0%;
+      transition: 0.3s;
+      background: #555;
+    }
+
+    .strength-text {
+      margin-top: 5px;
+      font-size: 12px;
+      color: #9fb3c8;
+    }
+
+    .terms {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      margin: 20px 0;
+      font-size: 13px;
+      color: #b8c7d6;
+      line-height: 1.5;
+    }
+
+    .terms input {
+      width: 17px;
+      height: 17px;
+      margin-top: 2px;
+      accent-color: #00d4ff;
+      flex-shrink: 0;
+    }
+
+    .terms a {
+      color: #00d4ff;
+      text-decoration: none;
+    }
+
+    .signup-btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #00d4ff, #0077ff);
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .signup-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 25px rgba(0, 174, 255, 0.25);
+    }
+
+    .signup-btn:active {
+      transform: translateY(0);
+    }
+
+    .message {
+      display: none;
+      padding: 11px 13px;
+      border-radius: 10px;
+      margin-bottom: 18px;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .message.error {
+      display: block;
+      background: rgba(255, 70, 70, 0.12);
+      border: 1px solid rgba(255, 70, 70, 0.3);
+      color: #ff9b9b;
+    }
+
+    .message.success {
+      display: block;
+      background: rgba(0, 220, 140, 0.12);
+      border: 1px solid rgba(0, 220, 140, 0.3);
+      color: #7ff0bd;
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 22px;
+      color: #a9b8c8;
+      font-size: 14px;
+    }
+
+    .login-link a {
+      color: #00d4ff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .home-link {
+      display: block;
+      text-align: center;
+      margin-top: 16px;
+      color: #9fb3c8;
+      text-decoration: none;
+      font-size: 13px;
+    }
+
+    .home-link:hover {
+      color: #00d4ff;
+    }
+
+    .demo-note {
+      margin-top: 18px;
+      padding: 12px;
+      border-radius: 10px;
+      background: rgba(255, 193, 7, 0.08);
+      border: 1px solid rgba(255, 193, 7, 0.18);
+      color: #d8c99b;
+      font-size: 11px;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    .requirements {
+      margin-top: 8px;
+      font-size: 11px;
+      color: #7f91a4;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 500px) {
+      body {
+        padding: 20px 12px;
+      }
+
+      .card {
+        padding: 23px 18px;
+        border-radius: 18px;
+      }
+
+      .brand h1 {
+        font-size: 32px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <div class="brand">
+      <h1>FINZO</h1>
+      <p>Smart Digital Finance</p>
+    </div>
+
+    <div class="card">
+
+      <h2>Create Account</h2>
+      <p class="subtitle">
+        Create your FINZO demo account
+      </p>
+
+      <div id="message" class="message"></div>
+
+      <form id="signupForm">
+
+        <!-- Full Name -->
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input
+            type="text"
+            id="name"
+            placeholder="Enter your full name"
+            maxlength="60"
+            autocomplete="name"
+            required
+          >
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input
+            type="email"
+            id="email"
+            placeholder="example@email.com"
+            autocomplete="email"
+            required
+          >
+        </div>
+
+        <!-- Mobile -->
+        <div class="form-group">
+          <label for="mobile">Mobile Number</label>
+          <input
+            type="tel"
+            id="mobile"
+            placeholder="10-digit mobile number"
+            maxlength="10"
+            inputmode="numeric"
+            autocomplete="tel"
+            required
+          >
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+
+          <label for="password">Password</label>
+
+          <div class="password-wrapper">
+            <input
+              type="password"
+              id="password"
+              placeholder="Create a strong password"
+              autocomplete="new-password"
+              required
+            >
+
+            <button
+              type="button"
+              class="show-btn"
+              id="showPassword"
+            >
+              Show
+            </button>
+          </div>
+
+          <div class="strength-box">
+
+            <div class="strength-bar">
+              <div
+                id="strengthFill"
+                class="strength-fill"
+              ></div>
+            </div>
+
+            <div
+              id="strengthText"
+              class="strength-text"
+            >
+              Password strength
+            </div>
+
+          </div>
+
+          <div class="requirements">
+            Use at least 8 characters with uppercase, lowercase and a number.
+          </div>
+
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="form-group">
+
+          <label for="confirmPassword">
+            Confirm Password
+          </label>
+
+          <div class="password-wrapper">
+
+            <input
+              type="password"
+              id="confirmPassword"
+              placeholder="Re-enter your password"
+              autocomplete="new-password"
+              required
+            >
+
+            <button
+              type="button"
+              class="show-btn"
+              id="showConfirmPassword"
+            >
+              Show
+            </button>
+
+          </div>
+
+        </div>
+
+        <!-- Terms -->
+        <div class="terms">
+
+          <input
+            type="checkbox"
+            id="terms"
+            required
+          >
+
+          <div>
+            I agree to the FINZO
+            <a href="#" onclick="return false;">
+              Demo Terms
+            </a>
+            and understand that this is a demo website.
+          </div>
+
+        </div>
+
+        <button
+          type="submit"
+          class="signup-btn"
+        >
+          Create FINZO Account
+        </button>
+
+      </form>
+
+      <div class="login-link">
+        Already have an account?
+        <a href="login.html">Login</a>
+      </div>
+
+      <a
+        href="index.html"
+        class="home-link"
+      >
+        ← Back to FINZO Home
+      </a>
+
+      <div class="demo-note">
+        ⚠️ DEMO ONLY — Do not enter real banking, card, KYC or
+        other sensitive information. This website does not process
+        real money.
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+    // ---------------------------------------
+    // FINZO SIGNUP
+    // ---------------------------------------
+
+    const signupForm = document.getElementById("signupForm");
+
+    const nameInput = document.getElementById("name");
+    const emailInput = document.getElementById("email");
+    const mobileInput = document.getElementById("mobile");
+    const passwordInput = document.getElementById("password");
+    const confirmPasswordInput =
+      document.getElementById("confirmPassword");
+
+    const messageBox = document.getElementById("message");
+
+    const strengthFill =
+      document.getElementById("strengthFill");
+
+    const strengthText =
+      document.getElementById("strengthText");
+
+
+    // ---------------------------------------
+    // MESSAGE
+    // ---------------------------------------
+
+    function showMessage(text, type) {
+
+      messageBox.textContent = text;
+
+      messageBox.className =
+        "message " + type;
+
+    }
+
+
+    // ---------------------------------------
+    // SHOW / HIDE PASSWORD
+    // ---------------------------------------
+
+    document
+      .getElementById("showPassword")
+      .addEventListener("click", function () {
+
+        if (passwordInput.type === "password") {
+
+          passwordInput.type = "text";
+          this.textContent = "Hide";
+
+        } else {
+
+          passwordInput.type = "password";
+          this.textContent = "Show";
+
+        }
+
+      });
+
+
+    document
+      .getElementById("showConfirmPassword")
+      .addEventListener("click", function () {
+
+        if (confirmPasswordInput.type === "password") {
+
+          confirmPasswordInput.type = "text";
+          this.textContent = "Hide";
+
+        } else {
+
+          confirmPasswordInput.type = "password";
+          this.textContent = "Show";
+
+        }
+
+      });
+
+
+    // ---------------------------------------
+    // PASSWORD STRENGTH
+    // ---------------------------------------
+
+    passwordInput.addEventListener(
+      "input",
+      function () {
+
+        const password = this.value;
+
+        let score = 0;
+
+        if (password.length >= 8) {
+          score++;
+        }
+
+        if (/[A-Z]/.test(password)) {
+          score++;
+        }
+
+        if (/[a-z]/.test(password)) {
+          score++;
+        }
+
+        if (/[0-9]/.test(password)) {
+          score++;
+        }
+
+        if (/[^A-Za-z0-9]/.test(password)) {
+          score++;
+        }
+
+
+        if (password.length === 0) {
+
+          strengthFill.style.width = "0%";
+          strengthText.textContent =
+            "Password strength";
+
+        }
+
+        else if (score <= 2) {
+
+          strengthFill.style.width = "35%";
+          strengthText.textContent =
+            "Weak password";
+
+        }
+
+        else if (score === 3) {
+
+          strengthFill.style.width = "60%";
+          strengthText.textContent =
+            "Medium password";
+
+        }
+
+        else if (score === 4) {
+
+          strengthFill.style.width = "80%";
+          strengthText.textContent =
+            "Strong password";
+
+        }
+
+        else {
+
+          strengthFill.style.width = "100%";
+          strengthText.textContent =
+            "Very strong password";
+
+        }
+
+      }
+    );
+
+
+    // ---------------------------------------
+    // MOBILE NUMBER
+    // ---------------------------------------
+
+    mobileInput.addEventListener(
+      "input",
+      function () {
+
+        this.value =
+          this.value
+            .replace(/\D/g, "")
+            .slice(0, 10);
+
+      }
+    );
+
+
+    // ---------------------------------------
+    // SHA-256 HASH
+    // DEMO PURPOSE ONLY
+    // ---------------------------------------
+
+    async function hashPassword(password) {
+
+      const encoder =
+        new TextEncoder();
+
+      const data =
+        encoder.encode(password);
+
+      const hashBuffer =
+        await crypto.subtle.digest(
+          "SHA-256",
+          data
+        );
+
+      const hashArray =
+        Array.from(
+          new Uint8Array(hashBuffer)
+        );
+
+      return hashArray
+        .map(
+          byte =>
+            byte
+              .toString(16)
+              .padStart(2, "0")
+        )
+        .join("");
+
+    }
+
+
+    // ---------------------------------------
+    // GENERATE DEMO ACCOUNT NUMBER
+    // ---------------------------------------
+
+    function generateAccountNumber() {
+
+      let number = "";
+
+      for (let i = 0; i < 16; i++) {
+
+        number +=
+          Math.floor(
+            Math.random() * 10
+          );
+
+      }
+
+      return number;
+
+    }
+
+
+    // ---------------------------------------
+    // SIGNUP
+    // ---------------------------------------
+
+    signupForm.addEventListener(
+      "submit",
+      async function (event) {
+
+        event.preventDefault();
+
+        const name =
+          nameInput.value.trim();
+
+        const email =
+          emailInput.value.trim().toLowerCase();
+
+        const mobile =
+          mobileInput.value.trim();
+
+        const password =
+          passwordInput.value;
+
+        const confirmPassword =
+          confirmPasswordInput.value;
+
+        const terms =
+          document.getElementById("terms").checked;
+
+
+        // Name validation
+
+        if (
+          name.length < 2 ||
+          name.length > 60
+        ) {
+
+          showMessage(
+            "Please enter a valid full name.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        // Email validation
+
+        const emailPattern =
+          /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailPattern.test(email)) {
+
+          showMessage(
+            "Please enter a valid email address.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        // Mobile validation
+
+        if (!/^[6-9]\d{9}$/.test(mobile)) {
+
+          showMessage(
+            "Please enter a valid 10-digit Indian mobile number.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        // Password validation
+
+        if (
+          password.length < 8 ||
+          !/[A-Z]/.test(password) ||
+          !/[a-z]/.test(password) ||
+          !/[0-9]/.test(password)
+        ) {
+
+          showMessage(
+            "Password must contain at least 8 characters, uppercase, lowercase and a number.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        // Confirm password
+
+        if (password !== confirmPassword) {
+
+          showMessage(
+            "Passwords do not match.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        // Terms
+
+        if (!terms) {
+
+          showMessage(
+            "Please accept the Demo Terms to continue.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        // -----------------------------------
+        // HASH PASSWORD
+        // -----------------------------------
+
+        let passwordHash = "";
+
+        try {
+
+          passwordHash =
+            await hashPassword(password);
+
+        } catch (error) {
+
+          showMessage(
+            "Password processing failed. Please try again.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        // -----------------------------------
+        // PRESERVE EXISTING DEMO DATA
+        // -----------------------------------
+
+        if (
+          !localStorage.getItem(
+            "finzoBalance"
+          )
+        ) {
+
+          localStorage.setItem(
+            "finzoBalance",
+            "25000"
+          );
+
+        }
+
+
+        if (
+          !localStorage.getItem(
+            "finzoTransactions"
+          )
+        ) {
+
+          localStorage.setItem(
+            "finzoTransactions",
+            JSON.stringify([])
+          );
+
+        }
+
+
+        if (
+          !localStorage.getItem(
+            "finzoDisplayedBalance"
+          )
+        ) {
+
+          localStorage.setItem(
+            "finzoDisplayedBalance",
+            "25000"
+          );
+
+        }
+
+
+        if (
+          !localStorage.getItem(
+            "finzoKycStatus"
+          )
+        ) {
+
+          localStorage.setItem(
+            "finzoKycStatus",
+            "Pending"
+          );
+
+        }
+
+
+        // -----------------------------------
+        // SAVE USER
+        // -----------------------------------
+
+        localStorage.setItem(
+          "finzoUserName",
+          name
+        );
+
+        localStorage.setItem(
+          "finzoName",
+          name
+        );
+
+        localStorage.setItem(
+          "finzoUserEmail",
+          email
+        );
+
+        localStorage.setItem(
+          "finzoEmail",
+          email
+        );
+
+        localStorage.setItem(
+          "finzoMobile",
+          mobile
+        );
+
+        localStorage.setItem(
+          "finzoPasswordHash",
+          passwordHash
+        );
+
+
+        // -----------------------------------
+        // ACCOUNT NUMBER
+        // -----------------------------------
+
+        if (
+          !localStorage.getItem(
+            "finzoAccountNumber"
+          )
+        ) {
+
+          localStorage.setItem(
+            "finzoAccountNumber",
+            generateAccountNumber()
+          );
+
+        }
+
+
+        // -----------------------------------
+        // LOGIN SESSION
+        // -----------------------------------
+
+        localStorage.setItem(
+          "finzoLoggedIn",
+          "true"
+        );
+
+
+        const sessionExpiry =
+          Date.now() +
+          (10 * 60 * 1000);
+
+        localStorage.setItem(
+          "finzoDemoSessionExpiry",
+          String(sessionExpiry)
+        );
+
+
+        // -----------------------------------
+        // SUCCESS
+        // -----------------------------------
+
+        showMessage(
+          "🎉 FINZO demo account created successfully! Opening Dashboard...",
+          "success"
+        );
+
+
+        setTimeout(
+          function () {
+
+            window.location.href =
+              "dashboard.html";
+
+          },
+          900
+        );
+
+      }
+    );
+
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FINZO - Dashboard</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f5f7fb;
+      color: #172033;
+      min-height: 100vh;
+      transition: 0.3s;
+    }
+
+    body.dark {
+      background: #10131a;
+      color: #f5f7fb;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    .header {
+      background: #111827;
+      color: white;
+      padding: 16px 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.12);
+    }
+
+    .brand {
+      font-size: 25px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .brand span {
+      color: #ef4444;
+    }
+
+    .demo-label {
+      font-size: 11px;
+      background: #ef4444;
+      padding: 4px 8px;
+      border-radius: 6px;
+      margin-left: 7px;
+      vertical-align: middle;
+    }
+
+    .menu-btn {
+      display: none;
+      border: none;
+      background: transparent;
+      color: white;
+      font-size: 25px;
+      cursor: pointer;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav a,
+    .nav button {
+      border: none;
+      background: transparent;
+      color: #d1d5db;
+      padding: 9px 11px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .nav a:hover,
+    .nav button:hover {
+      background: #1f2937;
+      color: white;
+    }
+
+    .notification-link {
+      position: relative;
+    }
+
+    .badge {
+      position: absolute;
+      top: -3px;
+      right: -2px;
+      min-width: 18px;
+      height: 18px;
+      padding: 2px 5px;
+      background: #ef4444;
+      color: white;
+      border-radius: 20px;
+      font-size: 10px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 30px auto 50px;
+    }
+
+    .welcome {
+      margin-bottom: 22px;
+    }
+
+    .welcome h1 {
+      font-size: 30px;
+      margin-bottom: 7px;
+    }
+
+    .welcome p {
+      color: #6b7280;
+      font-size: 15px;
+    }
+
+    body.dark .welcome p {
+      color: #9ca3af;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 22px;
+    }
+
+    .balance-card {
+      background: linear-gradient(135deg, #991b1b, #dc2626, #7f1d1d);
+      color: white;
+      border-radius: 22px;
+      padding: 30px;
+      min-height: 245px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 15px 35px rgba(127,29,29,0.25);
+    }
+
+    .balance-card::before {
+      content: "";
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      right: -70px;
+      top: -70px;
+    }
+
+    .balance-card::after {
+      content: "";
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+      left: -60px;
+      bottom: -80px;
+    }
+
+    .balance-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .balance-title {
+      font-size: 14px;
+      opacity: 0.85;
+    }
+
+    .account-mini {
+      font-size: 13px;
+      opacity: 0.9;
+    }
+
+    .balance-amount {
+      font-size: 42px;
+      font-weight: 800;
+      margin: 25px 0 22px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .balance-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .account-number {
+      font-size: 14px;
+      letter-spacing: 1px;
+    }
+
+    .copy-btn {
+      border: 1px solid rgba(255,255,255,0.35);
+      background: rgba(255,255,255,0.12);
+      color: white;
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .copy-btn:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    .summary-card {
+      background: white;
+      border-radius: 20px;
+      padding: 25px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+    }
+
+    body.dark .summary-card,
+    body.dark .action-card,
+    body.dark .section-card {
+      background: #181c25;
+      box-shadow: none;
+    }
+
+    .summary-card h2,
+    .section-title {
+      font-size: 18px;
+      margin-bottom: 18px;
+    }
+
+    .summary-item {
+      padding: 15px 0;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    body.dark .summary-item {
+      border-color: #2b313d;
+    }
+
+    .summary-item:last-child {
+      border-bottom: none;
+    }
+
+    .summary-label {
+      color: #6b7280;
+      font-size: 13px;
+    }
+
+    body.dark .summary-label {
+      color: #9ca3af;
+    }
+
+    .summary-value {
+      font-size: 17px;
+      font-weight: bold;
+    }
+
+    .credit {
+      color: #16a34a;
+    }
+
+    .debit {
+      color: #dc2626;
+    }
+
+    .quick-actions {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin: 22px 0;
+    }
+
+    .action-card {
+      background: white;
+      border-radius: 18px;
+      padding: 22px;
+      text-align: center;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .action-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 13px 30px rgba(0,0,0,0.1);
+    }
+
+    .action-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 15px;
+      margin: 0 auto 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 25px;
+      background: #fee2e2;
+    }
+
+    .action-card h3 {
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+
+    .action-card p {
+      color: #6b7280;
+      font-size: 12px;
+    }
+
+    body.dark .action-card p {
+      color: #9ca3af;
+    }
+
+    .main-section {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 22px;
+    }
+
+    .section-card {
+      background: white;
+      border-radius: 20px;
+      padding: 25px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .view-all {
+      color: #dc2626;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .transaction {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    body.dark .transaction {
+      border-color: #2b313d;
+    }
+
+    .transaction:last-child {
+      border-bottom: none;
+    }
+
+    .transaction-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .transaction-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f3f4f6;
+      flex-shrink: 0;
+    }
+
+    body.dark .transaction-icon {
+      background: #252a35;
+    }
+
+    .transaction-info {
+      min-width: 0;
+    }
+
+    .transaction-title {
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .transaction-name {
+      color: #6b7280;
+      font-size: 12px;
+      margin-top: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 220px;
+    }
+
+    body.dark .transaction-name {
+      color: #9ca3af;
+    }
+
+    .transaction-amount {
+      font-weight: bold;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .transaction-date {
+      color: #9ca3af;
+      font-size: 11px;
+      margin-top: 3px;
+      text-align: right;
+    }
+
+    .kyc-card {
+      border: 1px solid #e5e7eb;
+      border-radius: 15px;
+      padding: 18px;
+      margin-bottom: 15px;
+    }
+
+    body.dark .kyc-card {
+      border-color: #2b313d;
+    }
+
+    .kyc-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .kyc-status {
+      padding: 6px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: bold;
+    }
+
+    .pending {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .verified {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .kyc-text {
+      color: #6b7280;
+      font-size: 12px;
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+
+    body.dark .kyc-text {
+      color: #9ca3af;
+    }
+
+    .kyc-btn {
+      width: 100%;
+      border: none;
+      background: #111827;
+      color: white;
+      padding: 11px;
+      border-radius: 9px;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin: 22px 0;
+    }
+
+    .stat {
+      background: white;
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 7px 20px rgba(0,0,0,0.05);
+    }
+
+    body.dark .stat {
+      background: #181c25;
+    }
+
+    .stat-label {
+      color: #6b7280;
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    body.dark .stat-label {
+      color: #9ca3af;
+    }
+
+    .stat-value {
+      font-size: 21px;
+      font-weight: 800;
+    }
+
+    .session {
+      text-align: center;
+      color: #6b7280;
+      font-size: 12px;
+      margin-top: 25px;
+    }
+
+    body.dark .session {
+      color: #9ca3af;
+    }
+
+    .demo-note {
+      margin-top: 25px;
+      padding: 15px;
+      border-radius: 12px;
+      background: #fff7ed;
+      color: #9a3412;
+      font-size: 12px;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    body.dark .demo-note {
+      background: #2a1d16;
+      color: #fdba74;
+    }
+
+    .footer {
+      text-align: center;
+      color: #9ca3af;
+      font-size: 11px;
+      padding: 25px 10px;
+    }
+
+    @media (max-width: 900px) {
+      .dashboard-grid,
+      .main-section {
+        grid-template-columns: 1fr;
+      }
+
+      .nav {
+        position: absolute;
+        top: 66px;
+        right: 5%;
+        width: 240px;
+        background: #111827;
+        padding: 12px;
+        border-radius: 12px;
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+      }
+
+      .nav.show {
+        display: flex;
+      }
+
+      .nav a,
+      .nav button {
+        text-align: left;
+        width: 100%;
+      }
+
+      .menu-btn {
+        display: block;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .container {
+        width: 92%;
+        margin-top: 22px;
+      }
+
+      .welcome h1 {
+        font-size: 25px;
+      }
+
+      .balance-card {
+        padding: 24px;
+      }
+
+      .balance-amount {
+        font-size: 34px;
+      }
+
+      .quick-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .transaction-name {
+        max-width: 145px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="header">
+    <div class="brand">
+      FINZO <span class="demo-label">DEMO</span>
+    </div>
+
+    <button class="menu-btn" onclick="toggleMobileMenu()" id="menuButton">
+      ☰
+    </button>
+
+    <nav class="nav" id="mainNav">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="money.html">Money</a>
+      <a href="transactions.html">Transactions</a>
+      <a href="analytics.html">Analytics</a>
+
+      <a href="notifications.html" class="notification-link">
+        Notifications
+        <span class="badge" id="notificationBadge">0</span>
+      </a>
+
+      <a href="profile.html">Profile</a>
+      <a href="kyc.html">KYC</a>
+
+      <button onclick="toggleTheme()">🌙 Theme</button>
+      <button onclick="logout()">Logout</button>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <section class="welcome">
+      <h1 id="welcomeTitle">Welcome back 👋</h1>
+      <p>Manage your FINZO demo wallet and track your activity.</p>
+    </section>
+
+    <section class="dashboard-grid">
+
+      <div class="balance-card">
+
+        <div class="balance-top">
+          <div class="balance-title">Available Balance</div>
+          <div class="account-mini">FINZO Wallet</div>
+        </div>
+
+        <div class="balance-amount" id="balanceAmount">
+          ₹0
+        </div>
+
+        <div class="balance-bottom">
+          <div>
+            <div class="balance-title">Account Number</div>
+            <div class="account-number" id="accountNumber">
+              ** ** ** **
+            </div>
+          </div>
+
+          <button class="copy-btn" onclick="copyAccountNumber()">
+            📋 Copy
+          </button>
+        </div>
+
+      </div>
+
+      <div class="summary-card">
+
+        <h2>Financial Summary</h2>
+
+        <div class="summary-item">
+          <div>
+            <div class="summary-label">Total Added</div>
+          </div>
+          <div class="summary-value credit" id="totalCredit">
+            ₹0
+          </div>
+        </div>
+
+        <div class="summary-item">
+          <div>
+            <div class="summary-label">Total Sent</div>
+          </div>
+          <div class="summary-value debit" id="totalDebit">
+            ₹0
+          </div>
+        </div>
+
+        <div class="summary-item">
+          <div>
+            <div class="summary-label">Transactions</div>
+          </div>
+          <div class="summary-value" id="totalTransactions">
+            0
+          </div>
+        </div>
+
+        <div class="summary-item">
+          <div>
+            <div class="summary-label">Net Movement</div>
+          </div>
+          <div class="summary-value" id="netMovement">
+            ₹0
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <section class="quick-actions">
+
+      <div class="action-card" onclick="goTo('money.html')">
+        <div class="action-icon">➕</div>
+        <h3>Add Money</h3>
+        <p>Add demo funds to wallet</p>
+      </div>
+
+      <div class="action-card" onclick="goTo('money.html')">
+        <div class="action-icon">💸</div>
+        <h3>Send Money</h3>
+        <p>Send demo money</p>
+      </div>
+
+      <div class="action-card" onclick="goTo('transactions.html')">
+        <div class="action-icon">📄</div>
+        <h3>Transactions</h3>
+        <p>View complete history</p>
+      </div>
+
+    </section>
+
+    <section class="stats">
+
+      <div class="stat">
+        <div class="stat-label">Current Balance</div>
+        <div class="stat-value" id="statBalance">₹0</div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-label">Money Added</div>
+        <div class="stat-value credit" id="statCredit">₹0</div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-label">Money Sent</div>
+        <div class="stat-value debit" id="statDebit">₹0</div>
+      </div>
+
+    </section>
+
+    <section class="main-section">
+
+      <div class="section-card">
+
+        <div class="section-header">
+          <h2 class="section-title">Recent Transactions</h2>
+          <a href="transactions.html" class="view-all">View All →</a>
+        </div>
+
+        <div id="recentTransactions"></div>
+
+      </div>
+
+      <div class="section-card">
+
+        <div class="section-header">
+          <h2 class="section-title">Account Status</h2>
+        </div>
+
+        <div class="kyc-card">
+
+          <div class="kyc-top">
+            <strong>KYC Verification</strong>
+            <span class="kyc-status pending" id="kycStatus">
+              Pending
+            </span>
+          </div>
+
+          <p class="kyc-text" id="kycText">
+            Complete the demo KYC process to mark your account as verified.
+          </p>
+
+          <button class="kyc-btn" onclick="goTo('kyc.html')">
+            Manage KYC
+          </button>
+
+        </div>
+
+        <div class="kyc-card">
+
+          <div class="kyc-top">
+            <strong>Account Security</strong>
+            <span>🔐</span>
+          </div>
+
+          <p class="kyc-text">
+            Your FINZO demo data is stored locally in your browser.
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <div class="session">
+      Demo session expires in:
+      <strong id="sessionTimer">--:--</strong>
+    </div>
+
+    <div class="demo-note">
+      ⚠️ <strong>FINZO is a demo project.</strong>
+      No real money, bank account, UPI transaction or financial service is connected.
+      Do not enter real banking, Aadhaar, PAN, card or KYC information.
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    ©️ 2026 FINZO Demo • Built for learning purposes
+  </footer>
+
+  <script>
+
+    function getBalance() {
+      return Number(localStorage.getItem("finzoBalance")) || 0;
+    }
+
+    function getTransactions() {
+      try {
+        return JSON.parse(
+          localStorage.getItem("finzoTransactions") || "[]"
+        );
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function formatMoney(amount) {
+      return "₹" + Number(amount || 0).toLocaleString("en-IN");
+    }
+
+    function getUserName() {
+      return (
+        localStorage.getItem("finzoUserName") ||
+        localStorage.getItem("finzoName") ||
+        "User"
+      );
+    }
+
+    function displayBalance() {
+      const balance = getBalance();
+
+      document.getElementById("balanceAmount").textContent =
+        formatMoney(balance);
+
+      document.getElementById("statBalance").textContent =
+        formatMoney(balance);
+    }
+
+    function displayAccountNumber() {
+
+      let accountNumber =
+        localStorage.getItem("finzoAccountNumber");
+
+      if (!accountNumber) {
+
+        accountNumber = "";
+
+        for (let i = 0; i < 16; i++) {
+          accountNumber += Math.floor(Math.random() * 10);
+        }
+
+        localStorage.setItem(
+          "finzoAccountNumber",
+          accountNumber
+        );
+      }
+
+      const hidden =
+        "** ** ** " +
+        accountNumber.slice(-4);
+
+      document.getElementById("accountNumber").textContent =
+        hidden;
+    }
+
+    function calculateSummary() {
+
+      const transactions = getTransactions();
+
+      let credit = 0;
+      let debit = 0;
+
+      transactions.forEach(function(tx) {
+
+        const amount = Number(tx.amount) || 0;
+
+        if (tx.type === "Credit") {
+          credit += amount;
+        }
+
+        if (tx.type === "Debit") {
+          debit += amount;
+        }
+
+      });
+
+      const net = credit - debit;
+
+      document.getElementById("totalCredit").textContent =
+        formatMoney(credit);
+
+      document.getElementById("totalDebit").textContent =
+        formatMoney(debit);
+
+      document.getElementById("totalTransactions").textContent =
+        transactions.length;
+
+      document.getElementById("netMovement").textContent =
+        formatMoney(net);
+
+      document.getElementById("statCredit").textContent =
+        formatMoney(credit);
+
+      document.getElementById("statDebit").textContent =
+        formatMoney(debit);
+    }
+
+    function displayRecentTransactions() {
+
+      const container =
+        document.getElementById("recentTransactions");
+
+      const transactions = getTransactions();
+
+      if (transactions.length === 0) {
+
+        container.innerHTML = `
+          <div style="
+            text-align:center;
+            padding:35px 10px;
+            color:#9ca3af;
+            font-size:13px;
+          ">
+            No transactions yet.
+            <br><br>
+            Add or send demo money to see activity here.
+          </div>
+        `;
+
+        return;
+      }
+
+      const recent =
+        transactions.slice().reverse().slice(0, 5);
+
+      container.innerHTML = recent.map(function(tx) {
+
+        const isCredit = tx.type === "Credit";
+
+        const icon = isCredit ? "⬆️" : "⬇️";
+
+        const sign = isCredit ? "+" : "-";
+
+        const color = isCredit
+          ? "credit"
+          : "debit";
+
+        return `
+          <div class="transaction">
+
+            <div class="transaction-left">
+
+              <div class="transaction-icon">
+                ${icon}
+              </div>
+
+              <div class="transaction-info">
+
+                <div class="transaction-title">
+                  ${escapeHtml(tx.title || "Transaction")}
+                </div>
+
+                <div class="transaction-name">
+                  ${escapeHtml(tx.name || "Demo")}
+                </div>
+
+              </div>
+
+            </div>
+
+            <div>
+              <div class="transaction-amount ${color}">
+                ${sign}${formatMoney(tx.amount)}
+              </div>
+
+              <div class="transaction-date">
+                ${escapeHtml(tx.date || "")}
+              </div>
+            </div>
+
+          </div>
+        `;
+
+      }).join("");
+    }
+
+    function escapeHtml(value) {
+
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function displayKyc() {
+
+      const status =
+        localStorage.getItem("finzoKycStatus") ||
+        "Pending";
+
+      const statusElement =
+        document.getElementById("kycStatus");
+
+      const textElement =
+        document.getElementById("kycText");
+
+      statusElement.textContent = status;
+
+      if (status === "Verified") {
+
+        statusElement.className =
+          "kyc-status verified";
+
+        textElement.textContent =
+          "Demo KYC verification completed successfully.";
+
+      } else {
+
+        statusElement.className =
+          "kyc-status pending";
+
+        textElement.textContent =
+          "Complete the demo KYC process to mark your account as verified.";
+      }
+    }
+
+    function displayUser() {
+
+      const name = getUserName();
+
+      document.getElementById("welcomeTitle").textContent =
+        "Welcome back, " + name + " 👋";
+    }
+
+    function copyAccountNumber() {
+
+      const accountNumber =
+        localStorage.getItem("finzoAccountNumber");
+
+      if (!accountNumber) {
+        return;
+      }
+
+      if (navigator.clipboard) {
+
+        navigator.clipboard.writeText(accountNumber)
+          .then(function() {
+            alert("Account number copied.");
+          })
+          .catch(function() {
+            alert("Unable to copy account number.");
+          });
+
+      } else {
+
+        alert(
+          "Account Number: " + accountNumber
+        );
+      }
+    }
+
+    function toggleTheme() {
+
+      const isDark =
+        document.body.classList.toggle("dark");
+
+      localStorage.setItem(
+        "finzoTheme",
+        isDark ? "dark" : "light"
+      );
+    }
+
+    function loadTheme() {
+
+      const theme =
+        localStorage.getItem("finzoTheme");
+
+      if (theme === "dark") {
+        document.body.classList.add("dark");
+      }
+    }
+
+    function updateNotificationBadge() {
+
+      let notifications = [];
+
+      try {
+
+        notifications =
+          JSON.parse(
+            localStorage.getItem("finzoNotifications") || "[]"
+          );
+
+      } catch (error) {
+
+        notifications = [];
+      }
+
+      const unread =
+        notifications.filter(function(item) {
+          return item.read !== true;
+        }).length;
+
+      const badge =
+        document.getElementById("notificationBadge");
+
+      badge.textContent = unread;
+
+      if (unread === 0) {
+        badge.style.display = "none";
+      } else {
+        badge.style.display = "block";
+      }
+    }
+
+    function startSessionTimer() {
+
+      const expiry =
+        Number(
+          localStorage.getItem("finzoDemoSessionExpiry")
+        );
+
+      if (!expiry) {
+
+        document.getElementById("sessionTimer")
+          .textContent = "--:--";
+
+        return;
+      }
+
+      function updateTimer() {
+
+        const remaining =
+          expiry - Date.now();
+
+        if (remaining <= 0) {
+
+          document.getElementById("sessionTimer")
+            .textContent = "Expired";
+
+          return;
+        }
+
+        const totalSeconds =
+          Math.floor(remaining / 1000);
+
+        const minutes =
+          Math.floor(totalSeconds / 60);
+
+        const seconds =
+          totalSeconds % 60;
+
+        document.getElementById("sessionTimer")
+          .textContent =
+          String(minutes).padStart(2, "0") +
+          ":" +
+          String(seconds).padStart(2, "0");
+      }
+
+      updateTimer();
+
+      setInterval(updateTimer, 1000);
+    }
+
+    function toggleMobileMenu() {
+
+      const nav =
+        document.getElementById("mainNav");
+
+      const button =
+        document.getElementById("menuButton");
+
+      nav.classList.toggle("show");
+
+      if (nav.classList.contains("show")) {
+        button.textContent = "✕";
+      } else {
+        button.textContent = "☰";
+      }
+    }
+
+    function closeMobileMenu() {
+
+      const nav =
+        document.getElementById("mainNav");
+
+      const button =
+        document.getElementById("menuButton");
+
+      nav.classList.remove("show");
+
+      button.textContent = "☰";
+    }
+
+    function goTo(page) {
+
+      closeMobileMenu();
+
+      window.location.href = page;
+    }
+
+    function logout() {
+
+      localStorage.setItem(
+        "finzoLoggedIn",
+        "false"
+      );
+
+      window.location.href =
+        "login.html";
+    }
+
+    document.addEventListener(
+      "click",
+      function(event) {
+
+        const nav =
+          document.getElementById("mainNav");
+
+        const button =
+          document.getElementById("menuButton");
+
+        if (
+          window.innerWidth <= 900 &&
+          !nav.contains(event.target) &&
+          !button.contains(event.target)
+        ) {
+
+          closeMobileMenu();
+        }
+      }
+    );
+
+    function initializeDashboard() {
+
+      loadTheme();
+
+      displayUser();
+
+      displayBalance();
+
+      displayAccountNumber();
+
+      calculateSummary();
+
+      displayRecentTransactions();
+
+      displayKyc();
+
+      updateNotificationBadge();
+
+      startSessionTimer();
+    }
+
+    initializeDashboard();
+
+  </script>
+
+</body>
+</html>

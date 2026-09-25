@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FINZO - Login</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #07111f, #0d1b2a, #102a43);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 25px 15px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 440px;
+    }
+
+    .brand {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .brand h1 {
+      font-size: 40px;
+      letter-spacing: 2px;
+      color: #00d4ff;
+    }
+
+    .brand p {
+      margin-top: 5px;
+      color: #9fb3c8;
+      font-size: 14px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      backdrop-filter: blur(15px);
+      border-radius: 22px;
+      padding: 32px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+    }
+
+    .card h2 {
+      text-align: center;
+      font-size: 26px;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #a9b8c8;
+      font-size: 14px;
+      margin-bottom: 25px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #dce7f2;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      border-radius: 11px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(0, 0, 0, 0.25);
+      color: white;
+      font-size: 15px;
+      outline: none;
+    }
+
+    input::placeholder {
+      color: #8191a3;
+    }
+
+    input:focus {
+      border-color: #00d4ff;
+      box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.12);
+    }
+
+    .password-wrapper {
+      position: relative;
+    }
+
+    .password-wrapper input {
+      padding-right: 75px;
+    }
+
+    .show-btn {
+      position: absolute;
+      right: 8px;
+      top: 7px;
+      border: none;
+      background: transparent;
+      color: #00d4ff;
+      cursor: pointer;
+      padding: 7px;
+      font-size: 13px;
+    }
+
+    .forgot {
+      text-align: right;
+      margin-top: -7px;
+      margin-bottom: 20px;
+    }
+
+    .forgot a {
+      color: #00d4ff;
+      text-decoration: none;
+      font-size: 13px;
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #00d4ff, #0077ff);
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .login-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 25px rgba(0, 174, 255, 0.25);
+    }
+
+    .message {
+      display: none;
+      padding: 11px 13px;
+      border-radius: 10px;
+      margin-bottom: 18px;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .message.error {
+      display: block;
+      background: rgba(255, 70, 70, 0.12);
+      border: 1px solid rgba(255, 70, 70, 0.3);
+      color: #ff9b9b;
+    }
+
+    .message.success {
+      display: block;
+      background: rgba(0, 220, 140, 0.12);
+      border: 1px solid rgba(0, 220, 140, 0.3);
+      color: #7ff0bd;
+    }
+
+    .signup-link {
+      text-align: center;
+      margin-top: 22px;
+      color: #a9b8c8;
+      font-size: 14px;
+    }
+
+    .signup-link a {
+      color: #00d4ff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .home-link {
+      display: block;
+      text-align: center;
+      margin-top: 17px;
+      color: #9fb3c8;
+      text-decoration: none;
+      font-size: 13px;
+    }
+
+    .home-link:hover {
+      color: #00d4ff;
+    }
+
+    .demo-login {
+      margin-top: 20px;
+      padding: 13px;
+      border-radius: 11px;
+      background: rgba(0, 212, 255, 0.06);
+      border: 1px solid rgba(0, 212, 255, 0.14);
+      font-size: 12px;
+      color: #a9b8c8;
+      line-height: 1.6;
+    }
+
+    .demo-login strong {
+      color: #00d4ff;
+    }
+
+    .demo-note {
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 10px;
+      background: rgba(255, 193, 7, 0.08);
+      border: 1px solid rgba(255, 193, 7, 0.18);
+      color: #d8c99b;
+      font-size: 11px;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 500px) {
+      body {
+        padding: 18px 12px;
+      }
+
+      .card {
+        padding: 24px 18px;
+        border-radius: 18px;
+      }
+
+      .brand h1 {
+        font-size: 34px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <div class="brand">
+      <h1>FINZO</h1>
+      <p>Smart Digital Finance</p>
+    </div>
+
+    <div class="card">
+
+      <h2>Welcome Back</h2>
+
+      <p class="subtitle">
+        Login to your FINZO demo account
+      </p>
+
+      <div id="message" class="message"></div>
+
+      <form id="loginForm">
+
+        <!-- Email -->
+        <div class="form-group">
+
+          <label for="email">
+            Email Address
+          </label>
+
+          <input
+            type="email"
+            id="email"
+            placeholder="Enter your email"
+            autocomplete="email"
+            required
+          >
+
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+
+          <label for="password">
+            Password
+          </label>
+
+          <div class="password-wrapper">
+
+            <input
+              type="password"
+              id="password"
+              placeholder="Enter your password"
+              autocomplete="current-password"
+              required
+            >
+
+            <button
+              type="button"
+              class="show-btn"
+              id="showPassword"
+            >
+              Show
+            </button>
+
+          </div>
+
+        </div>
+
+        <!-- Forgot Password -->
+        <div class="forgot">
+          <a href="forgot-password.html">
+            Forgot Password?
+          </a>
+        </div>
+
+        <!-- Login -->
+        <button
+          type="submit"
+          class="login-btn"
+        >
+          Login to FINZO
+        </button>
+
+      </form>
+
+      <!-- Signup -->
+      <div class="signup-link">
+        Don't have an account?
+        <a href="signup.html">
+          Create Account
+        </a>
+      </div>
+
+      <!-- Home -->
+      <a
+        href="index.html"
+        class="home-link"
+      >
+        ← Back to FINZO Home
+      </a>
+
+      <!-- Demo Information -->
+      <div class="demo-login">
+
+        <strong>Demo Account</strong><br>
+
+        If you already created an account using the FINZO
+        Signup page, use the same email and password here.
+
+        <br><br>
+
+        For a fresh demo account, go to
+        <strong>Create Account</strong>.
+
+      </div>
+
+      <!-- Disclaimer -->
+      <div class="demo-note">
+
+        ⚠️ DEMO ONLY — Do not enter real banking,
+        card, KYC or other sensitive information.
+        This website does not process real money.
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+    // ---------------------------------------
+    // FINZO LOGIN
+    // ---------------------------------------
+
+    const loginForm =
+      document.getElementById("loginForm");
+
+    const emailInput =
+      document.getElementById("email");
+
+    const passwordInput =
+      document.getElementById("password");
+
+    const messageBox =
+      document.getElementById("message");
+
+
+    // ---------------------------------------
+    // MESSAGE
+    // ---------------------------------------
+
+    function showMessage(text, type) {
+
+      messageBox.textContent = text;
+
+      messageBox.className =
+        "message " + type;
+
+    }
+
+
+    // ---------------------------------------
+    // SHOW / HIDE PASSWORD
+    // ---------------------------------------
+
+    document
+      .getElementById("showPassword")
+      .addEventListener(
+        "click",
+        function () {
+
+          if (
+            passwordInput.type === "password"
+          ) {
+
+            passwordInput.type = "text";
+
+            this.textContent = "Hide";
+
+          } else {
+
+            passwordInput.type = "password";
+
+            this.textContent = "Show";
+
+          }
+
+        }
+      );
+
+
+    // ---------------------------------------
+    // SHA-256 HASH
+    // Same method used in Signup
+    // ---------------------------------------
+
+    async function hashPassword(password) {
+
+      const encoder =
+        new TextEncoder();
+
+      const data =
+        encoder.encode(password);
+
+      const hashBuffer =
+        await crypto.subtle.digest(
+          "SHA-256",
+          data
+        );
+
+      const hashArray =
+        Array.from(
+          new Uint8Array(hashBuffer)
+        );
+
+      return hashArray
+        .map(
+          byte =>
+            byte
+              .toString(16)
+              .padStart(2, "0")
+        )
+        .join("");
+
+    }
+
+
+    // ---------------------------------------
+    // LOGIN
+    // ---------------------------------------
+
+    loginForm.addEventListener(
+      "submit",
+      async function (event) {
+
+        event.preventDefault();
+
+        const email =
+          emailInput.value
+            .trim()
+            .toLowerCase();
+
+        const password =
+          passwordInput.value;
+
+
+        // -----------------------------------
+        // CHECK USER
+        // -----------------------------------
+
+        const savedEmail =
+          localStorage.getItem(
+            "finzoUserEmail"
+          );
+
+        const savedPasswordHash =
+          localStorage.getItem(
+            "finzoPasswordHash"
+          );
+
+
+        // -----------------------------------
+        // NO ACCOUNT
+        // -----------------------------------
+
+        if (
+          !savedEmail ||
+          !savedPasswordHash
+        ) {
+
+          showMessage(
+            "No FINZO demo account found. Please create an account first.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        // -----------------------------------
+        // EMAIL CHECK
+        // -----------------------------------
+
+        if (
+          email !==
+          savedEmail.toLowerCase()
+        ) {
+
+          showMessage(
+            "Incorrect email or password.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        // -----------------------------------
+        // PASSWORD HASH
+        // -----------------------------------
+
+        let enteredPasswordHash = "";
+
+        try {
+
+          enteredPasswordHash =
+            await hashPassword(password);
+
+        } catch (error) {
+
+          showMessage(
+            "Login processing failed. Please try again.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        // -----------------------------------
+        // PASSWORD CHECK
+        // -----------------------------------
+
+        if (
+          enteredPasswordHash !==
+          savedPasswordHash
+        ) {
+
+          showMessage(
+            "Incorrect email or password.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        // -----------------------------------
+        // LOGIN SUCCESS
+        // -----------------------------------
+
+        localStorage.setItem(
+          "finzoLoggedIn",
+          "true"
+        );
+
+
+        // -----------------------------------
+        // NEW DEMO SESSION
+        // 10 MINUTES
+        // -----------------------------------
+
+        const sessionExpiry =
+          Date.now() +
+          (10 * 60 * 1000);
+
+        localStorage.setItem(
+          "finzoDemoSessionExpiry",
+          String(sessionExpiry)
+        );
+
+
+        showMessage(
+          "✅ Login successful! Opening Dashboard...",
+          "success"
+        );
+
+
+        // -----------------------------------
+        // REDIRECT
+        // -----------------------------------
+
+        setTimeout(
+          function () {
+
+            window.location.href =
+              "dashboard.html";
+
+          },
+          700
+        );
+
+      }
+    );
+
+
+    // ---------------------------------------
+    // FORGOT PASSWORD
+    // DEMO VERSION
+    // ---------------------------------------
+
+    document
+      .getElementById("forgotPassword")
+      .addEventListener(
+        "click",
+        function (event) {
+
+          event.preventDefault();
+
+          const savedEmail =
+            localStorage.getItem(
+              "finzoUserEmail"
+            );
+
+          if (!savedEmail) {
+
+            showMessage(
+              "No demo account found. Please create an account first.",
+              "error"
+            );
+
+            return;
+
+          }
+
+          showMessage(
+            "For this demo, password reset is available by creating a new demo account.",
+            "success"
+          );
+
+        }
+      );
+
+  </script>
+
+</body>
+</html>

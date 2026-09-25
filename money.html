@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>FINZO - Money</title>
+
+<style>
+
+•⁠  ⁠{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+  color: #18212f;
+  min-height: 100vh;
+}
+
+body.dark {
+  background: #111827;
+  color: #f3f4f6;
+}
+
+/* HEADER */
+
+header {
+  background: #111827;
+  color: white;
+  padding: 16px 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo {
+  font-size: 25px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.demo {
+  font-size: 11px;
+  background: #dc2626;
+  padding: 4px 8px;
+  border-radius: 6px;
+  margin-left: 6px;
+}
+
+.menu-btn {
+  display: none;
+  background: transparent;
+  border: 0;
+  color: white;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+nav {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+nav button {
+  border: 0;
+  background: transparent;
+  color: white;
+  padding: 9px 11px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+nav button:hover {
+  background: #374151;
+}
+
+.badge {
+  background: #ef4444;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 10px;
+  margin-left: 3px;
+}
+
+/* PAGE */
+
+.container {
+  width: 92%;
+  max-width: 1150px;
+  margin: 30px auto;
+}
+
+.page-title {
+  margin-bottom: 22px;
+}
+
+.page-title h1 {
+  font-size: 30px;
+  margin-bottom: 6px;
+}
+
+.page-title p {
+  color: #6b7280;
+}
+
+.dark .page-title p {
+  color: #9ca3af;
+}
+
+/* BALANCE */
+
+.balance-card {
+  background: linear-gradient(135deg, #991b1b, #dc2626);
+  color: white;
+  padding: 28px;
+  border-radius: 18px;
+  margin-bottom: 25px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+}
+
+.balance-label {
+  font-size: 14px;
+  opacity: .9;
+}
+
+.balance {
+  font-size: 38px;
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+/* GRID */
+
+.money-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+}
+
+.card {
+  background: white;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 5px 18px rgba(0,0,0,0.07);
+}
+
+.dark .card {
+  background: #1f2937;
+}
+
+.card h2 {
+  margin-bottom: 7px;
+}
+
+.card-description {
+  color: #6b7280;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.dark .card-description {
+  color: #9ca3af;
+}
+
+/* FORM */
+
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 9px;
+  font-size: 15px;
+  margin-bottom: 14px;
+  background: white;
+  color: #111827;
+}
+
+.dark input,
+.dark select {
+  background: #111827;
+  color: white;
+  border-color: #4b5563;
+}
+
+.quick-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.quick-buttons button {
+  padding: 8px 13px;
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.dark .quick-buttons button {
+  background: #374151;
+  color: white;
+  border-color: #4b5563;
+}
+
+.primary-btn {
+  width: 100%;
+  padding: 13px;
+  background: #991b1b;
+  color: white;
+  border: 0;
+  border-radius: 9px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.primary-btn:hover {
+  background: #7f1d1d;
+}
+
+/* MESSAGE */
+
+.message {
+  margin-top: 14px;
+  padding: 10px;
+  border-radius: 8px;
+  display: none;
+  font-size: 14px;
+}
+
+.success {
+  display: block;
+  background: #dcfce7;
+  color: #166534;
+}
+
+.error {
+  display: block;
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* RECENT */
+
+.recent-card {
+  margin-top: 22px;
+}
+
+.transaction {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.dark .transaction {
+  border-color: #374151;
+}
+
+.transaction:last-child {
+  border-bottom: 0;
+}
+
+.transaction-title {
+  font-weight: bold;
+}
+
+.transaction-name {
+  font-size: 13px;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+.credit {
+  color: #15803d;
+  font-weight: bold;
+}
+
+.debit {
+  color: #dc2626;
+  font-weight: bold;
+}
+
+/* LINKS */
+
+.bottom-links {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 22px;
+}
+
+.bottom-links button {
+  border: 1px solid #d1d5db;
+  background: white;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.dark .bottom-links button {
+  background: #1f2937;
+  color: white;
+  border-color: #4b5563;
+}
+
+/* FOOTER */
+
+footer {
+  text-align: center;
+  color: #6b7280;
+  font-size: 12px;
+  padding: 35px 15px;
+}
+
+.dark footer {
+  color: #9ca3af;
+}
+
+/* MOBILE */
+
+@media (max-width: 850px) {
+
+  .menu-btn {
+    display: block;
+  }
+
+  nav {
+    display: none;
+    position: absolute;
+    top: 64px;
+    left: 0;
+    width: 100%;
+    background: #111827;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 10px;
+  }
+
+  nav.show {
+    display: flex;
+  }
+
+  nav button {
+    text-align: left;
+    padding: 13px;
+  }
+
+  .money-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .balance {
+    font-size: 31px;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+  <div class="logo" onclick="navigate('dashboard.html')">
+    FINZO <span class="demo">DEMO</span>
+  </div>
+
+  <button class="menu-btn" id="menuButton" onclick="toggleMenu()">
+    ☰
+  </button>
+
+  <nav id="mainNav">
+
+    <button onclick="navigate('dashboard.html')">
+      🏠 Dashboard
+    </button>
+
+    <button onclick="navigate('money.html')">
+      💰 Money
+    </button>
+
+    <button onclick="navigate('transactions.html')">
+      📜 Transactions
+    </button>
+
+    <button onclick="navigate('analytics.html')">
+      📊 Analytics
+    </button>
+
+    <button onclick="navigate('notifications.html')">
+      🔔 Notifications
+      <span id="notificationBadge" class="badge">0</span>
+    </button>
+
+    <button onclick="navigate('profile.html')">
+      👤 Profile
+    </button>
+
+    <button onclick="navigate('kyc.html')">
+      🪪 KYC
+    </button>
+
+    <button onclick="toggleTheme()">
+      🌙 Theme
+    </button>
+
+    <button onclick="logout()">
+      🚪 Logout
+    </button>
+
+  </nav>
+
+</header>
+
+
+<main class="container">
+
+  <div class="page-title">
+    <h1>Money</h1>
+    <p>Add money or send money using the FINZO demo system.</p>
+  </div>
+
+
+  <!-- BALANCE -->
+
+  <section class="balance-card">
+
+    <div class="balance-label">
+      Available Demo Balance
+    </div>
+
+    <div class="balance">
+      ₹<span id="balance">25,000</span>
+    </div>
+
+  </section>
+
+
+  <!-- MONEY ACTIONS -->
+
+  <section class="money-grid">
+
+
+    <!-- ADD MONEY -->
+
+    <div class="card">
+
+      <h2>💰 Add Money</h2>
+
+      <p class="card-description">
+        Add demo money to your FINZO wallet.
+      </p>
+
+      <label for="addSource">
+        Source
+      </label>
+
+      <select id="addSource">
+
+        <option value="Demo Bank">
+          Demo Bank
+        </option>
+
+        <option value="Demo Card">
+          Demo Card
+        </option>
+
+        <option value="Demo Wallet">
+          Demo Wallet
+        </option>
+
+      </select>
+
+
+      <label>
+        Quick Amount
+      </label>
+
+      <div class="quick-buttons">
+
+        <button type="button" onclick="setAddAmount(500)">
+          ₹500
+        </button>
+
+        <button type="button" onclick="setAddAmount(1000)">
+          ₹1,000
+        </button>
+
+        <button type="button" onclick="setAddAmount(5000)">
+          ₹5,000
+        </button>
+
+        <button type="button" onclick="setAddAmount(10000)">
+          ₹10,000
+        </button>
+
+      </div>
+
+
+      <label for="addAmount">
+        Amount
+      </label>
+
+      <input
+        type="number"
+        id="addAmount"
+        placeholder="Enter amount"
+        min="1"
+        max="100000"
+      >
+
+
+      <button
+        type="button"
+        class="primary-btn"
+        onclick="addMoney()"
+      >
+        Add Money
+      </button>
+
+      <div id="addMessage" class="message"></div>
+
+    </div>
+
+
+    <!-- SEND MONEY -->
+
+    <div class="card">
+
+      <h2>💸 Send Money</h2>
+
+      <p class="card-description">
+        Send demo money to another user.
+      </p>
+
+
+      <label for="recipientName">
+        Recipient Name
+      </label>
+
+      <input
+        type="text"
+        id="recipientName"
+        placeholder="Example: Ravi"
+      >
+
+
+      <label for="recipientAccount">
+        UPI / Account
+      </label>
+
+      <input
+        type="text"
+        id="recipientAccount"
+        placeholder="Example: ravi@demo"
+      >
+
+
+      <label>
+        Quick Amount
+      </label>
+
+      <div class="quick-buttons">
+
+        <button type="button" onclick="setSendAmount(500)">
+          ₹500
+        </button>
+
+        <button type="button" onclick="setSendAmount(1000)">
+          ₹1,000
+        </button>
+
+        <button type="button" onclick="setSendAmount(5000)">
+          ₹5,000
+        </button>
+
+      </div>
+
+
+      <label for="sendAmount">
+        Amount
+      </label>
+
+      <input
+        type="number"
+        id="sendAmount"
+        placeholder="Enter amount"
+        min="1"
+        max="100000"
+      >
+
+
+      <button
+        type="button"
+        class="primary-btn"
+        onclick="sendMoney()"
+      >
+        Send Money
+      </button>
+
+      <div id="sendMessage" class="message"></div>
+
+    </div>
+
+  </section>
+
+
+  <!-- RECENT TRANSACTIONS -->
+
+  <section class="card recent-card">
+
+    <h2>📜 Recent Transactions</h2>
+
+    <p class="card-description">
+      Your latest demo money activity.
+    </p>
+
+    <div id="recentTransactions"></div>
+
+  </section>
+
+
+  <!-- QUICK NAVIGATION -->
+
+  <div class="bottom-links">
+
+    <button onclick="navigate('transactions.html')">
+      View All Transactions
+    </button>
+
+    <button onclick="navigate('analytics.html')">
+      View Analytics
+    </button>
+
+    <button onclick="navigate('notifications.html')">
+      View Notifications
+    </button>
+
+    <button onclick="navigate('dashboard.html')">
+      Back to Dashboard
+    </button>
+
+  </div>
+
+</main>
+
+
+<footer>
+
+  FINZO Demo Wallet • For learning purposes only.<br><br>
+
+  No real bank, UPI, card or wallet transaction is performed.
+
+</footer>
+
+
+<script>
+
+function getBalance() {
+
+  const saved =
+    localStorage.getItem("finzoBalance");
+
+  if (saved === null) {
+
+    localStorage.setItem(
+      "finzoBalance",
+      "25000"
+    );
+
+    return 25000;
+  }
+
+  return Number(saved) || 0;
+}
+
+
+function saveBalance(amount) {
+
+  localStorage.setItem(
+    "finzoBalance",
+    String(amount)
+  );
+
+}
+
+
+function formatMoney(amount) {
+
+  return Number(amount).toLocaleString(
+    "en-IN"
+  );
+
+}
+
+
+function renderBalance() {
+
+  const balance =
+    getBalance();
+
+  document.getElementById(
+    "balance"
+  ).textContent =
+    formatMoney(balance);
+
+}
+
+
+function setAddAmount(amount) {
+
+  document.getElementById(
+    "addAmount"
+  ).value = amount;
+
+}
+
+
+function setSendAmount(amount) {
+
+  document.getElementById(
+    "sendAmount"
+  ).value = amount;
+
+}
+
+
+function getTransactions() {
+
+  try {
+
+    const saved =
+      localStorage.getItem(
+        "finzoTransactions"
+      );
+
+    if (!saved) {
+      return [];
+    }
+
+    const data =
+      JSON.parse(saved);
+
+    return Array.isArray(data)
+      ? data
+      : [];
+
+  } catch (error) {
+
+    return [];
+
+  }
+
+}
+
+
+function saveTransactions(transactions) {
+
+  localStorage.setItem(
+    "finzoTransactions",
+    JSON.stringify(transactions)
+  );
+
+}
+
+
+function createTransaction(
+  type,
+  title,
+  name,
+  amount
+) {
+
+  const transactions =
+    getTransactions();
+
+  transactions.unshift({
+
+    id:
+      "TXN" +
+      Date.now(),
+
+    type:
+      type,
+
+    title:
+      title,
+
+    name:
+      name,
+
+    amount:
+      Number(amount),
+
+    date:
+      new Date().toLocaleString(
+        "en-IN"
+      )
+
+  });
+
+  saveTransactions(
+    transactions
+  );
+
+}
+
+
+function addNotification(
+  title,
+  message,
+  icon
+) {
+
+  let notifications = [];
+
+  try {
+
+    const saved =
+      localStorage.getItem(
+        "finzoNotifications"
+      );
+
+    if (saved) {
+
+      notifications =
+        JSON.parse(saved);
+
+    }
+
+  } catch (error) {
+
+    notifications = [];
+
+  }
+
+
+  if (!Array.isArray(notifications)) {
+    notifications = [];
+  }
+
+
+  notifications.unshift({
+
+    id:
+      "NOT" +
+      Date.now(),
+
+    title:
+      title,
+
+    message:
+      message,
+
+    icon:
+      icon,
+
+    read:
+      false,
+
+    date:
+      new Date().toLocaleString(
+        "en-IN"
+      )
+
+  });
+
+
+  localStorage.setItem(
+    "finzoNotifications",
+    JSON.stringify(
+      notifications
+    )
+  );
+
+}
+
+
+function addMoney() {
+
+  const input =
+    document.getElementById(
+      "addAmount"
+    );
+
+  const source =
+    document.getElementById(
+      "addSource"
+    ).value;
+
+  const amount =
+    Number(input.value);
+
+
+  if (
+    !Number.isFinite(amount) ||
+    amount <= 0
+  ) {
+
+    showMessage(
+      "addMessage",
+      "Please enter a valid amount.",
+      false
+    );
+
+    return;
+
+  }
+
+
+  if (amount > 100000) {
+
+    showMessage(
+      "addMessage",
+      "Maximum demo amount is ₹1,00,000.",
+      false
+    );
+
+    return;
+
+  }
+
+
+  const oldBalance =
+    getBalance();
+
+  const newBalance =
+    oldBalance + amount;
+
+
+  saveBalance(
+    newBalance
+  );
+
+
+  createTransaction(
+    "Credit",
+    "Money Added",
+    source,
+    amount
+  );
+
+
+  addNotification(
+    "Money Added",
+    "₹" +
+      formatMoney(amount) +
+      " demo money added successfully.",
+    "💰"
+  );
+
+
+  renderBalance();
+  renderRecentTransactions();
+  updateNotificationBadge();
+
+
+  input.value = "";
+
+
+  showMessage(
+    "addMessage",
+    "₹" +
+      formatMoney(amount) +
+      " added successfully.",
+    true
+  );
+
+}
+
+
+function sendMoney() {
+
+  const name =
+    document.getElementById(
+      "recipientName"
+    ).value.trim();
+
+  const account =
+    document.getElementById(
+      "recipientAccount"
+    ).value.trim();
+
+  const input =
+    document.getElementById(
+      "sendAmount"
+    );
+
+  const amount =
+    Number(input.value);
+
+
+  if (name === "") {
+
+    showMessage(
+      "sendMessage",
+      "Please enter recipient name.",
+      false
+    );
+
+    return;
+
+  }
+
+
+  if (account === "") {
+
+    showMessage(
+      "sendMessage",
+      "Please enter UPI or account details.",
+      false
+    );
+
+    return;
+
+  }
+
+
+  if (
+    !Number.isFinite(amount) ||
+    amount <= 0
+  ) {
+
+    showMessage(
+      "sendMessage",
+      "Please enter a valid amount.",
+      false
+    );
+
+    return;
+
+  }
+
+
+  if (amount > 100000) {
+
+    showMessage(
+      "sendMessage",
+      "Maximum demo amount is ₹1,00,000.",
+      false
+    );
+
+    return;
+
+  }
+
+
+  const balance =
+    getBalance();
+
+
+  if (amount > balance) {
+
+    showMessage(
+      "sendMessage",
+      "Insufficient demo balance.",
+      false
+    );
+
+    return;
+
+  }
+
+
+  const newBalance =
+    balance - amount;
+
+
+  saveBalance(
+    newBalance
+  );
+
+
+  createTransaction(
+    "Debit",
+    "Money Sent",
+    name +
+      " (" +
+      account +
+      ")",
+    amount
+  );
+
+
+  addNotification(
+    "Money Sent",
+    "₹" +
+      formatMoney(amount) +
+      " demo money sent to " +
+      name +
+      ".",
+    "💸"
+  );
+
+
+  renderBalance();
+  renderRecentTransactions();
+  updateNotificationBadge();
+
+
+  document.getElementById(
+    "recipientName"
+  ).value = "";
+
+  document.getElementById(
+    "recipientAccount"
+  ).value = "";
+
+  input.value = "";
+
+
+  showMessage(
+    "sendMessage",
+    "₹" +
+      formatMoney(amount) +
+      " sent successfully.",
+    true
+  );
+
+}
+
+
+function showMessage(
+  elementId,
+  message,
+  success
+) {
+
+  const element =
+    document.getElementById(
+      elementId
+    );
+
+  element.textContent =
+    message;
+
+  element.className =
+    success
+      ? "message success"
+      : "message error";
+
+}
+
+
+function escapeHtml(value) {
+
+  return String(value)
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
+function renderRecentTransactions() {
+
+  const container =
+    document.getElementById(
+      "recentTransactions"
+    );
+
+  const transactions =
+    getTransactions();
+
+  if (
+    transactions.length === 0
+  ) {
+
+    container.innerHTML =
+      "<p>No transactions yet.</p>";
+
+    return;
+
+  }
+
+
+  const recent =
+    transactions.slice(
+      0,
+      5
+    );
+
+
+  container.innerHTML =
+    recent.map(
+      function(transaction) {
+
+        const amount =
+          Number(
+            transaction.amount
+          );
+
+        const isCredit =
+          transaction.type ===
+          "Credit";
+
+        const sign =
+          isCredit
+            ? "+"
+            : "-";
+
+        const className =
+          isCredit
+            ? "credit"
+            : "debit";
+
+
+        return `
+          <div class="transaction">
+
+            <div>
+
+              <div class="transaction-title">
+                ${escapeHtml(
+                  transaction.title ||
+                  transaction.type
+                )}
+              </div>
+
+              <div class="transaction-name">
+                ${escapeHtml(
+                  transaction.name ||
+                  ""
+                )}
+              </div>
+
+              <div class="transaction-name">
+                ${escapeHtml(
+                  transaction.date ||
+                  ""
+                )}
+              </div>
+
+            </div>
+
+            <div class="${className}">
+              ${sign} ₹${formatMoney(amount)}
+            </div>
+
+          </div>
+        `;
+
+      }
+    ).join("");
+
+}
+
+
+function updateNotificationBadge() {
+
+  const badge =
+    document.getElementById(
+      "notificationBadge"
+    );
+
+  try {
+
+    const saved =
+      localStorage.getItem(
+        "finzoNotifications"
+      );
+
+    if (!saved) {
+
+      badge.textContent =
+        "0";
+
+      return;
+
+    }
+
+
+    const notifications =
+      JSON.parse(saved);
+
+
+    const unread =
+      Array.isArray(notifications)
+        ? notifications.filter(
+            function(notification) {
+              return !notification.read;
+            }
+          ).length
+        : 0;
+
+
+    badge.textContent =
+      unread > 99
+        ? "99+"
+        : unread;
+
+  } catch (error) {
+
+    badge.textContent =
+      "0";
+
+  }
+
+}
+
+
+function applyTheme() {
+
+  const theme =
+    localStorage.getItem(
+      "finzoTheme"
+    );
+
+  if (theme === "dark") {
+
+    document.body.classList.add(
+      "dark"
+    );
+
+  } else {
+
+    document.body.classList.remove(
+      "dark"
+    );
+
+  }
+
+}
+
+
+function toggleTheme() {
+
+  const dark =
+    document.body.classList.toggle(
+      "dark"
+    );
+
+  localStorage.setItem(
+    "finzoTheme",
+    dark
+      ? "dark"
+      : "light"
+  );
+
+}
+
+
+function toggleMenu() {
+
+  const nav =
+    document.getElementById(
+      "mainNav"
+    );
+
+  const button =
+    document.getElementById(
+      "menuButton"
+    );
+
+  nav.classList.toggle(
+    "show"
+  );
+
+  button.textContent =
+    nav.classList.contains("show")
+      ? "✕"
+      : "☰";
+
+}
+
+
+function closeMenu() {
+
+  const nav =
+    document.getElementById(
+      "mainNav"
+    );
+
+  const button =
+    document.getElementById(
+      "menuButton"
+    );
+
+  nav.classList.remove(
+    "show"
+  );
+
+  button.textContent =
+    "☰";
+
+}
+
+
+function navigate(page) {
+
+  closeMenu();
+
+  window.location.href =
+    page;
+
+}
+
+
+function logout() {
+
+  localStorage.setItem(
+    "finzoLoggedIn",
+    "false"
+  );
+
+  window.location.href =
+    "login.html";
+
+}
+
+
+document.addEventListener(
+  "DOMContentLoaded",
+  function() {
+
+    renderBalance();
+
+    renderRecentTransactions();
+
+    updateNotificationBadge();
+
+    applyTheme();
+
+  }
+);
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>FINZO - Notifications</title>
+
+<style>
+
+•⁠  ⁠{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+  color: #18212f;
+  min-height: 100vh;
+}
+
+body.dark {
+  background: #111827;
+  color: #f3f4f6;
+}
+
+
+/* HEADER */
+
+header {
+  background: #111827;
+  color: white;
+  padding: 16px 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo {
+  font-size: 25px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.demo {
+  font-size: 11px;
+  background: #dc2626;
+  padding: 4px 8px;
+  border-radius: 6px;
+  margin-left: 6px;
+}
+
+.menu-btn {
+  display: none;
+  background: transparent;
+  border: 0;
+  color: white;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+nav {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+nav button {
+  border: 0;
+  background: transparent;
+  color: white;
+  padding: 9px 11px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+nav button:hover {
+  background: #374151;
+}
+
+.badge {
+  background: #ef4444;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 10px;
+  margin-left: 3px;
+}
+
+
+/* PAGE */
+
+.container {
+  width: 92%;
+  max-width: 1050px;
+  margin: 30px auto;
+}
+
+.page-title {
+  margin-bottom: 22px;
+}
+
+.page-title h1 {
+  font-size: 30px;
+  margin-bottom: 6px;
+}
+
+.page-title p {
+  color: #6b7280;
+}
+
+.dark .page-title p {
+  color: #9ca3af;
+}
+
+
+/* SUMMARY */
+
+.summary {
+  display: grid;
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 16px;
+
+  margin-bottom: 22px;
+}
+
+.summary-card {
+  background: white;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow:
+    0 5px 18px rgba(0,0,0,.07);
+}
+
+.dark .summary-card {
+  background: #1f2937;
+}
+
+.summary-card p {
+  color: #6b7280;
+  font-size: 13px;
+  margin-bottom: 7px;
+}
+
+.dark .summary-card p {
+  color: #9ca3af;
+}
+
+.summary-card h2 {
+  font-size: 24px;
+}
+
+
+/* CARD */
+
+.card {
+  background: white;
+  padding: 22px;
+  border-radius: 15px;
+  box-shadow:
+    0 5px 18px rgba(0,0,0,.07);
+}
+
+.dark .card {
+  background: #1f2937;
+}
+
+
+/* ACTIONS */
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.actions-left {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.read-btn {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.dark .read-btn {
+  background: #374151;
+  color: white;
+}
+
+.clear-btn {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+
+/* NOTIFICATION */
+
+.notification {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 18px 5px;
+  border-bottom:
+    1px solid #e5e7eb;
+}
+
+.dark .notification {
+  border-color: #374151;
+}
+
+.notification:last-child {
+  border-bottom: 0;
+}
+
+.notification.unread {
+  background: #fff7ed;
+  padding-left: 12px;
+  padding-right: 12px;
+  border-radius: 10px;
+}
+
+.dark .notification.unread {
+  background: #292524;
+}
+
+.notification-icon {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: #f3f4f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.dark .notification-icon {
+  background: #374151;
+}
+
+.notification-content {
+  flex: 1;
+}
+
+.notification-title {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.notification-message {
+  font-size: 14px;
+  color: #4b5563;
+  line-height: 1.5;
+}
+
+.dark .notification-message {
+  color: #d1d5db;
+}
+
+.notification-date {
+  font-size: 11px;
+  color: #9ca3af;
+  margin-top: 7px;
+}
+
+.notification-actions {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+.small-btn {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 5px;
+}
+
+.small-read {
+  color: #15803d;
+}
+
+.small-delete {
+  color: #dc2626;
+}
+
+
+/* EMPTY */
+
+.empty {
+  text-align: center;
+  padding: 50px 15px;
+  color: #6b7280;
+}
+
+
+/* LINKS */
+
+.bottom-links {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 22px;
+}
+
+.bottom-links button {
+  border: 1px solid #d1d5db;
+  background: white;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.dark .bottom-links button {
+  background: #1f2937;
+  color: white;
+  border-color: #4b5563;
+}
+
+
+/* FOOTER */
+
+footer {
+  text-align: center;
+  color: #6b7280;
+  font-size: 12px;
+  padding: 35px 15px;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 850px) {
+
+  .menu-btn {
+    display: block;
+  }
+
+  nav {
+    display: none;
+    position: absolute;
+    top: 64px;
+    left: 0;
+    width: 100%;
+    background: #111827;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 10px;
+  }
+
+  nav.show {
+    display: flex;
+  }
+
+  nav button {
+    text-align: left;
+    padding: 13px;
+  }
+
+  .summary {
+    grid-template-columns:
+      1fr 1fr;
+  }
+
+}
+
+@media (max-width: 550px) {
+
+  .summary {
+    grid-template-columns:
+      1fr;
+  }
+
+  .notification {
+    flex-wrap: wrap;
+  }
+
+  .notification-actions {
+    width: 100%;
+    margin-left: 59px;
+  }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+  <div
+    class="logo"
+    onclick="navigate('dashboard.html')"
+  >
+    FINZO
+    <span class="demo">
+      DEMO
+    </span>
+  </div>
+
+
+  <button
+    class="menu-btn"
+    id="menuButton"
+    onclick="toggleMenu()"
+  >
+    ☰
+  </button>
+
+
+  <nav id="mainNav">
+
+    <button
+      onclick="navigate('dashboard.html')"
+    >
+      🏠 Dashboard
+    </button>
+
+    <button
+      onclick="navigate('money.html')"
+    >
+      💰 Money
+    </button>
+
+    <button
+      onclick="navigate('transactions.html')"
+    >
+      📜 Transactions
+    </button>
+
+    <button
+      onclick="navigate('analytics.html')"
+    >
+      📊 Analytics
+    </button>
+
+    <button
+      onclick="navigate('notifications.html')"
+    >
+      🔔 Notifications
+      <span
+        id="notificationBadge"
+        class="badge"
+      >
+        0
+      </span>
+    </button>
+
+    <button
+      onclick="navigate('profile.html')"
+    >
+      👤 Profile
+    </button>
+
+    <button
+      onclick="navigate('kyc.html')"
+    >
+      🪪 KYC
+    </button>
+
+    <button
+      onclick="toggleTheme()"
+    >
+      🌙 Theme
+    </button>
+
+    <button
+      onclick="logout()"
+    >
+      🚪 Logout
+    </button>
+
+  </nav>
+
+</header>
+
+
+<main class="container">
+
+
+  <div class="page-title">
+
+    <h1>
+      Notifications
+    </h1>
+
+    <p>
+      Stay updated with your FINZO demo account.
+    </p>
+
+  </div>
+
+
+  <!-- SUMMARY -->
+
+  <section class="summary">
+
+
+    <div class="summary-card">
+
+      <p>
+        Total
+      </p>
+
+      <h2 id="totalCount">
+        0
+      </h2>
+
+    </div>
+
+
+    <div class="summary-card">
+
+      <p>
+        Unread
+      </p>
+
+      <h2 id="unreadCount">
+        0
+      </h2>
+
+    </div>
+
+
+    <div class="summary-card">
+
+      <p>
+        Read
+      </p>
+
+      <h2 id="readCount">
+        0
+      </h2>
+
+    </div>
+
+
+  </section>
+
+
+  <!-- NOTIFICATIONS -->
+
+  <section class="card">
+
+
+    <div class="actions">
+
+      <div class="actions-left">
+
+        <button
+          class="action-btn read-btn"
+          onclick="markAllRead()"
+        >
+          ✓ Mark All Read
+        </button>
+
+        <button
+          class="action-btn clear-btn"
+          onclick="clearAllNotifications()"
+        >
+          🗑 Clear All
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <div id="notificationList"></div>
+
+
+  </section>
+
+
+  <div class="bottom-links">
+
+    <button
+      onclick="navigate('money.html')"
+    >
+      💰 Money
+    </button>
+
+    <button
+      onclick="navigate('dashboard.html')"
+    >
+      🏠 Dashboard
+    </button>
+
+    <button
+      onclick="navigate('profile.html')"
+    >
+      👤 Profile
+    </button>
+
+  </div>
+
+
+</main>
+
+
+<footer>
+
+  FINZO Demo Wallet • For learning purposes only.<br><br>
+
+  Notifications are generated from local demo activity.
+
+</footer>
+
+
+<script>
+
+
+function getNotifications() {
+
+  try {
+
+    const saved =
+      localStorage.getItem(
+        "finzoNotifications"
+      );
+
+
+    if (!saved) {
+      return [];
+    }
+
+
+    const data =
+      JSON.parse(
+        saved
+      );
+
+
+    return Array.isArray(data)
+      ? data
+      : [];
+
+  } catch (error) {
+
+    return [];
+
+  }
+
+}
+
+
+function saveNotifications(
+  notifications
+) {
+
+  localStorage.setItem(
+    "finzoNotifications",
+    JSON.stringify(
+      notifications
+    )
+  );
+
+}
+
+
+function createStarterNotifications() {
+
+  let notifications =
+    getNotifications();
+
+
+  if (
+    notifications.length > 0
+  ) {
+
+    return;
+
+  }
+
+
+  notifications = [
+
+    {
+
+      id:
+        "WELCOME" +
+        Date.now(),
+
+      title:
+        "Welcome to FINZO",
+
+      message:
+        "Your FINZO demo account is ready to explore.",
+
+      icon:
+        "👋",
+
+      read:
+        false,
+
+      date:
+        new Date().toLocaleString(
+          "en-IN"
+        )
+
+    },
+
+    {
+
+      id:
+        "SECURITY" +
+        Date.now(),
+
+      title:
+        "Demo Security Alert",
+
+      message:
+        "This is a learning-only demo. Do not enter real banking or KYC information.",
+
+      icon:
+        "🔐",
+
+      read:
+        false,
+
+      date:
+        new Date().toLocaleString(
+          "en-IN"
+        )
+
+    }
+
+  ];
+
+
+  saveNotifications(
+    notifications
+  );
+
+}
+
+
+function checkKycNotification() {
+
+  const kycStatus =
+    localStorage.getItem(
+      "finzoKycStatus"
+    );
+
+
+  const oldNotification =
+    localStorage.getItem(
+      "finzoNotification"
+    );
+
+
+  if (
+    kycStatus === "Verified" &&
+    oldNotification
+  ) {
+
+    const notifications =
+      getNotifications();
+
+
+    const alreadyExists =
+      notifications.some(
+        function(notification) {
+
+          return (
+            notification.title ===
+            "KYC Verified"
+          );
+
+        }
+      );
+
+
+    if (!alreadyExists) {
+
+      notifications.unshift({
+
+        id:
+          "KYC" +
+          Date.now(),
+
+        title:
+          "KYC Verified",
+
+        message:
+          "Your demo KYC verification was completed successfully.",
+
+        icon:
+          "🪪",
+
+        read:
+          false,
+
+        date:
+          new Date().toLocaleString(
+            "en-IN"
+          )
+
+      });
+
+
+      saveNotifications(
+        notifications
+      );
+
+    }
+
+
+    localStorage.removeItem(
+      "finzoNotification"
+    );
+
+  }
+
+}
+
+
+function renderNotifications() {
+
+  const container =
+    document.getElementById(
+      "notificationList"
+    );
+
+
+  const notifications =
+    getNotifications();
+
+
+  const total =
+    notifications.length;
+
+
+  const unread =
+    notifications.filter(
+      function(notification) {
+
+        return !notification.read;
+
+      }
+    ).length;
+
+
+  const read =
+    total - unread;
+
+
+  document.getElementById(
+    "totalCount"
+  ).textContent =
+    total;
+
+
+  document.getElementById(
+    "unreadCount"
+  ).textContent =
+    unread;
+
+
+  document.getElementById(
+    "readCount"
+  ).textContent =
+    read;
+
+
+  document.getElementById(
+    "notificationBadge"
+  ).textContent =
+    unread > 99
+      ? "99+"
+      : unread;
+
+
+  if (
+    total === 0
+  ) {
+
+    container.innerHTML = `
+
+      <div class="empty">
+
+        <div style="font-size:45px">
+          🔕
+        </div>
+
+        <br>
+
+        No notifications.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  container.innerHTML =
+    notifications.map(
+      function(notification) {
+
+        const unreadClass =
+          notification.read
+            ? ""
+            : "unread";
+
+
+        const readButton =
+          notification.read
+            ? ""
+            : `
+
+              <button
+                class="small-btn small-read"
+                onclick="markRead('${escapeHtml(notification.id)}')"
+              >
+                ✓ Read
+              </button>
+
+            `;
+
+
+        return `
+
+          <div
+            class="notification ${unreadClass}"
+          >
+
+            <div class="notification-icon">
+
+              ${escapeHtml(
+                notification.icon ||
+                "🔔"
+              )}
+
+            </div>
+
+
+            <div class="notification-content">
+
+              <div class="notification-title">
+
+                ${escapeHtml(
+                  notification.title ||
+                  "Notification"
+                )}
+
+              </div>
+
+
+              <div class="notification-message">
+
+                ${escapeHtml(
+                  notification.message ||
+                  ""
+                )}
+
+              </div>
+
+
+              <div class="notification-date">
+
+                ${escapeHtml(
+                  notification.date ||
+                  ""
+                )}
+
+              </div>
+
+            </div>
+
+
+            <div class="notification-actions">
+
+              ${readButton}
+
+              <button
+                class="small-btn small-delete"
+                onclick="deleteNotification('${escapeHtml(notification.id)}')"
+              >
+                Delete
+              </button>
+
+            </div>
+
+          </div>
+
+        `;
+
+      }
+    ).join("");
+
+}
+
+
+function markRead(id) {
+
+  const notifications =
+    getNotifications();
+
+
+  notifications.forEach(
+    function(notification) {
+
+      if (
+        notification.id === id
+      ) {
+
+        notification.read =
+          true;
+
+      }
+
+    }
+  );
+
+
+  saveNotifications(
+    notifications
+  );
+
+
+  renderNotifications();
+
+}
+
+
+function markAllRead() {
+
+  const notifications =
+    getNotifications();
+
+
+  notifications.forEach(
+    function(notification) {
+
+      notification.read =
+        true;
+
+    }
+  );
+
+
+  saveNotifications(
+    notifications
+  );
+
+
+  renderNotifications();
+
+}
+
+
+function deleteNotification(id) {
+
+  const notifications =
+    getNotifications();
+
+
+  const updated =
+    notifications.filter(
+      function(notification) {
+
+        return (
+          notification.id !== id
+        );
+
+      }
+    );
+
+
+  saveNotifications(
+    updated
+  );
+
+
+  renderNotifications();
+
+}
+
+
+function clearAllNotifications() {
+
+  const notifications =
+    getNotifications();
+
+
+  if (
+    notifications.length === 0
+  ) {
+
+    return;
+
+  }
+
+
+  const confirmed =
+    confirm(
+      "Clear all FINZO demo notifications?"
+    );
+
+
+  if (!confirmed) {
+
+    return;
+
+  }
+
+
+  localStorage.removeItem(
+    "finzoNotifications"
+  );
+
+
+  localStorage.removeItem(
+    "finzoNotification"
+  );
+
+
+  renderNotifications();
+
+}
+
+
+function escapeHtml(value) {
+
+  return String(value)
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
+function applyTheme() {
+
+  const theme =
+    localStorage.getItem(
+      "finzoTheme"
+    );
+
+
+  if (
+    theme === "dark"
+  ) {
+
+    document.body.classList.add(
+      "dark"
+    );
+
+  } else {
+
+    document.body.classList.remove(
+      "dark"
+    );
+
+  }
+
+}
+
+
+function toggleTheme() {
+
+  const dark =
+    document.body.classList.toggle(
+      "dark"
+    );
+
+
+  localStorage.setItem(
+    "finzoTheme",
+    dark
+      ? "dark"
+      : "light"
+  );
+
+}
+
+
+function toggleMenu() {
+
+  const nav =
+    document.getElementById(
+      "mainNav"
+    );
+
+
+  const button =
+    document.getElementById(
+      "menuButton"
+    );
+
+
+  nav.classList.toggle(
+    "show"
+  );
+
+
+  button.textContent =
+    nav.classList.contains(
+      "show"
+    )
+      ? "✕"
+      : "☰";
+
+}
+
+
+function closeMenu() {
+
+  const nav =
+    document.getElementById(
+      "mainNav"
+    );
+
+
+  const button =
+    document.getElementById(
+      "menuButton"
+    );
+
+
+  nav.classList.remove(
+    "show"
+  );
+
+
+  button.textContent =
+    "☰";
+
+}
+
+
+function navigate(page) {
+
+  closeMenu();
+
+  window.location.href =
+    page;
+
+}
+
+
+function logout() {
+
+  localStorage.setItem(
+    "finzoLoggedIn",
+    "false"
+  );
+
+
+  window.location.href =
+    "login.html";
+
+}
+
+
+document.addEventListener(
+  "DOMContentLoaded",
+  function() {
+
+    createStarterNotifications();
+
+    checkKycNotification();
+
+    renderNotifications();
+
+    applyTheme();
+
+  }
+);
+
+</script>
+
+</body>
+
+</html>
