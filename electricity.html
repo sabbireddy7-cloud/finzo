@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>FINZO - Electricity Bill</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f5f5f5;
+    color:#222;
+}
+
+header{
+    background:#101010;
+    color:white;
+    padding:16px 22px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    font-size:26px;
+    font-weight:bold;
+}
+
+.dashboard-btn{
+    background:#b91c1c;
+    color:white;
+    text-decoration:none;
+    padding:10px 16px;
+    border-radius:8px;
+    font-size:14px;
+}
+
+.container{
+    max-width:600px;
+    margin:30px auto;
+    padding:20px;
+}
+
+.card{
+    background:white;
+    padding:25px;
+    border-radius:16px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.08);
+}
+
+h1{
+    font-size:25px;
+    margin-bottom:8px;
+}
+
+.subtitle{
+    color:#777;
+    font-size:14px;
+    margin-bottom:25px;
+}
+
+label{
+    display:block;
+    margin-top:16px;
+    margin-bottom:7px;
+    font-weight:bold;
+    font-size:14px;
+}
+
+select,
+input{
+    width:100%;
+    padding:13px;
+    border:1px solid #ddd;
+    border-radius:9px;
+    font-size:15px;
+    outline:none;
+}
+
+select:focus,
+input:focus{
+    border-color:#b91c1c;
+}
+
+.bill-box{
+    display:none;
+    margin-top:18px;
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    padding:15px;
+    border-radius:10px;
+}
+
+.bill-row{
+    display:flex;
+    justify-content:space-between;
+    padding:6px 0;
+    font-size:14px;
+}
+
+.bill-row strong{
+    color:#111;
+}
+
+.pay-btn{
+    width:100%;
+    margin-top:22px;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:#b91c1c;
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.pay-btn:hover{
+    background:#991b1b;
+}
+
+#message{
+    display:none;
+    margin-top:18px;
+    padding:13px;
+    border-radius:9px;
+    font-size:14px;
+    line-height:1.5;
+}
+
+.success{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.error{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.history-btn{
+    display:block;
+    text-align:center;
+    margin-top:15px;
+    padding:12px;
+    border:1px solid #b91c1c;
+    color:#b91c1c;
+    text-decoration:none;
+    border-radius:9px;
+    font-weight:bold;
+}
+
+.history-btn:hover{
+    background:#b91c1c;
+    color:white;
+}
+
+.demo-note{
+    margin-top:20px;
+    padding:12px;
+    background:#fff7ed;
+    border:1px solid #fed7aa;
+    border-radius:8px;
+    color:#9a3412;
+    font-size:12px;
+    line-height:1.5;
+}
+
+.demo-accounts{
+    margin-top:18px;
+    padding:14px;
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    border-radius:10px;
+    font-size:12px;
+    line-height:1.7;
+}
+
+.demo-accounts strong{
+    color:#111;
+}
+
+@media(max-width:500px){
+    .container{
+        margin:15px auto;
+        padding:12px;
+    }
+
+    .card{
+        padding:20px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        FINZO
+    </div>
+
+    <a href="dashboard.html" class="dashboard-btn">
+        Dashboard
+    </a>
+
+</header>
+
+
+<div class="container">
+
+<div class="card">
+
+    <h1>Electricity Bill</h1>
+
+    <p class="subtitle">
+        Pay your electricity bill quickly
+    </p>
+
+
+    <!-- ELECTRICITY BOARD -->
+
+    <label for="board">
+        Electricity Board
+    </label>
+
+    <select id="board">
+
+        <option value="">
+            Select Electricity Board
+        </option>
+
+        <option>TSSPDCL</option>
+        <option>TGSPDCL</option>
+        <option>APSPDCL</option>
+        <option>APEPDCL</option>
+        <option>Other</option>
+
+    </select>
+
+
+    <!-- CONSUMER NUMBER -->
+
+    <label for="consumer">
+        Consumer Number
+    </label>
+
+    <input
+        type="text"
+        id="consumer"
+        maxlength="20"
+        inputmode="numeric"
+        placeholder="Enter consumer number"
+    >
+
+
+    <!-- BILL DETAILS -->
+
+    <div id="billBox" class="bill-box">
+
+        <div class="bill-row">
+
+            <span>Customer Name</span>
+
+            <strong id="customerName">
+                -
+            </strong>
+
+        </div>
+
+        <div class="bill-row">
+
+            <span>Bill Amount</span>
+
+            <strong id="billAmount">
+                -
+            </strong>
+
+        </div>
+
+        <div class="bill-row">
+
+            <span>Due Date</span>
+
+            <strong id="dueDate">
+                -
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- PAYMENT AMOUNT -->
+
+    <label for="paymentAmount">
+        Enter Payment Amount
+    </label>
+
+    <input
+        type="number"
+        id="paymentAmount"
+        min="1"
+        placeholder="Enter payment amount"
+    >
+
+
+    <!-- PAY BUTTON -->
+
+    <button
+        class="pay-btn"
+        onclick="payElectricityBill()"
+    >
+        Proceed to Pay
+    </button>
+
+
+    <!-- MESSAGE -->
+
+    <div id="message"></div>
+
+
+    <!-- TRANSACTION HISTORY -->
+
+    <a
+        href="transactions.html"
+        class="history-btn"
+    >
+        View Transaction History
+    </a>
+
+
+    <!-- DEMO ACCOUNTS -->
+
+    <div class="demo-accounts">
+
+        <strong>Demo Consumer Numbers:</strong><br>
+
+        100001 → Rahul Kumar → ₹1,250<br>
+
+        100002 → Arun Reddy → ₹890<br>
+
+        100003 → Suresh Kumar → ₹1,560<br>
+
+        123456 → Ravi Kumar → ₹720
+
+    </div>
+
+
+    <!-- DEMO NOTE -->
+
+    <div class="demo-note">
+
+        <strong>Demo Mode:</strong><br>
+
+        This is a demo electricity bill payment.
+        No real electricity bill payment will be processed.
+
+    </div>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =================================
+   LOGIN PROTECTION
+================================= */
+
+if(localStorage.getItem("finzoLoggedIn") !== "true"){
+
+    window.location.href = "login.html";
+
+}
+
+
+/* =================================
+   DEMO ELECTRICITY DATABASE
+================================= */
+
+const electricityCustomers = {
+
+    "100001": {
+
+        name:"Rahul Kumar",
+
+        amount:1250,
+
+        due:"30 Sep 2026"
+
+    },
+
+    "100002": {
+
+        name:"Arun Reddy",
+
+        amount:890,
+
+        due:"02 Oct 2026"
+
+    },
+
+    "100003": {
+
+        name:"Suresh Kumar",
+
+        amount:1560,
+
+        due:"05 Oct 2026"
+
+    },
+
+    "123456": {
+
+        name:"Ravi Kumar",
+
+        amount:720,
+
+        due:"10 Oct 2026"
+
+    }
+
+};
+
+
+/* =================================
+   FIND BILL
+================================= */
+
+function findBill(){
+
+    const consumer =
+        document.getElementById("consumer")
+        .value
+        .trim();
+
+    const billBox =
+        document.getElementById("billBox");
+
+    const customerName =
+        document.getElementById("customerName");
+
+    const billAmount =
+        document.getElementById("billAmount");
+
+    const dueDate =
+        document.getElementById("dueDate");
+
+
+    if(consumer === ""){
+
+        billBox.style.display = "none";
+
+        return;
+
+    }
+
+
+    if(electricityCustomers[consumer]){
+
+        const customer =
+            electricityCustomers[consumer];
+
+
+        customerName.innerText =
+            customer.name;
+
+
+        billAmount.innerText =
+            "₹" +
+            customer.amount.toLocaleString("en-IN");
+
+
+        dueDate.innerText =
+            customer.due;
+
+
+        billBox.style.display =
+            "block";
+
+
+        /* Automatically fill payment amount */
+
+        document.getElementById(
+            "paymentAmount"
+        ).value = customer.amount;
+
+    }
+    else{
+
+        billBox.style.display =
+            "none";
+
+    }
+
+}
+
+
+/* =================================
+   AUTO BILL CHECK
+================================= */
+
+document.getElementById("consumer")
+.addEventListener("input",findBill);
+
+
+/* =================================
+   PAY ELECTRICITY BILL
+================================= */
+
+function payElectricityBill(){
+
+    const board =
+        document.getElementById("board")
+        .value
+        .trim();
+
+    const consumer =
+        document.getElementById("consumer")
+        .value
+        .trim();
+
+    const paymentAmount =
+        Number(
+            document.getElementById("paymentAmount")
+            .value
+        );
+
+    const message =
+        document.getElementById("message");
+
+
+    message.style.display = "none";
+
+
+    /* BOARD VALIDATION */
+
+    if(board === ""){
+
+        showError(
+            "Please select the electricity board."
+        );
+
+        return;
+
+    }
+
+
+    /* CONSUMER NUMBER */
+
+    if(consumer === ""){
+
+        showError(
+            "Please enter the consumer number."
+        );
+
+        return;
+
+    }
+
+
+    /* DEMO CUSTOMER */
+
+    if(!electricityCustomers[consumer]){
+
+        showError(
+            "Consumer number not found. Please use a demo consumer number."
+        );
+
+        return;
+
+    }
+
+
+    const customer =
+        electricityCustomers[consumer];
+
+
+    /* PAYMENT AMOUNT */
+
+    if(!paymentAmount || paymentAmount <= 0){
+
+        showError(
+            "Please enter a valid payment amount."
+        );
+
+        return;
+
+    }
+
+
+    /* AMOUNT LIMIT */
+
+    if(paymentAmount > customer.amount){
+
+        showError(
+            "Payment amount cannot exceed the bill amount of ₹" +
+            customer.amount.toLocaleString("en-IN") +
+            " in this demo."
+        );
+
+        return;
+
+    }
+
+
+    /* =================================
+       SAVE TRANSACTION
+    ================================= */
+
+    let transactions =
+        JSON.parse(
+            localStorage.getItem(
+                "finzoTransactions"
+            ) || "[]"
+        );
+
+
+    const transaction = {
+
+        type:"Electricity Bill",
+
+        method:"Demo Payment",
+
+        amount:Number(paymentAmount),
+
+        date:new Date().toLocaleString("en-IN"),
+
+        status:"Success",
+
+        details:
+            "Board: " +
+            board +
+            " | Consumer No: " +
+            consumer +
+            " | Customer: " +
+            customer.name
+
+    };
+
+
+    transactions.unshift(transaction);
+
+
+    localStorage.setItem(
+        "finzoTransactions",
+        JSON.stringify(transactions)
+    );
+
+
+    /* =================================
+       SUCCESS MESSAGE
+    ================================= */
+
+    message.className =
+        "success";
+
+
+    message.innerHTML =
+
+        "✅ <strong>Payment Successful!</strong><br><br>" +
+
+        "Electricity Board: " +
+        board +
+        "<br>" +
+
+        "Customer: " +
+        customer.name +
+        "<br>" +
+
+        "Consumer Number: " +
+        consumer +
+        "<br>" +
+
+        "Amount Paid: ₹" +
+        paymentAmount.toLocaleString("en-IN") +
+
+        "<br><br>" +
+
+        "Transaction saved successfully in Transaction History.";
+
+
+    message.style.display =
+        "block";
+
+
+    /* CLEAR PAYMENT */
+
+    document.getElementById(
+        "paymentAmount"
+    ).value = "";
+
+}
+
+
+/* =================================
+   ERROR MESSAGE
+================================= */
+
+function showError(text){
+
+    const message =
+        document.getElementById("message");
+
+
+    message.className =
+        "error";
+
+
+    message.innerHTML =
+        "❌ " + text;
+
+
+    message.style.display =
+        "block";
+
+}
+
+</script>
+
+</body>
+</html>

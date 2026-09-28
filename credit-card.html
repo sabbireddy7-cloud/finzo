@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>FINZO - Credit Card Bill</title>
+
+<style>
+    *{
+        box-sizing:border-box;
+        margin:0;
+        padding:0;
+        font-family:Arial, sans-serif;
+    }
+
+    body{
+        background:#f5f5f5;
+        color:#222;
+    }
+
+    header{
+        background:#101010;
+        color:white;
+        padding:16px 22px;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+    }
+
+    .logo{
+        font-size:26px;
+        font-weight:bold;
+        color:#fff;
+    }
+
+    .dashboard-btn{
+        background:#b91c1c;
+        color:white;
+        text-decoration:none;
+        padding:10px 16px;
+        border-radius:8px;
+        font-size:14px;
+    }
+
+    .container{
+        max-width:600px;
+        margin:30px auto;
+        padding:20px;
+    }
+
+    .card{
+        background:white;
+        padding:25px;
+        border-radius:16px;
+        box-shadow:0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    h1{
+        font-size:25px;
+        margin-bottom:8px;
+    }
+
+    .subtitle{
+        color:#777;
+        margin-bottom:25px;
+        font-size:14px;
+    }
+
+    label{
+        display:block;
+        margin-top:16px;
+        margin-bottom:7px;
+        font-weight:bold;
+        font-size:14px;
+    }
+
+    select,
+    input{
+        width:100%;
+        padding:13px;
+        border:1px solid #ddd;
+        border-radius:9px;
+        font-size:15px;
+        outline:none;
+    }
+
+    select:focus,
+    input:focus{
+        border-color:#b91c1c;
+    }
+
+    .bill-box{
+        margin-top:20px;
+        background:#fafafa;
+        border:1px solid #eee;
+        border-radius:12px;
+        padding:16px;
+    }
+
+    .bill-row{
+        display:flex;
+        justify-content:space-between;
+        padding:7px 0;
+        font-size:14px;
+    }
+
+    .bill-row strong{
+        color:#111;
+    }
+
+    .quick-title{
+        margin-top:20px;
+        margin-bottom:10px;
+        font-size:14px;
+        font-weight:bold;
+    }
+
+    .quick-buttons{
+        display:grid;
+        grid-template-columns:repeat(3,1fr);
+        gap:10px;
+    }
+
+    .quick-buttons button{
+        padding:11px 5px;
+        border:1px solid #ddd;
+        background:white;
+        border-radius:8px;
+        cursor:pointer;
+        font-weight:bold;
+    }
+
+    .quick-buttons button:hover{
+        background:#b91c1c;
+        color:white;
+        border-color:#b91c1c;
+    }
+
+    .pay-btn{
+        width:100%;
+        margin-top:22px;
+        padding:14px;
+        border:none;
+        border-radius:10px;
+        background:#b91c1c;
+        color:white;
+        font-size:16px;
+        font-weight:bold;
+        cursor:pointer;
+    }
+
+    .pay-btn:hover{
+        background:#991b1b;
+    }
+
+    #message{
+        margin-top:18px;
+        padding:12px;
+        border-radius:8px;
+        display:none;
+        font-size:14px;
+        line-height:1.5;
+    }
+
+    .success{
+        background:#dcfce7;
+        color:#166534;
+    }
+
+    .error{
+        background:#fee2e2;
+        color:#991b1b;
+    }
+
+    .demo-note{
+        margin-top:20px;
+        padding:12px;
+        background:#fff7ed;
+        border:1px solid #fed7aa;
+        border-radius:8px;
+        color:#9a3412;
+        font-size:12px;
+        line-height:1.5;
+    }
+
+    .history-btn{
+        display:block;
+        text-align:center;
+        margin-top:15px;
+        padding:12px;
+        border:1px solid #b91c1c;
+        color:#b91c1c;
+        text-decoration:none;
+        border-radius:9px;
+        font-weight:bold;
+    }
+
+    .history-btn:hover{
+        background:#b91c1c;
+        color:white;
+    }
+
+    @media(max-width:500px){
+        .container{
+            margin:15px auto;
+            padding:12px;
+        }
+
+        .card{
+            padding:20px;
+        }
+
+        .quick-buttons{
+            grid-template-columns:repeat(2,1fr);
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">FINZO</div>
+
+    <a href="dashboard.html" class="dashboard-btn">
+        Dashboard
+    </a>
+</header>
+
+
+<div class="container">
+
+    <div class="card">
+
+        <h1>Credit Card Bill Payment</h1>
+
+        <p class="subtitle">
+            Pay your credit card bill securely
+        </p>
+
+
+        <!-- BANK -->
+        <label for="bank">Credit Card Bank / Issuer</label>
+
+        <select id="bank">
+            <option value="">Select Bank / Card Issuer</option>
+            <option>HDFC Bank</option>
+            <option>ICICI Bank</option>
+            <option>SBI Card</option>
+            <option>Axis Bank</option>
+            <option>IndusInd Bank</option>
+            <option>Kotak Mahindra Bank</option>
+            <option>YES Bank</option>
+            <option>IDFC FIRST Bank</option>
+            <option>Bank of Baroda</option>
+            <option>RBL Bank</option>
+            <option>AU Small Finance Bank</option>
+            <option>American Express</option>
+            <option>Standard Chartered</option>
+            <option>HSBC</option>
+            <option>Federal Bank</option>
+            <option>IDBI Bank</option>
+            <option>Punjab National Bank</option>
+            <option>Canara Bank</option>
+            <option>Indian Bank</option>
+            <option>Other</option>
+        </select>
+
+
+        <!-- LAST 4 DIGITS -->
+        <label for="last4">
+            Credit Card Last 4 Digits
+        </label>
+
+        <input
+            type="text"
+            id="last4"
+            maxlength="4"
+            inputmode="numeric"
+            placeholder="Enter last 4 digits"
+        >
+
+
+        <!-- MOBILE -->
+        <label for="mobile">
+            Registered Mobile Number
+        </label>
+
+        <input
+            type="tel"
+            id="mobile"
+            maxlength="10"
+            inputmode="numeric"
+            placeholder="Enter 10 digit mobile number"
+        >
+
+
+        <!-- BILL DETAILS -->
+        <div class="bill-box">
+
+            <div class="bill-row">
+                <span>Total Outstanding</span>
+                <strong>₹5,000</strong>
+            </div>
+
+            <div class="bill-row">
+                <span>Minimum Bill Payment</span>
+                <strong>₹500</strong>
+            </div>
+
+        </div>
+
+
+        <!-- QUICK PAYMENT -->
+        <div class="quick-title">
+            Quick Payment
+        </div>
+
+        <div class="quick-buttons">
+
+            <button onclick="setAmount(500)">
+                ₹500
+            </button>
+
+            <button onclick="setAmount(1000)">
+                ₹1,000
+            </button>
+
+            <button onclick="setAmount(2000)">
+                ₹2,000
+            </button>
+
+            <button onclick="setAmount(3000)">
+                ₹3,000
+            </button>
+
+            <button onclick="setAmount(4000)">
+                ₹4,000
+            </button>
+
+            <button onclick="setAmount(5000)">
+                ₹5,000
+            </button>
+
+        </div>
+
+
+        <!-- PAYMENT AMOUNT -->
+        <label for="amount">
+            Enter Payment Amount
+        </label>
+
+        <input
+            type="number"
+            id="amount"
+            placeholder="Enter amount"
+            min="500"
+            max="5000"
+        >
+
+
+        <!-- PAY BUTTON -->
+        <button class="pay-btn" onclick="payBill()">
+            Proceed to Pay
+        </button>
+
+
+        <!-- MESSAGE -->
+        <div id="message"></div>
+
+
+        <!-- TRANSACTION HISTORY -->
+        <a href="transactions.html" class="history-btn">
+            View Transaction History
+        </a>
+
+
+        <!-- DEMO NOTE -->
+        <div class="demo-note">
+            <strong>Demo Mode:</strong><br>
+            This is a demo credit card bill payment.
+            No real card payment or banking transaction will be processed.
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* ================================
+   LOGIN PROTECTION
+================================ */
+
+if(localStorage.getItem("finzoLoggedIn") !== "true"){
+    window.location.href = "login.html";
+}
+
+
+/* ================================
+   QUICK AMOUNT
+================================ */
+
+function setAmount(value){
+
+    document.getElementById("amount").value = value;
+
+}
+
+
+/* ================================
+   PAYMENT
+================================ */
+
+function payBill(){
+
+    const bank =
+        document.getElementById("bank").value.trim();
+
+    const last4 =
+        document.getElementById("last4").value.trim();
+
+    const mobile =
+        document.getElementById("mobile").value.trim();
+
+    const amount =
+        Number(document.getElementById("amount").value);
+
+    const message =
+        document.getElementById("message");
+
+
+    /* CLEAR MESSAGE */
+
+    message.style.display = "none";
+    message.className = "";
+
+
+    /* BANK VALIDATION */
+
+    if(bank === ""){
+
+        showError("Please select your credit card bank.");
+
+        return;
+    }
+
+
+    /* CARD LAST 4 VALIDATION */
+
+    if(!/^[0-9]{4}$/.test(last4)){
+
+        showError(
+            "Please enter exactly 4 digits of your credit card."
+        );
+
+        return;
+    }
+
+
+    /* MOBILE VALIDATION */
+
+    if(!/^[6-9][0-9]{9}$/.test(mobile)){
+
+        showError(
+            "Please enter a valid 10 digit mobile number."
+        );
+
+        return;
+    }
+
+
+    /* AMOUNT VALIDATION */
+
+    if(!amount || amount <= 0){
+
+        showError(
+            "Please enter a payment amount."
+        );
+
+        return;
+    }
+
+
+    /* MINIMUM PAYMENT */
+
+    if(amount < 500){
+
+        showError(
+            "Minimum payment amount is ₹500."
+        );
+
+        return;
+    }
+
+
+    /* OUTSTANDING LIMIT */
+
+    if(amount > 5000){
+
+        showError(
+            "Payment amount cannot exceed ₹5,000 in this demo."
+        );
+
+        return;
+    }
+
+
+    /* ================================
+       SAVE TRANSACTION
+    ================================= */
+
+    let transactions =
+        JSON.parse(
+            localStorage.getItem("finzoTransactions") || "[]"
+        );
+
+
+    const transaction = {
+
+        type: "Credit Card Bill",
+
+        method: "Demo Payment",
+
+        amount: Number(amount),
+
+        date: new Date().toLocaleString("en-IN"),
+
+        status: "Success",
+
+        details:
+            "Bank: " +
+            bank +
+            " | Card: **" +
+            last4
+
+    };
+
+
+    transactions.unshift(transaction);
+
+
+    localStorage.setItem(
+        "finzoTransactions",
+        JSON.stringify(transactions)
+    );
+
+
+    /* SUCCESS MESSAGE */
+
+    message.className = "success";
+
+    message.innerHTML =
+        "✅ <strong>Payment Successful!</strong><br><br>" +
+        "Bank: " + bank + "<br>" +
+        "Card: **" + last4 + "<br>" +
+        "Amount Paid: ₹" +
+        amount.toLocaleString("en-IN") +
+        "<br><br>" +
+        "Transaction saved successfully in Transaction History.";
+
+    message.style.display = "block";
+
+
+    /* CLEAR AMOUNT */
+
+    document.getElementById("amount").value = "";
+
+}
+
+
+/* ================================
+   ERROR MESSAGE
+================================ */
+
+function showError(text){
+
+    const message =
+        document.getElementById("message");
+
+    message.className = "error";
+
+    message.innerHTML =
+        "❌ " + text;
+
+    message.style.display = "block";
+}
+
+</script>
+
+</body>
+</html>

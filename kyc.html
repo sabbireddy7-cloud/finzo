@@ -1,1111 +1,606 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>FINZO - KYC</title>
+<title>FINZO - KYC</title>
 
-  <style>
-    *{
-      box-sizing:border-box;
-      margin:0;
-      padding:0;
-      font-family:Arial,Helvetica,sans-serif;
-    }
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,sans-serif;
+}
 
-    body{
-      min-height:100vh;
-      background:#f5f7fb;
-      color:#172033;
-    }
+body{
+    background:#f5f5f5;
+    color:#222;
+}
 
-    body.dark{
-      background:#111827;
-      color:#f3f4f6;
-    }
+.header{
+    background:#101010;
+    color:white;
+    padding:18px 25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
 
-    header{
-      background:#111827;
-      color:white;
-      padding:18px 5%;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      position:sticky;
-      top:0;
-      z-index:10;
+.logo{
+    font-size:28px;
+    font-weight:bold;
+    color:#ff3333;
+}
+
+.dashboard-btn{
+    text-decoration:none;
+    color:white;
+    background:#b91c1c;
+    padding:10px 18px;
+    border-radius:8px;
+    font-size:14px;
+}
+
+.container{
+    max-width:700px;
+    margin:30px auto;
+    padding:0 15px;
+}
+
+.card{
+    background:white;
+    padding:28px;
+    border-radius:16px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.08);
+}
+
+h1{
+    text-align:center;
+    margin-bottom:8px;
+}
+
+.subtitle{
+    text-align:center;
+    color:#777;
+    margin-bottom:25px;
+    font-size:14px;
+}
+
+.section{
+    margin-top:25px;
+    padding:18px;
+    background:#fafafa;
+    border:1px solid #e5e5e5;
+    border-radius:12px;
+}
+
+.section-title{
+    font-size:18px;
+    font-weight:bold;
+    margin-bottom:15px;
+    color:#b91c1c;
+}
+
+label{
+    display:block;
+    font-weight:bold;
+    margin-top:15px;
+    margin-bottom:7px;
+}
+
+input{
+    width:100%;
+    padding:13px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:15px;
+}
+
+input:focus{
+    outline:none;
+    border-color:#b91c1c;
+}
+
+input[type="file"]{
+    background:white;
+    padding:10px;
+}
+
+.submit-btn{
+    width:100%;
+    margin-top:25px;
+    padding:14px;
+    background:#b91c1c;
+    color:white;
+    border:none;
+    border-radius:9px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.submit-btn:hover{
+    background:#991b1b;
+}
+
+.message{
+    display:none;
+    margin-top:18px;
+    padding:13px;
+    border-radius:8px;
+    text-align:center;
+}
+
+.success{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.error{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.status{
+    margin-top:20px;
+    padding:15px;
+    background:#fff7ed;
+    border:1px solid #fed7aa;
+    border-radius:10px;
+    text-align:center;
+    color:#9a3412;
+    font-size:14px;
+}
+
+.note{
+    margin-top:18px;
+    color:#777;
+    font-size:12px;
+    line-height:1.5;
+    text-align:center;
+}
+
+@media(max-width:600px){
+
+    .header{
+        padding:15px;
     }
 
     .logo{
-      font-size:25px;
-      font-weight:800;
-      letter-spacing:1px;
-    }
-
-    .logo span{
-      color:#ef4444;
-    }
-
-    .header-right{
-      display:flex;
-      gap:10px;
-      align-items:center;
-    }
-
-    button{
-      border:none;
-      cursor:pointer;
-    }
-
-    .theme-btn{
-      background:#374151;
-      color:white;
-      padding:10px 14px;
-      border-radius:10px;
-    }
-
-    .container{
-      max-width:1000px;
-      margin:35px auto;
-      padding:0 20px;
-    }
-
-    .page-title{
-      text-align:center;
-      margin-bottom:25px;
-    }
-
-    .page-title h1{
-      font-size:32px;
-      margin-bottom:8px;
-    }
-
-    .page-title p{
-      color:#6b7280;
-    }
-
-    body.dark .page-title p{
-      color:#9ca3af;
-    }
-
-    .status-card{
-      background:white;
-      border-radius:18px;
-      padding:25px;
-      box-shadow:0 8px 25px rgba(0,0,0,0.08);
-      margin-bottom:22px;
-    }
-
-    body.dark .status-card,
-    body.dark .card{
-      background:#1f2937;
-    }
-
-    .status-top{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:15px;
-      margin-bottom:18px;
-    }
-
-    .status-title{
-      font-size:20px;
-      font-weight:700;
-    }
-
-    .status-badge{
-      padding:8px 14px;
-      border-radius:20px;
-      font-size:13px;
-      font-weight:bold;
-    }
-
-    .pending{
-      background:#fff7ed;
-      color:#c2410c;
-    }
-
-    .verified{
-      background:#ecfdf5;
-      color:#047857;
-    }
-
-    .progress-bg{
-      width:100%;
-      height:12px;
-      background:#e5e7eb;
-      border-radius:20px;
-      overflow:hidden;
-    }
-
-    .progress-bar{
-      height:100%;
-      width:60%;
-      background:#16a34a;
-      border-radius:20px;
-      transition:width .5s ease;
-    }
-
-    .progress-text{
-      margin-top:10px;
-      font-size:14px;
-      color:#6b7280;
-    }
-
-    body.dark .progress-text{
-      color:#9ca3af;
-    }
-
-    .grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:22px;
+        font-size:24px;
     }
 
     .card{
-      background:white;
-      border-radius:18px;
-      padding:25px;
-      box-shadow:0 8px 25px rgba(0,0,0,0.08);
+        padding:20px;
     }
-
-    .card h2{
-      font-size:20px;
-      margin-bottom:20px;
-    }
-
-    .field{
-      margin-bottom:17px;
-    }
-
-    label{
-      display:block;
-      margin-bottom:7px;
-      font-size:14px;
-      font-weight:600;
-    }
-
-    input,
-    select{
-      width:100%;
-      padding:13px;
-      border:1px solid #d1d5db;
-      border-radius:10px;
-      font-size:15px;
-      outline:none;
-      background:white;
-      color:#111827;
-    }
-
-    input:focus,
-    select:focus{
-      border-color:#ef4444;
-    }
-
-    body.dark input,
-    body.dark select{
-      background:#111827;
-      color:white;
-      border-color:#4b5563;
-    }
-
-    input[readonly]{
-      background:#f3f4f6;
-    }
-
-    body.dark input[readonly]{
-      background:#374151;
-    }
-
-    .demo-box{
-      background:#fff7ed;
-      border:1px solid #fed7aa;
-      color:#9a3412;
-      padding:14px;
-      border-radius:12px;
-      margin-bottom:18px;
-      font-size:13px;
-      line-height:1.5;
-    }
-
-    body.dark .demo-box{
-      background:#3b2a1c;
-      border-color:#92400e;
-      color:#fdba74;
-    }
-
-    .check-row{
-      display:flex;
-      align-items:flex-start;
-      gap:10px;
-      margin:18px 0;
-      font-size:14px;
-      line-height:1.5;
-    }
-
-    .check-row input{
-      width:auto;
-      margin-top:3px;
-    }
-
-    .submit-btn{
-      width:100%;
-      background:#dc2626;
-      color:white;
-      padding:14px;
-      border-radius:10px;
-      font-size:16px;
-      font-weight:700;
-      transition:.2s;
-    }
-
-    .submit-btn:hover{
-      background:#b91c1c;
-    }
-
-    .submit-btn:disabled{
-      background:#9ca3af;
-      cursor:not-allowed;
-    }
-
-    .success-message{
-      display:none;
-      background:#ecfdf5;
-      color:#047857;
-      border:1px solid #a7f3d0;
-      padding:14px;
-      border-radius:10px;
-      margin-top:15px;
-      font-size:14px;
-    }
-
-    body.dark .success-message{
-      background:#064e3b;
-      color:#a7f3d0;
-      border-color:#047857;
-    }
-
-    .info-list{
-      list-style:none;
-    }
-
-    .info-list li{
-      padding:12px 0;
-      border-bottom:1px solid #e5e7eb;
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      font-size:14px;
-    }
-
-    body.dark .info-list li{
-      border-color:#374151;
-    }
-
-    .info-list li:last-child{
-      border-bottom:none;
-    }
-
-    .info-label{
-      color:#6b7280;
-    }
-
-    body.dark .info-label{
-      color:#9ca3af;
-    }
-
-    .steps{
-      margin-top:20px;
-    }
-
-    .step{
-      display:flex;
-      gap:14px;
-      margin-bottom:18px;
-      align-items:flex-start;
-    }
-
-    .step-number{
-      width:32px;
-      height:32px;
-      border-radius:50%;
-      background:#fee2e2;
-      color:#dc2626;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      font-weight:bold;
-      flex-shrink:0;
-    }
-
-    .step h3{
-      font-size:15px;
-      margin-bottom:4px;
-    }
-
-    .step p{
-      font-size:13px;
-      color:#6b7280;
-      line-height:1.5;
-    }
-
-    body.dark .step p{
-      color:#9ca3af;
-    }
-
-    .bottom-buttons{
-      display:flex;
-      gap:12px;
-      margin-top:25px;
-    }
-
-    .back-btn{
-      flex:1;
-      background:#374151;
-      color:white;
-      padding:13px;
-      border-radius:10px;
-      font-weight:600;
-    }
-
-    .dashboard-btn{
-      flex:1;
-      background:#111827;
-      color:white;
-      padding:13px;
-      border-radius:10px;
-      font-weight:600;
-    }
-
-    .disclaimer{
-      text-align:center;
-      margin:25px auto;
-      max-width:800px;
-      font-size:12px;
-      color:#6b7280;
-      line-height:1.6;
-    }
-
-    body.dark .disclaimer{
-      color:#9ca3af;
-    }
-
-    footer{
-      text-align:center;
-      padding:25px;
-      color:#6b7280;
-      font-size:13px;
-    }
-
-    @media(max-width:750px){
-
-      .grid{
-        grid-template-columns:1fr;
-      }
-
-      .page-title h1{
-        font-size:27px;
-      }
-
-      .status-top{
-        flex-direction:column;
-        align-items:flex-start;
-      }
-
-      .bottom-buttons{
-        flex-direction:column;
-      }
-
-      header{
-        padding:15px 20px;
-      }
-    }
-  </style>
+}
+</style>
 </head>
 
 <body>
 
-<header>
+<!-- HEADER -->
 
-  <div class="logo">
-    FIN<span>ZO</span>
-  </div>
+<div class="header">
 
-  <div class="header-right">
-
-    <button class="theme-btn" onclick="toggleTheme()">
-      🌙 Theme
-    </button>
-
-  </div>
-
-</header>
-
-
-<div class="container">
-
-  <div class="page-title">
-    <h1>KYC Verification</h1>
-    <p>Complete your demo KYC verification</p>
-  </div>
-
-
-  <!-- KYC STATUS -->
-
-  <div class="status-card">
-
-    <div class="status-top">
-
-      <div>
-        <div class="status-title">
-          KYC Verification Status
-        </div>
-      </div>
-
-      <div id="statusBadge" class="status-badge pending">
-        Pending
-      </div>
-
+    <div class="logo">
+        FINZO
     </div>
 
-    <div class="progress-bg">
-
-      <div
-        id="progressBar"
-        class="progress-bar">
-      </div>
-
-    </div>
-
-    <div
-      id="progressText"
-      class="progress-text">
-      Verification progress: 60%
-    </div>
-
-  </div>
-
-
-  <div class="grid">
-
-
-    <!-- PERSONAL DETAILS -->
-
-    <div class="card">
-
-      <h2>👤 Personal Details</h2>
-
-      <div class="demo-box">
-
-        <strong>Demo Mode:</strong><br>
-
-        This is only a FINZO learning project.
-        Do not enter real Aadhaar, PAN, bank or
-        other sensitive identity information.
-
-      </div>
-
-
-      <div class="field">
-
-        <label>Full Name</label>
-
-        <input
-          type="text"
-          id="fullName"
-          readonly>
-
-      </div>
-
-
-      <div class="field">
-
-        <label>Email</label>
-
-        <input
-          type="email"
-          id="email"
-          readonly>
-
-      </div>
-
-
-      <div class="field">
-
-        <label>Mobile Number</label>
-
-        <input
-          type="text"
-          id="mobile"
-          readonly>
-
-      </div>
-
-
-      <div class="field">
-
-        <label>Demo Document Type</label>
-
-        <select id="documentType">
-
-          <option value="">
-            Select Document
-          </option>
-
-          <option value="Demo ID">
-            Demo ID Card
-          </option>
-
-          <option value="Demo Address Proof">
-            Demo Address Proof
-          </option>
-
-          <option value="Demo PAN">
-            Demo PAN Card
-          </option>
-
-        </select>
-
-      </div>
-
-
-      <div class="field">
-
-        <label>Demo Document Number</label>
-
-        <input
-          type="text"
-          id="documentNumber"
-          placeholder="Example: DEMO123456">
-
-      </div>
-
-
-      <label class="check-row">
-
-        <input
-          type="checkbox"
-          id="demoConfirm">
-
-        <span>
-          I confirm that I am using dummy/demo
-          information for this FINZO project.
-        </span>
-
-      </label>
-
-
-      <button
-        class="submit-btn"
-        id="submitBtn"
-        onclick="submitKyc()">
-
-        Submit KYC
-
-      </button>
-
-
-      <div
-        id="successMessage"
-        class="success-message">
-
-        ✅ Demo KYC verification completed successfully!
-
-      </div>
-
-    </div>
-
-
-    <!-- KYC INFORMATION -->
-
-    <div class="card">
-
-      <h2>📋 KYC Information</h2>
-
-
-      <ul class="info-list">
-
-        <li>
-          <span class="info-label">
-            Account Holder
-          </span>
-
-          <strong id="displayName">
-            Demo User
-          </strong>
-        </li>
-
-
-        <li>
-          <span class="info-label">
-            Email
-          </span>
-
-          <strong id="displayEmail">
-            demo@finzo.com
-          </strong>
-        </li>
-
-
-        <li>
-          <span class="info-label">
-            KYC Status
-          </span>
-
-          <strong id="displayStatus">
-            Pending
-          </strong>
-        </li>
-
-
-        <li>
-          <span class="info-label">
-            Verification Type
-          </span>
-
-          <strong>
-            Demo Verification
-          </strong>
-        </li>
-
-
-        <li>
-          <span class="info-label">
-            Last Updated
-          </span>
-
-          <strong id="lastUpdated">
-            Not submitted
-          </strong>
-        </li>
-
-      </ul>
-
-
-      <div class="steps">
-
-        <div class="step">
-
-          <div class="step-number">
-            1
-          </div>
-
-          <div>
-
-            <h3>Enter Demo Details</h3>
-
-            <p>
-              Select a demo document and enter
-              dummy document information.
-            </p>
-
-          </div>
-
-        </div>
-
-
-        <div class="step">
-
-          <div class="step-number">
-            2
-          </div>
-
-          <div>
-
-            <h3>Confirm Demo Data</h3>
-
-            <p>
-              Confirm that the information is
-              dummy data for this learning project.
-            </p>
-
-          </div>
-
-        </div>
-
-
-        <div class="step">
-
-          <div class="step-number">
-            3
-          </div>
-
-          <div>
-
-            <h3>Demo Verification</h3>
-
-            <p>
-              FINZO will change the demo status
-              from Pending to Verified.
-            </p>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <div class="bottom-buttons">
-
-    <button
-      class="back-btn"
-      onclick="goProfile()">
-
-      ← Back to Profile
-
-    </button>
-
-
-    <button
-      class="dashboard-btn"
-      onclick="goDashboard()">
-
-      Dashboard →
-
-    </button>
-
-  </div>
-
-
-  <div class="disclaimer">
-
-    ⚠️ <strong>Demo Project Only:</strong>
-    This KYC module does not perform real identity
-    verification. Never enter real Aadhaar, PAN,
-    bank account or other sensitive personal
-    information into this demo application.
-
-  </div>
+    <a href="dashboard.html" class="dashboard-btn">
+        Dashboard
+    </a>
 
 </div>
 
 
-<footer>
+<div class="container">
 
-  ©️ 2026 FINZO • Demo Financial Website
+<div class="card">
 
-</footer>
+<h1>KYC Verification</h1>
 
+<p class="subtitle">
+Complete your KYC details
+</p>
+
+
+<!-- AADHAAR SECTION -->
+
+<div class="section">
+
+<div class="section-title">
+Aadhaar Card Details
+</div>
+
+<label for="aadhaarFile">
+Upload Aadhaar Card
+</label>
+
+<input
+    type="file"
+    id="aadhaarFile"
+    accept="image/*,.pdf"
+/>
+
+
+<label for="aadhaarNumber">
+Aadhaar Number
+</label>
+
+<input
+    type="text"
+    id="aadhaarNumber"
+    placeholder="Enter 12-digit Aadhaar number"
+    maxlength="12"
+    inputmode="numeric"
+/>
+
+</div>
+
+
+<!-- PAN SECTION -->
+
+<div class="section">
+
+<div class="section-title">
+PAN Card Details
+</div>
+
+<label for="panFile">
+Upload PAN Card
+</label>
+
+<input
+    type="file"
+    id="panFile"
+    accept="image/*,.pdf"
+/>
+
+
+<label for="panNumber">
+PAN Card Number
+</label>
+
+<input
+    type="text"
+    id="panNumber"
+    placeholder="Enter PAN number"
+    maxlength="10"
+    style="text-transform:uppercase;"
+/>
+
+</div>
+
+
+<!-- BANK SECTION -->
+
+<div class="section">
+
+<div class="section-title">
+Bank Details
+</div>
+
+<label for="bankFile">
+Upload Bank Details
+</label>
+
+<input
+    type="file"
+    id="bankFile"
+    accept="image/*,.pdf"
+/>
+
+
+<label for="bankName">
+Bank Name
+</label>
+
+<input
+    type="text"
+    id="bankName"
+    placeholder="Enter bank name"
+/>
+
+
+<label for="accountNumber">
+Bank Account Number
+</label>
+
+<input
+    type="text"
+    id="accountNumber"
+    placeholder="Enter bank account number"
+    inputmode="numeric"
+/>
+
+
+<!-- IFSC CODE ADDED -->
+
+<label for="ifscCode">
+IFSC Code
+</label>
+
+<input
+    type="text"
+    id="ifscCode"
+    placeholder="Enter IFSC code"
+    maxlength="11"
+    style="text-transform:uppercase;"
+/>
+
+</div>
+
+
+<!-- PROFILE PHOTO -->
+
+<div class="section">
+
+<div class="section-title">
+Profile Photo
+</div>
+
+<label for="profilePhoto">
+Upload Profile Photo
+</label>
+
+<input
+    type="file"
+    id="profilePhoto"
+    accept="image/*"
+/>
+
+</div>
+
+
+<!-- SUBMIT -->
+
+<button
+    class="submit-btn"
+    onclick="submitKYC()"
+>
+    Submit KYC
+</button>
+
+
+<!-- MESSAGE -->
+
+<div
+    id="message"
+    class="message"
+></div>
+
+
+<!-- STATUS -->
+
+<div class="status">
+
+    KYC Status:
+    <strong id="kycStatus">
+        Not Submitted
+    </strong>
+
+</div>
+
+
+<div class="note">
+Demo KYC page for FINZO website development.
+Do not upload real Aadhaar, PAN, bank documents or other sensitive personal information to this demo.
+</div>
+
+</div>
+
+</div>
 
 
 <script>
 
-  /* =========================
-     BASIC HELPERS
-  ========================= */
+/* LOGIN PROTECTION */
 
-  function $(id){
-    return document.getElementById(id);
-  }
+if(localStorage.getItem("finzoLoggedIn") !== "true"){
+    window.location.href = "login.html";
+}
 
 
-  /* =========================
-     LOAD USER DATA
-  ========================= */
+/* LOAD SAVED STATUS */
 
-  const userName =
-    localStorage.getItem("finzoUserName") ||
-    localStorage.getItem("finzoName") ||
-    "Demo User";
+const savedKYC =
+    localStorage.getItem("finzoKYCSubmitted");
 
+if(savedKYC === "true"){
 
-  const userEmail =
-    localStorage.getItem("finzoUserEmail") ||
-    localStorage.getItem("finzoEmail") ||
-    "demo@finzo.com";
+    document.getElementById("kycStatus")
+        .textContent = "Submitted";
+
+}
 
 
-  const userMobile =
-    localStorage.getItem("finzoMobile") ||
-    "9999999999";
+/* SUBMIT KYC */
+
+function submitKYC(){
+
+    const aadhaarFile =
+        document.getElementById("aadhaarFile").files[0];
+
+    const aadhaarNumber =
+        document.getElementById("aadhaarNumber").value.trim();
+
+    const panFile =
+        document.getElementById("panFile").files[0];
+
+    const panNumber =
+        document.getElementById("panNumber").value
+        .trim()
+        .toUpperCase();
+
+    const bankFile =
+        document.getElementById("bankFile").files[0];
+
+    const bankName =
+        document.getElementById("bankName").value.trim();
+
+    const accountNumber =
+        document.getElementById("accountNumber").value.trim();
+
+    /* IFSC CODE */
+
+    const ifscCode =
+        document.getElementById("ifscCode").value
+        .trim()
+        .toUpperCase();
+
+    const profilePhoto =
+        document.getElementById("profilePhoto").files[0];
 
 
-  let kycStatus =
-    localStorage.getItem("finzoKycStatus") ||
-    "Pending";
+    /* AADHAAR VALIDATION */
 
+    if(!aadhaarFile){
 
-  /* =========================
-     DISPLAY USER
-  ========================= */
-
-  $("fullName").value = userName;
-
-  $("email").value = userEmail;
-
-  $("mobile").value = userMobile;
-
-  $("displayName").textContent = userName;
-
-  $("displayEmail").textContent = userEmail;
-
-
-  /* =========================
-     UPDATE KYC UI
-  ========================= */
-
-  function updateKycUI(){
-
-    const badge = $("statusBadge");
-
-    const progressBar = $("progressBar");
-
-    const progressText = $("progressText");
-
-    const displayStatus = $("displayStatus");
-
-    if(kycStatus === "Verified"){
-
-      badge.textContent = "Verified";
-
-      badge.className =
-        "status-badge verified";
-
-      progressBar.style.width = "100%";
-
-      progressText.textContent =
-        "Verification progress: 100%";
-
-      displayStatus.textContent =
-        "Verified";
-
-      displayStatus.style.color =
-        "#16a34a";
-
-      $("submitBtn").textContent =
-        "KYC Already Verified";
-
-      $("submitBtn").disabled = true;
-
-      $("successMessage").style.display =
-        "block";
-
-      const updated =
-        localStorage.getItem(
-          "finzoKycUpdatedAt"
+        showMessage(
+            "Please upload Aadhaar Card.",
+            "error"
         );
 
-      if(updated){
-
-        $("lastUpdated").textContent =
-          updated;
-
-      }
-
-    }else{
-
-      badge.textContent = "Pending";
-
-      badge.className =
-        "status-badge pending";
-
-      progressBar.style.width = "60%";
-
-      progressText.textContent =
-        "Verification progress: 60%";
-
-      displayStatus.textContent =
-        "Pending";
-
-      displayStatus.style.color =
-        "#c2410c";
-
-      $("submitBtn").textContent =
-        "Submit KYC";
-
-      $("submitBtn").disabled = false;
-
-      $("successMessage").style.display =
-        "none";
-
-    }
-
-  }
-
-
-  /* =========================
-     SUBMIT KYC
-  ========================= */
-
-  function submitKyc(){
-
-    const documentType =
-      $("documentType").value;
-
-    const documentNumber =
-      $("documentNumber").value.trim();
-
-    const demoConfirm =
-      $("demoConfirm").checked;
-
-
-    if(!documentType){
-
-      alert(
-        "Please select a Demo Document Type."
-      );
-
-      return;
-
+        return;
     }
 
 
-    if(documentNumber.length < 4){
+    if(!/^\d{12}$/.test(aadhaarNumber)){
 
-      alert(
-        "Please enter a dummy Demo Document Number."
-      );
+        showMessage(
+            "Please enter a valid 12-digit Aadhaar number.",
+            "error"
+        );
 
-      return;
-
+        return;
     }
 
 
-    if(!demoConfirm){
+    /* PAN VALIDATION */
 
-      alert(
-        "Please confirm that you are using dummy/demo information."
-      );
+    if(!panFile){
 
-      return;
+        showMessage(
+            "Please upload PAN Card.",
+            "error"
+        );
 
+        return;
     }
 
 
-    /*
-      DEMO ONLY
+    if(!/^[A-Z]{5}[0-9]{4}[A-Z]$/.test(panNumber)){
 
-      No real identity verification happens.
-    */
+        showMessage(
+            "Please enter a valid PAN number.",
+            "error"
+        );
 
-    kycStatus = "Verified";
+        return;
+    }
 
+
+    /* BANK VALIDATION */
+
+    if(!bankFile){
+
+        showMessage(
+            "Please upload Bank Details.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    if(bankName === ""){
+
+        showMessage(
+            "Please enter Bank Name.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    if(accountNumber === ""){
+
+        showMessage(
+            "Please enter Bank Account Number.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    /* IFSC VALIDATION */
+
+    if(!/^[A-Z]{4}0[A-Z0-9]{6}$/.test(ifscCode)){
+
+        showMessage(
+            "Please enter a valid 11-character IFSC Code.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    /* PROFILE PHOTO */
+
+    if(!profilePhoto){
+
+        showMessage(
+            "Please upload Profile Photo.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    /* SAVE DEMO KYC STATUS */
 
     localStorage.setItem(
-      "finzoKycStatus",
-      "Verified"
+        "finzoKYCSubmitted",
+        "true"
     );
 
 
-    const now =
-      new Date();
+    /* UPDATE STATUS */
+
+    document.getElementById("kycStatus")
+        .textContent = "Submitted";
 
 
-    const formattedDate =
-      now.toLocaleString(
-        "en-IN",
-        {
-          dateStyle:"medium",
-          timeStyle:"short"
-        }
-      );
-
-
-    localStorage.setItem(
-      "finzoKycUpdatedAt",
-      formattedDate
+    showMessage(
+        "KYC submitted successfully! This is a demo submission.",
+        "success"
     );
 
-
-    localStorage.setItem(
-      "finzoNotification",
-      "Demo KYC verified successfully."
-    );
+}
 
 
-    updateKycUI();
+/* MESSAGE FUNCTION */
 
+function showMessage(text,type){
 
-    alert(
-      "✅ Demo KYC Verified Successfully!"
-    );
+    const message =
+        document.getElementById("message");
 
-  }
+    message.textContent = text;
 
+    message.className =
+        "message " + type;
 
-  /* =========================
-     THEME
-  ========================= */
+    message.style.display = "block";
 
-  function applyTheme(){
-
-    const theme =
-      localStorage.getItem(
-        "finzoTheme"
-      );
-
-    if(theme === "dark"){
-
-      document.body.classList.add(
-        "dark"
-      );
-
-    }else{
-
-      document.body.classList.remove(
-        "dark"
-      );
-
-    }
-
-  }
-
-
-  function toggleTheme(){
-
-    document.body.classList.toggle(
-      "dark"
-    );
-
-
-    const isDark =
-      document.body.classList.contains(
-        "dark"
-      );
-
-
-    localStorage.setItem(
-      "finzoTheme",
-      isDark ? "dark" : "light"
-    );
-
-  }
-
-
-  /* =========================
-     NAVIGATION
-  ========================= */
-
-  function goProfile(){
-
-    window.location.href =
-      "profile.html";
-
-  }
-
-
-  function goDashboard(){
-
-    window.location.href =
-      "dashboard.html";
-
-  }
-
-
-  /* =========================
-     INITIALIZE
-  ========================= */
-
-  applyTheme();
-
-  updateKycUI();
+}
 
 </script>
 

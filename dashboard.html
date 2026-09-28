@@ -1,1315 +1,2482 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FINZO - Dashboard</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f5f7fb;
-      color: #172033;
-      min-height: 100vh;
-      transition: 0.3s;
-    }
-
-    body.dark {
-      background: #10131a;
-      color: #f5f7fb;
-    }
-
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    button {
-      font-family: inherit;
-    }
-
-    .header {
-      background: #111827;
-      color: white;
-      padding: 16px 5%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      box-shadow: 0 4px 18px rgba(0,0,0,0.12);
-    }
-
-    .brand {
-      font-size: 25px;
-      font-weight: 800;
-      letter-spacing: 1px;
-    }
-
-    .brand span {
-      color: #ef4444;
-    }
-
-    .demo-label {
-      font-size: 11px;
-      background: #ef4444;
-      padding: 4px 8px;
-      border-radius: 6px;
-      margin-left: 7px;
-      vertical-align: middle;
-    }
-
-    .menu-btn {
-      display: none;
-      border: none;
-      background: transparent;
-      color: white;
-      font-size: 25px;
-      cursor: pointer;
-    }
-
-    .nav {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .nav a,
-    .nav button {
-      border: none;
-      background: transparent;
-      color: #d1d5db;
-      padding: 9px 11px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 14px;
-    }
-
-    .nav a:hover,
-    .nav button:hover {
-      background: #1f2937;
-      color: white;
-    }
-
-    .notification-link {
-      position: relative;
-    }
-
-    .badge {
-      position: absolute;
-      top: -3px;
-      right: -2px;
-      min-width: 18px;
-      height: 18px;
-      padding: 2px 5px;
-      background: #ef4444;
-      color: white;
-      border-radius: 20px;
-      font-size: 10px;
-      text-align: center;
-      font-weight: bold;
-    }
-
-    .container {
-      width: 90%;
-      max-width: 1200px;
-      margin: 30px auto 50px;
-    }
-
-    .welcome {
-      margin-bottom: 22px;
-    }
-
-    .welcome h1 {
-      font-size: 30px;
-      margin-bottom: 7px;
-    }
-
-    .welcome p {
-      color: #6b7280;
-      font-size: 15px;
-    }
-
-    body.dark .welcome p {
-      color: #9ca3af;
-    }
-
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: 1.6fr 1fr;
-      gap: 22px;
-    }
-
-    .balance-card {
-      background: linear-gradient(135deg, #991b1b, #dc2626, #7f1d1d);
-      color: white;
-      border-radius: 22px;
-      padding: 30px;
-      min-height: 245px;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 15px 35px rgba(127,29,29,0.25);
-    }
-
-    .balance-card::before {
-      content: "";
-      position: absolute;
-      width: 220px;
-      height: 220px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.08);
-      right: -70px;
-      top: -70px;
-    }
-
-    .balance-card::after {
-      content: "";
-      position: absolute;
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.06);
-      left: -60px;
-      bottom: -80px;
-    }
-
-    .balance-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: relative;
-      z-index: 2;
-    }
-
-    .balance-title {
-      font-size: 14px;
-      opacity: 0.85;
-    }
-
-    .account-mini {
-      font-size: 13px;
-      opacity: 0.9;
-    }
-
-    .balance-amount {
-      font-size: 42px;
-      font-weight: 800;
-      margin: 25px 0 22px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .balance-bottom {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: relative;
-      z-index: 2;
-    }
-
-    .account-number {
-      font-size: 14px;
-      letter-spacing: 1px;
-    }
-
-    .copy-btn {
-      border: 1px solid rgba(255,255,255,0.35);
-      background: rgba(255,255,255,0.12);
-      color: white;
-      padding: 8px 12px;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    .copy-btn:hover {
-      background: rgba(255,255,255,0.2);
-    }
-
-    .summary-card {
-      background: white;
-      border-radius: 20px;
-      padding: 25px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.06);
-    }
-
-    body.dark .summary-card,
-    body.dark .action-card,
-    body.dark .section-card {
-      background: #181c25;
-      box-shadow: none;
-    }
-
-    .summary-card h2,
-    .section-title {
-      font-size: 18px;
-      margin-bottom: 18px;
-    }
-
-    .summary-item {
-      padding: 15px 0;
-      border-bottom: 1px solid #e5e7eb;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    body.dark .summary-item {
-      border-color: #2b313d;
-    }
-
-    .summary-item:last-child {
-      border-bottom: none;
-    }
-
-    .summary-label {
-      color: #6b7280;
-      font-size: 13px;
-    }
-
-    body.dark .summary-label {
-      color: #9ca3af;
-    }
-
-    .summary-value {
-      font-size: 17px;
-      font-weight: bold;
-    }
-
-    .credit {
-      color: #16a34a;
-    }
-
-    .debit {
-      color: #dc2626;
-    }
-
-    .quick-actions {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin: 22px 0;
-    }
-
-    .action-card {
-      background: white;
-      border-radius: 18px;
-      padding: 22px;
-      text-align: center;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.06);
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .action-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 13px 30px rgba(0,0,0,0.1);
-    }
-
-    .action-icon {
-      width: 52px;
-      height: 52px;
-      border-radius: 15px;
-      margin: 0 auto 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 25px;
-      background: #fee2e2;
-    }
-
-    .action-card h3 {
-      font-size: 16px;
-      margin-bottom: 5px;
-    }
-
-    .action-card p {
-      color: #6b7280;
-      font-size: 12px;
-    }
-
-    body.dark .action-card p {
-      color: #9ca3af;
-    }
-
-    .main-section {
-      display: grid;
-      grid-template-columns: 1.5fr 1fr;
-      gap: 22px;
-    }
-
-    .section-card {
-      background: white;
-      border-radius: 20px;
-      padding: 25px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.06);
-    }
-
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 15px;
-    }
-
-    .view-all {
-      color: #dc2626;
-      font-size: 13px;
-      font-weight: bold;
-    }
-
-    .transaction {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 0;
-      border-bottom: 1px solid #e5e7eb;
-    }
-
-    body.dark .transaction {
-      border-color: #2b313d;
-    }
-
-    .transaction:last-child {
-      border-bottom: none;
-    }
-
-    .transaction-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      min-width: 0;
-    }
-
-    .transaction-icon {
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #f3f4f6;
-      flex-shrink: 0;
-    }
-
-    body.dark .transaction-icon {
-      background: #252a35;
-    }
-
-    .transaction-info {
-      min-width: 0;
-    }
-
-    .transaction-title {
-      font-weight: bold;
-      font-size: 14px;
-    }
-
-    .transaction-name {
-      color: #6b7280;
-      font-size: 12px;
-      margin-top: 3px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 220px;
-    }
-
-    body.dark .transaction-name {
-      color: #9ca3af;
-    }
-
-    .transaction-amount {
-      font-weight: bold;
-      font-size: 14px;
-      white-space: nowrap;
-    }
-
-    .transaction-date {
-      color: #9ca3af;
-      font-size: 11px;
-      margin-top: 3px;
-      text-align: right;
-    }
-
-    .kyc-card {
-      border: 1px solid #e5e7eb;
-      border-radius: 15px;
-      padding: 18px;
-      margin-bottom: 15px;
-    }
-
-    body.dark .kyc-card {
-      border-color: #2b313d;
-    }
-
-    .kyc-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .kyc-status {
-      padding: 6px 10px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: bold;
-    }
-
-    .pending {
-      background: #fef3c7;
-      color: #92400e;
-    }
-
-    .verified {
-      background: #dcfce7;
-      color: #166534;
-    }
-
-    .kyc-text {
-      color: #6b7280;
-      font-size: 12px;
-      margin-top: 10px;
-      line-height: 1.5;
-    }
-
-    body.dark .kyc-text {
-      color: #9ca3af;
-    }
-
-    .kyc-btn {
-      width: 100%;
-      border: none;
-      background: #111827;
-      color: white;
-      padding: 11px;
-      border-radius: 9px;
-      cursor: pointer;
-      margin-top: 12px;
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 15px;
-      margin: 22px 0;
-    }
-
-    .stat {
-      background: white;
-      border-radius: 16px;
-      padding: 18px;
-      box-shadow: 0 7px 20px rgba(0,0,0,0.05);
-    }
-
-    body.dark .stat {
-      background: #181c25;
-    }
-
-    .stat-label {
-      color: #6b7280;
-      font-size: 12px;
-      margin-bottom: 8px;
-    }
-
-    body.dark .stat-label {
-      color: #9ca3af;
-    }
-
-    .stat-value {
-      font-size: 21px;
-      font-weight: 800;
-    }
-
-    .session {
-      text-align: center;
-      color: #6b7280;
-      font-size: 12px;
-      margin-top: 25px;
-    }
-
-    body.dark .session {
-      color: #9ca3af;
-    }
-
-    .demo-note {
-      margin-top: 25px;
-      padding: 15px;
-      border-radius: 12px;
-      background: #fff7ed;
-      color: #9a3412;
-      font-size: 12px;
-      line-height: 1.5;
-      text-align: center;
-    }
-
-    body.dark .demo-note {
-      background: #2a1d16;
-      color: #fdba74;
-    }
-
-    .footer {
-      text-align: center;
-      color: #9ca3af;
-      font-size: 11px;
-      padding: 25px 10px;
-    }
-
-    @media (max-width: 900px) {
-      .dashboard-grid,
-      .main-section {
-        grid-template-columns: 1fr;
-      }
-
-      .nav {
-        position: absolute;
-        top: 66px;
-        right: 5%;
-        width: 240px;
-        background: #111827;
-        padding: 12px;
-        border-radius: 12px;
-        display: none;
-        flex-direction: column;
-        align-items: stretch;
-        box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-      }
-
-      .nav.show {
-        display: flex;
-      }
-
-      .nav a,
-      .nav button {
-        text-align: left;
-        width: 100%;
-      }
-
-      .menu-btn {
-        display: block;
-      }
-    }
-
-    @media (max-width: 650px) {
-      .container {
-        width: 92%;
-        margin-top: 22px;
-      }
-
-      .welcome h1 {
-        font-size: 25px;
-      }
-
-      .balance-card {
-        padding: 24px;
-      }
-
-      .balance-amount {
-        font-size: 34px;
-      }
-
-      .quick-actions {
-        grid-template-columns: 1fr;
-      }
-
-      .stats {
-        grid-template-columns: 1fr;
-      }
-
-      .transaction-name {
-        max-width: 145px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FINZO Dashboard</title>
+
+<style>
+:root{
+    --primary:#b91c1c;
+    --primary-dark:#991b1b;
+    --bg:#f5f5f5;
+    --card:#ffffff;
+    --text:#171717;
+    --muted:#737373;
+    --border:#e5e5e5;
+    --success:#15803d;
+    --danger:#dc2626;
+    --shadow:0 8px 25px rgba(0,0,0,.08);
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+}
+
+button,
+input,
+select{
+    font-family:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+/* ================= HEADER ================= */
+
+.header{
+    position:sticky;
+    top:0;
+    z-index:1000;
+    background:var(--card);
+    border-bottom:1px solid var(--border);
+    box-shadow:0 2px 10px rgba(0,0,0,.05);
+}
+
+.header-inner{
+    max-width:1400px;
+    margin:auto;
+    min-height:72px;
+    padding:12px 24px;
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+.logo{
+    font-size:28px;
+    font-weight:900;
+    color:var(--primary);
+    letter-spacing:1px;
+    flex-shrink:0;
+}
+
+.top-nav{
+    margin-left:auto;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    overflow-x:auto;
+    scrollbar-width:none;
+}
+
+.top-nav::-webkit-scrollbar{
+    display:none;
+}
+
+.top-nav a,
+.nav-btn{
+    border:0;
+    background:transparent;
+    color:var(--text);
+    padding:10px 12px;
+    border-radius:9px;
+    font-size:14px;
+    font-weight:600;
+    white-space:nowrap;
+}
+
+.top-nav a:hover,
+.nav-btn:hover{
+    background:#f1f1f1;
+    color:var(--primary);
+}
+
+.nav-btn{
+    position:relative;
+}
+
+.notification-badge{
+    position:absolute;
+    top:1px;
+    right:1px;
+    min-width:17px;
+    height:17px;
+    padding:0 4px;
+    border-radius:20px;
+    background:var(--primary);
+    color:white;
+    font-size:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+/* ================= NOTIFICATION ================= */
+
+.notification-panel{
+    position:fixed;
+    top:76px;
+    right:20px;
+    width:350px;
+    max-width:calc(100% - 30px);
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px;
+    box-shadow:0 15px 45px rgba(0,0,0,.18);
+    z-index:2000;
+    display:none;
+    overflow:hidden;
+}
+
+.notification-panel.show{
+    display:block;
+}
+
+.notification-head{
+    padding:16px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.notification-head h3{
+    font-size:17px;
+}
+
+.notification-head button{
+    border:0;
+    background:none;
+    color:var(--primary);
+    font-size:12px;
+    font-weight:bold;
+}
+
+.notification-item{
+    padding:15px 16px;
+    border-bottom:1px solid var(--border);
+}
+
+.notification-item:last-child{
+    border-bottom:0;
+}
+
+.notification-item strong{
+    display:block;
+    font-size:14px;
+    margin-bottom:5px;
+}
+
+.notification-item p{
+    color:var(--muted);
+    font-size:12px;
+    line-height:1.5;
+}
+
+/* ================= MAIN ================= */
+
+.container{
+    max-width:1400px;
+    margin:auto;
+    padding:25px 24px 90px;
+}
+
+/* ================= WALLET ================= */
+
+.wallet-card{
+    background:linear-gradient(135deg,#b91c1c,#7f1d1d);
+    color:white;
+    border-radius:22px;
+    padding:28px;
+    box-shadow:0 12px 30px rgba(127,29,29,.25);
+    position:relative;
+    overflow:hidden;
+}
+
+.wallet-card::after{
+    content:"";
+    position:absolute;
+    width:220px;
+    height:220px;
+    border-radius:50%;
+    right:-80px;
+    top:-90px;
+    background:rgba(255,255,255,.08);
+}
+
+.wallet-label{
+    font-size:14px;
+    opacity:.85;
+}
+
+.wallet-balance{
+    font-size:38px;
+    font-weight:800;
+    margin:10px 0 22px;
+}
+
+.wallet-actions{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    position:relative;
+    z-index:2;
+}
+
+.wallet-btn{
+    border:0;
+    border-radius:10px;
+    padding:12px 18px;
+    font-weight:bold;
+    font-size:14px;
+}
+
+.add-btn{
+    background:white;
+    color:var(--primary);
+}
+
+.send-btn{
+    background:rgba(255,255,255,.16);
+    color:white;
+    border:1px solid rgba(255,255,255,.35);
+}
+
+/* ================= SECTION ================= */
+
+.section{
+    margin-top:30px;
+}
+
+.section-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+}
+
+.section-title h2{
+    font-size:21px;
+}
+
+.section-title span{
+    color:var(--muted);
+    font-size:13px;
+}
+
+/* ================= SERVICES ================= */
+
+.services-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+}
+
+.service-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:20px 15px;
+    text-align:center;
+    cursor:pointer;
+    transition:.2s;
+    box-shadow:0 4px 15px rgba(0,0,0,.04);
+}
+
+.service-card:hover{
+    transform:translateY(-3px);
+    border-color:var(--primary);
+    box-shadow:var(--shadow);
+}
+
+.service-icon{
+    width:54px;
+    height:54px;
+    border-radius:15px;
+    margin:0 auto 11px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#fef2f2;
+    font-size:25px;
+}
+
+.service-card h3{
+    font-size:14px;
+    margin-bottom:5px;
+}
+
+.service-card p{
+    color:var(--muted);
+    font-size:11px;
+}
+
+/* ================= SERVICE AREA ================= */
+
+.service-area{
+    margin-top:25px;
+    display:none;
+}
+
+.service-box{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:22px;
+    box-shadow:var(--shadow);
+}
+
+.service-box-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.service-box-head h2{
+    font-size:20px;
+}
+
+.close-btn{
+    width:34px;
+    height:34px;
+    border:0;
+    border-radius:50%;
+    background:#f1f1f1;
+    font-size:20px;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+}
+
+.form-group.full{
+    grid-column:1/-1;
+}
+
+.form-group label{
+    font-size:13px;
+    font-weight:bold;
+}
+
+.form-group input,
+.form-group select{
+    width:100%;
+    padding:12px 13px;
+    border:1px solid var(--border);
+    border-radius:9px;
+    background:var(--card);
+    color:var(--text);
+    outline:none;
+}
+
+.form-group input:focus,
+.form-group select:focus{
+    border-color:var(--primary);
+}
+
+.primary-btn{
+    margin-top:18px;
+    border:0;
+    border-radius:10px;
+    background:var(--primary);
+    color:white;
+    padding:13px 22px;
+    font-weight:bold;
+}
+
+.primary-btn:hover{
+    background:var(--primary-dark);
+}
+
+.secondary-btn{
+    border:1px solid var(--border);
+    background:var(--card);
+    color:var(--text);
+    border-radius:9px;
+    padding:10px 15px;
+    font-weight:bold;
+}
+
+/* ================= BALANCE INFO ================= */
+
+.balance-info{
+    margin-top:15px;
+    background:#fafafa;
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:14px;
+    font-size:13px;
+    line-height:1.6;
+}
+
+/* ================= MESSAGE ================= */
+
+.message{
+    margin-top:15px;
+    padding:12px 14px;
+    border-radius:9px;
+    font-size:13px;
+    display:none;
+}
+
+.message.success{
+    display:block;
+    background:#f0fdf4;
+    color:var(--success);
+    border:1px solid #bbf7d0;
+}
+
+.message.error{
+    display:block;
+    background:#fef2f2;
+    color:var(--danger);
+    border:1px solid #fecaca;
+}
+
+/* ================= TRANSACTIONS ================= */
+
+.transactions{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:18px;
+    overflow:hidden;
+}
+
+.transaction{
+    padding:15px 18px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+}
+
+.transaction:last-child{
+    border-bottom:0;
+}
+
+.transaction-left{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.transaction-icon{
+    width:42px;
+    height:42px;
+    border-radius:11px;
+    background:#fef2f2;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.transaction-name{
+    font-size:14px;
+    font-weight:bold;
+}
+
+.transaction-date{
+    font-size:11px;
+    color:var(--muted);
+    margin-top:4px;
+}
+
+.transaction-amount{
+    font-size:14px;
+    font-weight:bold;
+}
+
+.credit{
+    color:var(--success);
+}
+
+.debit{
+    color:var(--danger);
+}
+
+.empty-transactions{
+    padding:30px;
+    text-align:center;
+    color:var(--muted);
+    font-size:13px;
+}
+
+/* ================= KYC ================= */
+
+.kyc-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+}
+
+.kyc-card h3{
+    margin-bottom:7px;
+}
+
+.kyc-card p{
+    color:var(--muted);
+    font-size:13px;
+}
+
+/* ================= TOAST ================= */
+
+.toast{
+    position:fixed;
+    bottom:25px;
+    right:25px;
+    background:#171717;
+    color:white;
+    padding:13px 18px;
+    border-radius:10px;
+    font-size:13px;
+    display:none;
+    z-index:3000;
+    box-shadow:0 8px 30px rgba(0,0,0,.25);
+}
+
+.toast.show{
+    display:block;
+}
+
+/* ================= DARK MODE ================= */
+
+body.dark{
+    --bg:#0b0b0b;
+    --card:#171717;
+    --text:#f5f5f5;
+    --muted:#a3a3a3;
+    --border:#2a2a2a;
+}
+
+body.dark .top-nav a:hover,
+body.dark .nav-btn:hover{
+    background:#262626;
+}
+
+body.dark .service-icon,
+body.dark .transaction-icon{
+    background:#2a1515;
+}
+
+body.dark .balance-info{
+    background:#111;
+}
+
+body.dark .close-btn{
+    background:#292929;
+}
+
+body.dark .form-group input,
+body.dark .form-group select{
+    background:#111;
+}
+
+body.dark .secondary-btn{
+    background:#171717;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:1100px){
+    .services-grid{
+        grid-template-columns:repeat(3,1fr);
+    }
+}
+
+@media(max-width:800px){
+
+    .header-inner{
+        padding:10px 14px;
+        min-height:auto;
+        flex-wrap:wrap;
+        gap:8px;
+    }
+
+    .logo{
+        font-size:25px;
+    }
+
+    .top-nav{
+        width:100%;
+        order:2;
+        margin-left:0;
+        padding-bottom:3px;
+    }
+
+    .top-nav a,
+    .nav-btn{
+        font-size:12px;
+        padding:9px 10px;
+    }
+
+    .container{
+        padding:18px 14px 80px;
+    }
+
+    .wallet-card{
+        padding:22px;
+    }
+
+    .wallet-balance{
+        font-size:31px;
+    }
+
+    .services-grid{
+        grid-template-columns:repeat(2,1fr);
+        gap:11px;
+    }
+
+    .service-card{
+        padding:16px 8px;
+    }
+
+    .service-icon{
+        width:48px;
+        height:48px;
+        font-size:22px;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .form-group.full{
+        grid-column:auto;
+    }
+
+    .kyc-card{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .notification-panel{
+        right:10px;
+        top:115px;
+    }
+}
+
+@media(max-width:420px){
+
+    .services-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .wallet-actions{
+        flex-direction:column;
+    }
+
+    .wallet-btn{
+        width:100%;
+    }
+
+    .transaction{
+        padding:13px;
+    }
+
+    .transaction-amount{
+        font-size:12px;
+    }
+}
+</style>
 </head>
 
 <body>
 
-  <header class="header">
-    <div class="brand">
-      FINZO <span class="demo-label">DEMO</span>
+<!-- ================= HEADER ================= -->
+
+<header class="header">
+    <div class="header-inner">
+
+        <div class="logo">FINZO</div>
+
+        <nav class="top-nav">
+
+
+            <a href="dashboard.html">📊 Dashboard</a>
+
+            <a href="profile.html">👤 Profile</a>
+
+            <a href="kyc.html">🪪 KYC</a>
+
+            <button class="nav-btn" onclick="toggleNotifications()">
+                🔔 Notification
+                <span class="notification-badge" id="notificationBadge">3</span>
+            </button>
+
+            <button class="nav-btn" onclick="toggleTheme()" id="themeButton">
+                🌙 Change
+            </button>
+
+            <button class="nav-btn" onclick="logout()">
+                🚪 Logout
+            </button>
+
+        </nav>
+
+    </div>
+</header>
+
+<!-- ================= NOTIFICATION PANEL ================= -->
+
+<div class="notification-panel" id="notificationPanel">
+
+    <div class="notification-head">
+        <h3>Notifications</h3>
+        <button onclick="markNotificationsRead()">Mark all read</button>
     </div>
 
-    <button class="menu-btn" onclick="toggleMobileMenu()" id="menuButton">
-      ☰
-    </button>
+    <div class="notification-item">
+        <strong>👋 Welcome to FINZO</strong>
+        <p>Your FINZO dashboard is ready to use.</p>
+    </div>
 
-    <nav class="nav" id="mainNav">
-      <a href="dashboard.html">Dashboard</a>
-      <a href="money.html">Money</a>
-      <a href="transactions.html">Transactions</a>
-      <a href="analytics.html">Analytics</a>
+    <div class="notification-item">
+        <strong>🪪 Complete your KYC</strong>
+        <p>Complete KYC to unlock more services.</p>
+    </div>
 
-      <a href="notifications.html" class="notification-link">
-        Notifications
-        <span class="badge" id="notificationBadge">0</span>
-      </a>
+    <div class="notification-item">
+        <strong>💰 Wallet</strong>
+        <p>Add money to your wallet and use FINZO services.</p>
+    </div>
 
-      <a href="profile.html">Profile</a>
-      <a href="kyc.html">KYC</a>
+</div>
 
-      <button onclick="toggleTheme()">🌙 Theme</button>
-      <button onclick="logout()">Logout</button>
-    </nav>
-  </header>
+<!-- ================= MAIN ================= -->
 
-  <main class="container">
+<main class="container">
 
-    <section class="welcome">
-      <h1 id="welcomeTitle">Welcome back 👋</h1>
-      <p>Manage your FINZO demo wallet and track your activity.</p>
-    </section>
+    <!-- WALLET -->
 
-    <section class="dashboard-grid">
+    <section>
 
-      <div class="balance-card">
+        <div class="wallet-card">
 
-        <div class="balance-top">
-          <div class="balance-title">Available Balance</div>
-          <div class="account-mini">FINZO Wallet</div>
-        </div>
-
-        <div class="balance-amount" id="balanceAmount">
-          ₹0
-        </div>
-
-        <div class="balance-bottom">
-          <div>
-            <div class="balance-title">Account Number</div>
-            <div class="account-number" id="accountNumber">
-              ** ** ** **
+            <div class="wallet-label">
+                Wallet Balance
             </div>
-          </div>
 
-          <button class="copy-btn" onclick="copyAccountNumber()">
-            📋 Copy
-          </button>
+            <div class="wallet-balance" id="mainWalletBalance">
+                ₹0.00
+            </div>
+
+            <div class="wallet-actions">
+
+                <a href="add-money.html" class="wallet-btn add-btn">
+                    ➕ Add Money
+                </a>
+
+                <button class="wallet-btn send-btn"
+                        onclick="openService('bank')">
+                    💸 Send Money
+                </button>
+
+            </div>
+
         </div>
-
-      </div>
-
-      <div class="summary-card">
-
-        <h2>Financial Summary</h2>
-
-        <div class="summary-item">
-          <div>
-            <div class="summary-label">Total Added</div>
-          </div>
-          <div class="summary-value credit" id="totalCredit">
-            ₹0
-          </div>
-        </div>
-
-        <div class="summary-item">
-          <div>
-            <div class="summary-label">Total Sent</div>
-          </div>
-          <div class="summary-value debit" id="totalDebit">
-            ₹0
-          </div>
-        </div>
-
-        <div class="summary-item">
-          <div>
-            <div class="summary-label">Transactions</div>
-          </div>
-          <div class="summary-value" id="totalTransactions">
-            0
-          </div>
-        </div>
-
-        <div class="summary-item">
-          <div>
-            <div class="summary-label">Net Movement</div>
-          </div>
-          <div class="summary-value" id="netMovement">
-            ₹0
-          </div>
-        </div>
-
-      </div>
 
     </section>
 
-    <section class="quick-actions">
 
-      <div class="action-card" onclick="goTo('money.html')">
-        <div class="action-icon">➕</div>
-        <h3>Add Money</h3>
-        <p>Add demo funds to wallet</p>
-      </div>
+    <!-- QUICK SERVICES -->
 
-      <div class="action-card" onclick="goTo('money.html')">
-        <div class="action-icon">💸</div>
-        <h3>Send Money</h3>
-        <p>Send demo money</p>
-      </div>
+    <section class="section">
 
-      <div class="action-card" onclick="goTo('transactions.html')">
-        <div class="action-icon">📄</div>
-        <h3>Transactions</h3>
-        <p>View complete history</p>
-      </div>
-
-    </section>
-
-    <section class="stats">
-
-      <div class="stat">
-        <div class="stat-label">Current Balance</div>
-        <div class="stat-value" id="statBalance">₹0</div>
-      </div>
-
-      <div class="stat">
-        <div class="stat-label">Money Added</div>
-        <div class="stat-value credit" id="statCredit">₹0</div>
-      </div>
-
-      <div class="stat">
-        <div class="stat-label">Money Sent</div>
-        <div class="stat-value debit" id="statDebit">₹0</div>
-      </div>
-
-    </section>
-
-    <section class="main-section">
-
-      <div class="section-card">
-
-        <div class="section-header">
-          <h2 class="section-title">Recent Transactions</h2>
-          <a href="transactions.html" class="view-all">View All →</a>
+        <div class="section-title">
+            <h2>Quick Services</h2>
+            <span>Choose a service</span>
         </div>
 
-        <div id="recentTransactions"></div>
+        <div class="services-grid">
 
-      </div>
+            <div class="service-card" onclick="openService('mobile')">
+                <div class="service-icon">📱</div>
+                <h3>Mobile Recharge</h3>
+                <p>Prepaid recharge</p>
+            </div>
 
-      <div class="section-card">
+            <div class="service-card" onclick="openService('dth')">
+                <div class="service-icon">📺</div>
+                <h3>DTH</h3>
+                <p>DTH recharge</p>
+            </div>
 
-        <div class="section-header">
-          <h2 class="section-title">Account Status</h2>
+            <div class="service-card" onclick="openService('credit')">
+                <div class="service-icon">💳</div>
+                <h3>Credit Card Bill</h3>
+                <p>Pay card bill</p>
+            </div>
+
+            <div class="service-card" onclick="openService('bank')">
+                <div class="service-icon">🏦</div>
+                <h3>Bank Transfer</h3>
+                <p>Send money</p>
+            </div>
+
+            <div class="service-card" onclick="openService('electricity')">
+                <div class="service-icon">💡</div>
+                <h3>Electricity Bill</h3>
+                <p>Pay electricity</p>
+            </div>
+
+            <div class="service-card" onclick="openService('water')">
+                <div class="service-icon">💧</div>
+                <h3>Water Bill</h3>
+                <p>Pay water bill</p>
+            </div>
+
+            <div class="service-card" onclick="openService('gas')">
+                <div class="service-icon">🔥</div>
+                <h3>Gas Bill</h3>
+                <p>Pay gas bill</p>
+            </div>
+
+            <div class="service-card" onclick="openService('insurance')">
+                <div class="service-icon">🛡️</div>
+                <h3>Insurance</h3>
+                <p>Pay premium</p>
+            </div>
+
+            <div class="service-card" onclick="openService('other')">
+                <div class="service-icon">🧾</div>
+                <h3>Other Bills</h3>
+                <p>Other payments</p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- SERVICE AREA -->
+
+    <section class="service-area" id="serviceArea">
+
+        <div class="service-box">
+
+            <div class="service-box-head">
+                <h2 id="serviceTitle">Service</h2>
+
+                <button class="close-btn" onclick="closeService()">
+                    ×
+                </button>
+            </div>
+
+            <div id="serviceContent"></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- RECENT TRANSACTIONS -->
+
+    <section class="section">
+
+        <div class="section-title">
+            <h2>Recent Transactions</h2>
+            <span>Latest activity</span>
+        </div>
+
+        <div class="transactions" id="transactionsList">
+        </div>
+
+    </section>
+
+
+    <!-- KYC -->
+
+    <section class="section">
+
+        <div class="section-title">
+            <h2>KYC</h2>
         </div>
 
         <div class="kyc-card">
-
-          <div class="kyc-top">
-            <strong>KYC Verification</strong>
-            <span class="kyc-status pending" id="kycStatus">
-              Pending
-            </span>
-          </div>
-
-          <p class="kyc-text" id="kycText">
-            Complete the demo KYC process to mark your account as verified.
-          </p>
-
-          <button class="kyc-btn" onclick="goTo('kyc.html')">
-            Manage KYC
-          </button>
-
-        </div>
-
-        <div class="kyc-card">
-
-          <div class="kyc-top">
-            <strong>Account Security</strong>
-            <span>🔐</span>
-          </div>
-
-          <p class="kyc-text">
-            Your FINZO demo data is stored locally in your browser.
-          </p>
-
-        </div>
-
-      </div>
-
-    </section>
-
-    <div class="session">
-      Demo session expires in:
-      <strong id="sessionTimer">--:--</strong>
-    </div>
-
-    <div class="demo-note">
-      ⚠️ <strong>FINZO is a demo project.</strong>
-      No real money, bank account, UPI transaction or financial service is connected.
-      Do not enter real banking, Aadhaar, PAN, card or KYC information.
-    </div>
-
-  </main>
-
-  <footer class="footer">
-    ©️ 2026 FINZO Demo • Built for learning purposes
-  </footer>
-
-  <script>
-
-    function getBalance() {
-      return Number(localStorage.getItem("finzoBalance")) || 0;
-    }
-
-    function getTransactions() {
-      try {
-        return JSON.parse(
-          localStorage.getItem("finzoTransactions") || "[]"
-        );
-      } catch (error) {
-        return [];
-      }
-    }
-
-    function formatMoney(amount) {
-      return "₹" + Number(amount || 0).toLocaleString("en-IN");
-    }
-
-    function getUserName() {
-      return (
-        localStorage.getItem("finzoUserName") ||
-        localStorage.getItem("finzoName") ||
-        "User"
-      );
-    }
-
-    function displayBalance() {
-      const balance = getBalance();
-
-      document.getElementById("balanceAmount").textContent =
-        formatMoney(balance);
-
-      document.getElementById("statBalance").textContent =
-        formatMoney(balance);
-    }
-
-    function displayAccountNumber() {
-
-      let accountNumber =
-        localStorage.getItem("finzoAccountNumber");
-
-      if (!accountNumber) {
-
-        accountNumber = "";
-
-        for (let i = 0; i < 16; i++) {
-          accountNumber += Math.floor(Math.random() * 10);
-        }
-
-        localStorage.setItem(
-          "finzoAccountNumber",
-          accountNumber
-        );
-      }
-
-      const hidden =
-        "** ** ** " +
-        accountNumber.slice(-4);
-
-      document.getElementById("accountNumber").textContent =
-        hidden;
-    }
-
-    function calculateSummary() {
-
-      const transactions = getTransactions();
-
-      let credit = 0;
-      let debit = 0;
-
-      transactions.forEach(function(tx) {
-
-        const amount = Number(tx.amount) || 0;
-
-        if (tx.type === "Credit") {
-          credit += amount;
-        }
-
-        if (tx.type === "Debit") {
-          debit += amount;
-        }
-
-      });
-
-      const net = credit - debit;
-
-      document.getElementById("totalCredit").textContent =
-        formatMoney(credit);
-
-      document.getElementById("totalDebit").textContent =
-        formatMoney(debit);
-
-      document.getElementById("totalTransactions").textContent =
-        transactions.length;
-
-      document.getElementById("netMovement").textContent =
-        formatMoney(net);
-
-      document.getElementById("statCredit").textContent =
-        formatMoney(credit);
-
-      document.getElementById("statDebit").textContent =
-        formatMoney(debit);
-    }
-
-    function displayRecentTransactions() {
-
-      const container =
-        document.getElementById("recentTransactions");
-
-      const transactions = getTransactions();
-
-      if (transactions.length === 0) {
-
-        container.innerHTML = `
-          <div style="
-            text-align:center;
-            padding:35px 10px;
-            color:#9ca3af;
-            font-size:13px;
-          ">
-            No transactions yet.
-            <br><br>
-            Add or send demo money to see activity here.
-          </div>
-        `;
-
-        return;
-      }
-
-      const recent =
-        transactions.slice().reverse().slice(0, 5);
-
-      container.innerHTML = recent.map(function(tx) {
-
-        const isCredit = tx.type === "Credit";
-
-        const icon = isCredit ? "⬆️" : "⬇️";
-
-        const sign = isCredit ? "+" : "-";
-
-        const color = isCredit
-          ? "credit"
-          : "debit";
-
-        return `
-          <div class="transaction">
-
-            <div class="transaction-left">
-
-              <div class="transaction-icon">
-                ${icon}
-              </div>
-
-              <div class="transaction-info">
-
-                <div class="transaction-title">
-                  ${escapeHtml(tx.title || "Transaction")}
-                </div>
-
-                <div class="transaction-name">
-                  ${escapeHtml(tx.name || "Demo")}
-                </div>
-
-              </div>
-
-            </div>
 
             <div>
-              <div class="transaction-amount ${color}">
-                ${sign}${formatMoney(tx.amount)}
-              </div>
-
-              <div class="transaction-date">
-                ${escapeHtml(tx.date || "")}
-              </div>
+                <h3>Complete your KYC</h3>
+                <p>
+                    Submit Aadhaar, PAN, bank details and profile photo.
+                </p>
             </div>
 
-          </div>
-        `;
+            <a href="kyc.html" class="primary-btn">
+                Complete KYC
+            </a>
 
-      }).join("");
-    }
+        </div>
 
-    function escapeHtml(value) {
+    </section>
 
-      return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    }
+</main>
 
-    function displayKyc() {
 
-      const status =
-        localStorage.getItem("finzoKycStatus") ||
-        "Pending";
+<!-- TOAST -->
 
-      const statusElement =
-        document.getElementById("kycStatus");
+<div class="toast" id="toast"></div>
 
-      const textElement =
-        document.getElementById("kycText");
 
-      statusElement.textContent = status;
+<script>
 
-      if (status === "Verified") {
+/* =====================================================
+   LOGIN PROTECTION
+===================================================== */
 
-        statusElement.className =
-          "kyc-status verified";
+if(localStorage.getItem("finzoLoggedIn") !== "true"){
+    window.location.href = "login.html";
+}
 
-        textElement.textContent =
-          "Demo KYC verification completed successfully.";
 
-      } else {
+/* =====================================================
+   WALLET
+===================================================== */
 
-        statusElement.className =
-          "kyc-status pending";
+function getWalletBalance(){
 
-        textElement.textContent =
-          "Complete the demo KYC process to mark your account as verified.";
-      }
-    }
-
-    function displayUser() {
-
-      const name = getUserName();
-
-      document.getElementById("welcomeTitle").textContent =
-        "Welcome back, " + name + " 👋";
-    }
-
-    function copyAccountNumber() {
-
-      const accountNumber =
-        localStorage.getItem("finzoAccountNumber");
-
-      if (!accountNumber) {
-        return;
-      }
-
-      if (navigator.clipboard) {
-
-        navigator.clipboard.writeText(accountNumber)
-          .then(function() {
-            alert("Account number copied.");
-          })
-          .catch(function() {
-            alert("Unable to copy account number.");
-          });
-
-      } else {
-
-        alert(
-          "Account Number: " + accountNumber
-        );
-      }
-    }
-
-    function toggleTheme() {
-
-      const isDark =
-        document.body.classList.toggle("dark");
-
-      localStorage.setItem(
-        "finzoTheme",
-        isDark ? "dark" : "light"
-      );
-    }
-
-    function loadTheme() {
-
-      const theme =
-        localStorage.getItem("finzoTheme");
-
-      if (theme === "dark") {
-        document.body.classList.add("dark");
-      }
-    }
-
-    function updateNotificationBadge() {
-
-      let notifications = [];
-
-      try {
-
-        notifications =
-          JSON.parse(
-            localStorage.getItem("finzoNotifications") || "[]"
-          );
-
-      } catch (error) {
-
-        notifications = [];
-      }
-
-      const unread =
-        notifications.filter(function(item) {
-          return item.read !== true;
-        }).length;
-
-      const badge =
-        document.getElementById("notificationBadge");
-
-      badge.textContent = unread;
-
-      if (unread === 0) {
-        badge.style.display = "none";
-      } else {
-        badge.style.display = "block";
-      }
-    }
-
-    function startSessionTimer() {
-
-      const expiry =
-        Number(
-          localStorage.getItem("finzoDemoSessionExpiry")
-        );
-
-      if (!expiry) {
-
-        document.getElementById("sessionTimer")
-          .textContent = "--:--";
-
-        return;
-      }
-
-      function updateTimer() {
-
-        const remaining =
-          expiry - Date.now();
-
-        if (remaining <= 0) {
-
-          document.getElementById("sessionTimer")
-            .textContent = "Expired";
-
-          return;
-        }
-
-        const totalSeconds =
-          Math.floor(remaining / 1000);
-
-        const minutes =
-          Math.floor(totalSeconds / 60);
-
-        const seconds =
-          totalSeconds % 60;
-
-        document.getElementById("sessionTimer")
-          .textContent =
-          String(minutes).padStart(2, "0") +
-          ":" +
-          String(seconds).padStart(2, "0");
-      }
-
-      updateTimer();
-
-      setInterval(updateTimer, 1000);
-    }
-
-    function toggleMobileMenu() {
-
-      const nav =
-        document.getElementById("mainNav");
-
-      const button =
-        document.getElementById("menuButton");
-
-      nav.classList.toggle("show");
-
-      if (nav.classList.contains("show")) {
-        button.textContent = "✕";
-      } else {
-        button.textContent = "☰";
-      }
-    }
-
-    function closeMobileMenu() {
-
-      const nav =
-        document.getElementById("mainNav");
-
-      const button =
-        document.getElementById("menuButton");
-
-      nav.classList.remove("show");
-
-      button.textContent = "☰";
-    }
-
-    function goTo(page) {
-
-      closeMobileMenu();
-
-      window.location.href = page;
-    }
-
-    function logout() {
-
-      localStorage.setItem(
-        "finzoLoggedIn",
-        "false"
-      );
-
-      window.location.href =
-        "login.html";
-    }
-
-    document.addEventListener(
-      "click",
-      function(event) {
-
-        const nav =
-          document.getElementById("mainNav");
-
-        const button =
-          document.getElementById("menuButton");
-
-        if (
-          window.innerWidth <= 900 &&
-          !nav.contains(event.target) &&
-          !button.contains(event.target)
-        ) {
-
-          closeMobileMenu();
-        }
-      }
+    let balance = Number(
+        localStorage.getItem("finzoWalletBalance")
     );
 
-    function initializeDashboard() {
-
-      loadTheme();
-
-      displayUser();
-
-      displayBalance();
-
-      displayAccountNumber();
-
-      calculateSummary();
-
-      displayRecentTransactions();
-
-      displayKyc();
-
-      updateNotificationBadge();
-
-      startSessionTimer();
+    if(isNaN(balance)){
+        balance = 0;
+        localStorage.setItem("finzoWalletBalance","0");
     }
 
-    initializeDashboard();
+    return balance;
+}
 
-  </script>
+
+function updateWalletBalance(){
+
+    const balance = getWalletBalance();
+
+    const element =
+        document.getElementById("mainWalletBalance");
+
+    if(element){
+        element.textContent =
+            "₹" + balance.toFixed(2);
+    }
+}
+
+
+function updateServiceBalance(){
+
+    updateWalletBalance();
+
+}
+
+
+/* =====================================================
+   TRANSACTIONS
+===================================================== */
+
+function saveTransaction(transaction){
+
+    let transactions =
+        JSON.parse(
+            localStorage.getItem("finzoTransactions") || "[]"
+        );
+
+    transactions.unshift(transaction);
+
+    transactions =
+        transactions.slice(0,20);
+
+    localStorage.setItem(
+        "finzoTransactions",
+        JSON.stringify(transactions)
+    );
+
+}
+
+
+function loadTransactions(){
+
+    const container =
+        document.getElementById("transactionsList");
+
+    if(!container) return;
+
+    let transactions =
+        JSON.parse(
+            localStorage.getItem("finzoTransactions") || "[]"
+        );
+
+    if(!transactions.length){
+
+        container.innerHTML = `
+            <div class="empty-transactions">
+                No transactions yet.
+            </div>
+        `;
+
+        return;
+    }
+
+    container.innerHTML =
+        transactions.map(transaction => {
+
+            let amount =
+                Number(transaction.amount);
+
+            if(isNaN(amount)){
+                amount = 0;
+            }
+
+            const type =
+                transaction.transactionType || "debit";
+
+            const sign =
+                type === "credit" ? "+" : "-";
+
+            const icon =
+                transaction.icon || "💰";
+
+            const name =
+                transaction.type || "Transaction";
+
+            const date =
+                transaction.date ||
+                new Date().toLocaleString();
+
+            return `
+
+                <div class="transaction">
+
+                    <div class="transaction-left">
+
+                        <div class="transaction-icon">
+                            ${icon}
+                        </div>
+
+                        <div>
+                            <div class="transaction-name">
+                                ${name}
+                            </div>
+
+                            <div class="transaction-date">
+                                ${date}
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="transaction-amount ${type}">
+                        ${sign} ₹${amount.toFixed(2)}
+                    </div>
+
+                </div>
+
+            `;
+
+        }).join("");
+
+}
+
+
+/* =====================================================
+   DASHBOARD REFRESH
+===================================================== */
+
+function refreshDashboard(){
+
+    updateWalletBalance();
+    updateServiceBalance();
+    loadTransactions();
+
+}
+
+refreshDashboard();
+
+
+/* =====================================================
+   OPEN SERVICE
+===================================================== */
+
+function openService(type){
+
+    const area =
+        document.getElementById("serviceArea");
+
+    const title =
+        document.getElementById("serviceTitle");
+
+    const content =
+        document.getElementById("serviceContent");
+
+    area.style.display = "block";
+
+    window.scrollTo({
+        top:area.offsetTop - 90,
+        behavior:"smooth"
+    });
+
+
+    if(type === "mobile"){
+
+        title.textContent =
+            "📱 Mobile Recharge";
+
+        content.innerHTML = `
+
+            <form onsubmit="payMobile(event)">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label>Mobile Number</label>
+                        <input
+                            type="tel"
+                            id="mobileNumber"
+                            maxlength="10"
+                            placeholder="Enter mobile number"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Operator</label>
+
+                        <select id="mobileOperator" required>
+                            <option value="">Select Operator</option>
+                            <option>Jio</option>
+                            <option>Airtel</option>
+                            <option>Vi</option>
+                            <option>BSNL</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Amount</label>
+                        <input
+                            type="number"
+                            id="mobileAmount"
+                            placeholder="Enter amount"
+                            min="1"
+                            required>
+                    </div>
+
+                </div>
+
+                <button class="primary-btn">
+                    Pay Recharge
+                </button>
+
+            </form>
+
+            <div id="mobileMessage"></div>
+        `;
+    }
+
+
+    else if(type === "dth"){
+
+        title.textContent =
+            "📺 DTH Recharge";
+
+        content.innerHTML = `
+
+            <form onsubmit="payDTH(event)">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label>Subscriber ID</label>
+                        <input
+                            type="text"
+                            id="dthId"
+                            placeholder="Enter subscriber ID"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>DTH Provider</label>
+
+                        <select id="dthProvider" required>
+                            <option value="">Select Provider</option>
+                            <option>Tata Play</option>
+                            <option>Airtel Digital TV</option>
+                            <option>Dish TV</option>
+                            <option>Sun Direct</option>
+                            <option>Videocon D2H</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Amount</label>
+                        <input
+                            type="number"
+                            id="dthAmount"
+                            min="1"
+                            placeholder="Enter amount"
+                            required>
+                    </div>
+
+                </div>
+
+                <button class="primary-btn">
+                    Pay DTH
+                </button>
+
+            </form>
+
+            <div id="dthMessage"></div>
+        `;
+    }
+
+
+    else if(type === "credit"){
+
+        title.textContent =
+            "💳 Credit Card Bill";
+
+        content.innerHTML = `
+
+            <form onsubmit="payCredit(event)">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label>Credit Card Number</label>
+                        <input
+                            type="text"
+                            id="creditNumber"
+                            maxlength="19"
+                            placeholder="Enter card number"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Card Holder Name</label>
+                        <input
+                            type="text"
+                            id="creditName"
+                            placeholder="Enter name"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Bill Amount</label>
+                        <input
+                            type="number"
+                            id="creditAmount"
+                            min="1"
+                            placeholder="Enter amount"
+                            required>
+                    </div>
+
+                </div>
+
+                <button class="primary-btn">
+                    Pay Credit Card Bill
+                </button>
+
+            </form>
+
+            <div id="creditMessage"></div>
+        `;
+    }
+
+
+    else if(type === "bank"){
+
+        title.textContent =
+            "🏦 Bank Transfer";
+
+        content.innerHTML = `
+
+            <form onsubmit="payBank(event)">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label>Account Number</label>
+                        <input
+                            type="text"
+                            id="bankAccount"
+                            placeholder="Enter account number"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>IFSC Code</label>
+                        <input
+                            type="text"
+                            id="bankIFSC"
+                            placeholder="Enter IFSC"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Beneficiary Name</label>
+                        <input
+                            type="text"
+                            id="bankName"
+                            placeholder="Beneficiary name"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Amount</label>
+                        <input
+                            type="number"
+                            id="bankAmount"
+                            min="1"
+                            placeholder="Enter amount"
+                            required>
+                    </div>
+
+                </div>
+
+                <button class="primary-btn">
+                    Send Money
+                </button>
+
+            </form>
+
+            <div id="bankMessage"></div>
+        `;
+    }
+
+
+    else if(type === "electricity"){
+
+        title.textContent =
+            "💡 Electricity Bill";
+
+        content.innerHTML = `
+
+            <form onsubmit="payElectricity(event)">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label>Consumer Number</label>
+                        <input
+                            type="text"
+                            id="electricityNumber"
+                            placeholder="Try 100001"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Customer Name</label>
+                        <input
+                            type="text"
+                            id="electricityName"
+                            placeholder="Customer name"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Bill Amount</label>
+                        <input
+                            type="number"
+                            id="electricityAmount"
+                            min="1"
+                            placeholder="Enter amount"
+                            required>
+                    </div>
+
+                </div>
+
+                <div class="balance-info">
+                    Demo Numbers:
+                    100001 = ₹1250,
+                    100002 = ₹890,
+                    100003 = ₹1560,
+                    123456 = ₹720
+                </div>
+
+                <button class="primary-btn">
+                    Pay Electricity Bill
+                </button>
+
+            </form>
+
+            <div id="electricityMessage"></div>
+        `;
+    }
+
+
+    else if(type === "water"){
+
+        title.textContent =
+            "💧 Water Bill";
+
+        content.innerHTML = `
+
+            <form onsubmit="payWater(event)">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label>Consumer Number</label>
+                        <input
+                            type="text"
+                            id="waterNumber"
+                            placeholder="Try 200001"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Customer Name</label>
+                        <input
+                            type="text"
+                            id="waterName"
+                            placeholder="Customer name"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Bill Amount</label>
+                        <input
+                            type="number"
+                            id="waterAmount"
+                            min="1"
+                            placeholder="Enter amount"
+                            required>
+                    </div>
+
+                </div>
+
+                <div class="balance-info">
+                    Demo Numbers:
+                    200001 = ₹450,
+                    200002 = ₹680,
+                    200003 = ₹520,
+                    123456 = ₹390
+                </div>
+
+                <button class="primary-btn">
+                    Pay Water Bill
+                </button>
+
+            </form>
+
+            <div id="waterMessage"></div>
+        `;
+    }
+
+
+    else if(type === "gas"){
+
+        title.textContent =
+            "🔥 Gas Bill";
+
+        content.innerHTML = `
+
+            <form onsubmit="payGas(event)">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label>Consumer Number</label>
+                        <input
+                            type="text"
+                            id="gasNumber"
+                            placeholder="Try 300001"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Customer Name</label>
+                        <input
+                            type="text"
+                            id="gasName"
+                            placeholder="Customer name"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Bill Amount</label>
+                        <input
+                            type="number"
+                            id="gasAmount"
+                            min="1"
+                            placeholder="Enter amount"
+                            required>
+                    </div>
+
+                </div>
+
+                <div class="balance-info">
+                    Demo Numbers:
+                    300001 = ₹850,
+                    300002 = ₹1120,
+                    300003 = ₹975,
+                    123456 = ₹760
+                </div>
+
+                <button class="primary-btn">
+                    Pay Gas Bill
+                </button>
+
+            </form>
+
+            <div id="gasMessage"></div>
+        `;
+    }
+
+
+    else if(type === "insurance"){
+
+        title.textContent =
+            "🛡️ Insurance Premium";
+
+        content.innerHTML = `
+
+            <form onsubmit="payInsurance(event)">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label>Insurance Type</label>
+
+                        <select id="insuranceType" required>
+                            <option value="">Select Type</option>
+                            <option>Life Insurance</option>
+                            <option>Health Insurance</option>
+                            <option>Motor Insurance</option>
+                            <option>General Insurance</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Insurance Provider</label>
+
+                        <select id="insuranceProvider" required>
+                            <option value="">Select Provider</option>
+                            <option>LIC</option>
+                            <option>HDFC Life</option>
+                            <option>ICICI Prudential</option>
+                            <option>SBI Life</option>
+                            <option>Star Health</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Policy Number</label>
+                        <input
+                            type="text"
+                            id="insurancePolicy"
+                            placeholder="Try INS100001"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Registered Mobile</label>
+                        <input
+                            type="tel"
+                            id="insuranceMobile"
+                            maxlength="10"
+                            placeholder="10 digit mobile"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Customer Name</label>
+                        <input
+                            type="text"
+                            id="insuranceName"
+                            placeholder="Customer name"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Premium Amount</label>
+                        <input
+                            type="number"
+                            id="insuranceAmount"
+                            min="1"
+                            placeholder="Enter premium amount"
+                            required>
+                    </div>
+
+                </div>
+
+                <div class="balance-info">
+                    Demo Policies:
+                    INS100001 = ₹2500,
+                    INS100002 = ₹3500,
+                    INS100003 = ₹1800,
+                    123456 = ₹2200
+                </div>
+
+                <button class="primary-btn">
+                    Pay Insurance Premium
+                </button>
+
+            </form>
+
+            <div id="insuranceMessage"></div>
+        `;
+    }
+
+
+    else if(type === "other"){
+
+        title.textContent =
+            "🧾 Other Bills";
+
+        content.innerHTML = `
+
+            <form onsubmit="payOther(event)">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label>Bill Type</label>
+
+                        <select id="otherType" required>
+                            <option value="">Select Bill</option>
+                            <option>Internet Bill</option>
+                            <option>Education Fee</option>
+                            <option>Loan Payment</option>
+                            <option>Subscription</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Reference Number</label>
+                        <input
+                            type="text"
+                            id="otherNumber"
+                            placeholder="Try 400001"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Customer Name</label>
+                        <input
+                            type="text"
+                            id="otherName"
+                            placeholder="Customer name"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Amount</label>
+                        <input
+                            type="number"
+                            id="otherAmount"
+                            min="1"
+                            placeholder="Enter amount"
+                            required>
+                    </div>
+
+                </div>
+
+                <div class="balance-info">
+                    Demo Numbers:
+                    400001 = ₹599,
+                    400002 = ₹899,
+                    400003 = ₹1250,
+                    123456 = ₹450
+                </div>
+
+                <button class="primary-btn">
+                    Pay Bill
+                </button>
+
+            </form>
+
+            <div id="otherMessage"></div>
+        `;
+    }
+
+}
+
+
+/* =====================================================
+   CLOSE SERVICE
+===================================================== */
+
+function closeService(){
+
+    const area =
+        document.getElementById("serviceArea");
+
+    area.style.display = "none";
+
+}
+
+
+/* =====================================================
+   PAYMENT ENGINE
+===================================================== */
+
+function processPayment(amount,successCallback){
+
+    amount = Number(amount);
+
+    if(isNaN(amount) || amount <= 0){
+
+        showToast("Please enter a valid amount.");
+
+        return;
+    }
+
+    const balance =
+        getWalletBalance();
+
+    if(amount > balance){
+
+        showToast(
+            "Insufficient wallet balance."
+        );
+
+        return;
+    }
+
+    const newBalance =
+        balance - amount;
+
+    localStorage.setItem(
+        "finzoWalletBalance",
+        newBalance.toFixed(2)
+    );
+
+    successCallback();
+
+    refreshDashboard();
+
+}
+
+
+/* =====================================================
+   MOBILE RECHARGE
+===================================================== */
+
+function payMobile(event){
+
+    event.preventDefault();
+
+    const mobile =
+        document.getElementById("mobileNumber").value.trim();
+
+    const operator =
+        document.getElementById("mobileOperator").value;
+
+    const amount =
+        Number(
+            document.getElementById("mobileAmount").value
+        );
+
+    if(!/^[0-9]{10}$/.test(mobile)){
+
+        showToast(
+            "Enter valid 10 digit mobile number."
+        );
+
+        return;
+    }
+
+    processPayment(amount,()=>{
+
+        saveTransaction({
+
+            type:"Mobile Recharge",
+
+            amount:amount,
+
+            transactionType:"debit",
+
+            icon:"📱",
+
+            details:
+                mobile + " - " + operator,
+
+            date:
+                new Date().toLocaleString()
+
+        });
+
+        showToast(
+            "Mobile recharge successful."
+        );
+
+    });
+
+}
+
+
+/* =====================================================
+   DTH
+===================================================== */
+
+function payDTH(event){
+
+    event.preventDefault();
+
+    const id =
+        document.getElementById("dthId").value.trim();
+
+    const provider =
+        document.getElementById("dthProvider").value;
+
+    const amount =
+        Number(
+            document.getElementById("dthAmount").value
+        );
+
+    processPayment(amount,()=>{
+
+        saveTransaction({
+
+            type:"DTH Recharge",
+
+            amount:amount,
+
+            transactionType:"debit",
+
+            icon:"📺",
+
+            details:
+                id + " - " + provider,
+
+            date:
+                new Date().toLocaleString()
+
+        });
+
+        showToast(
+            "DTH recharge successful."
+        );
+
+    });
+
+}
+
+
+/* =====================================================
+   CREDIT CARD
+===================================================== */
+
+function payCredit(event){
+
+    event.preventDefault();
+
+    const number =
+        document.getElementById("creditNumber").value.trim();
+
+    const name =
+        document.getElementById("creditName").value.trim();
+
+    const amount =
+        Number(
+            document.getElementById("creditAmount").value
+        );
+
+    if(number.length < 8){
+
+        showToast(
+            "Enter valid card number."
+        );
+
+        return;
+    }
+
+    processPayment(amount,()=>{
+
+        saveTransaction({
+
+            type:"Credit Card Bill",
+
+            amount:amount,
+
+            transactionType:"debit",
+
+            icon:"💳",
+
+            details:name,
+
+            date:
+                new Date().toLocaleString()
+
+        });
+
+        showToast(
+            "Credit card bill paid successfully."
+        );
+
+    });
+
+}
+
+
+/* =====================================================
+   BANK TRANSFER
+===================================================== */
+
+function payBank(event){
+
+    event.preventDefault();
+
+    const account =
+        document.getElementById("bankAccount").value.trim();
+
+    const ifsc =
+        document.getElementById("bankIFSC").value.trim();
+
+    const name =
+        document.getElementById("bankName").value.trim();
+
+    const amount =
+        Number(
+            document.getElementById("bankAmount").value
+        );
+
+    if(account.length < 6){
+
+        showToast(
+            "Enter valid account number."
+        );
+
+        return;
+    }
+
+    if(ifsc.length < 6){
+
+        showToast(
+            "Enter valid IFSC."
+        );
+
+        return;
+    }
+
+    processPayment(amount,()=>{
+
+        saveTransaction({
+
+            type:"Bank Transfer",
+
+            amount:amount,
+
+            transactionType:"debit",
+
+            icon:"🏦",
+
+            details:
+                name + " / " + ifsc,
+
+            date:
+                new Date().toLocaleString()
+
+        });
+
+        showToast(
+            "Bank transfer successful."
+        );
+
+    });
+
+}
+
+
+/* =====================================================
+   ELECTRICITY
+===================================================== */
+
+function payElectricity(event){
+
+    event.preventDefault();
+
+    const number =
+        document.getElementById(
+            "electricityNumber"
+        ).value.trim();
+
+    const name =
+        document.getElementById(
+            "electricityName"
+        ).value.trim();
+
+    const amount =
+        Number(
+            document.getElementById(
+                "electricityAmount"
+            ).value
+        );
+
+    processPayment(amount,()=>{
+
+        saveTransaction({
+
+            type:"Electricity Bill",
+
+            amount:amount,
+
+            transactionType:"debit",
+
+            icon:"💡",
+
+            details:
+                number + " / " + name,
+
+            date:
+                new Date().toLocaleString()
+
+        });
+
+        showToast(
+            "Electricity bill paid successfully."
+        );
+
+    });
+
+}
+
+
+/* =====================================================
+   WATER
+===================================================== */
+
+function payWater(event){
+
+    event.preventDefault();
+
+    const number =
+        document.getElementById(
+            "waterNumber"
+        ).value.trim();
+
+    const name =
+        document.getElementById(
+            "waterName"
+        ).value.trim();
+
+    const amount =
+        Number(
+            document.getElementById(
+                "waterAmount"
+            ).value
+        );
+
+    processPayment(amount,()=>{
+
+        saveTransaction({
+
+            type:"Water Bill",
+
+            amount:amount,
+
+            transactionType:"debit",
+
+            icon:"💧",
+
+            details:
+                number + " / " + name,
+
+            date:
+                new Date().toLocaleString()
+
+        });
+
+        showToast(
+            "Water bill paid successfully."
+        );
+
+    });
+
+}
+
+
+/* =====================================================
+   GAS
+===================================================== */
+
+function payGas(event){
+
+    event.preventDefault();
+
+    const number =
+        document.getElementById(
+            "gasNumber"
+        ).value.trim();
+
+    const name =
+        document.getElementById(
+            "gasName"
+        ).value.trim();
+
+    const amount =
+        Number(
+            document.getElementById(
+                "gasAmount"
+            ).value
+        );
+
+    processPayment(amount,()=>{
+
+        saveTransaction({
+
+            type:"Gas Bill",
+
+            amount:amount,
+
+            transactionType:"debit",
+
+            icon:"🔥",
+
+            details:
+                number + " / " + name,
+
+            date:
+                new Date().toLocaleString()
+
+        });
+
+        showToast(
+            "Gas bill paid successfully."
+        );
+
+    });
+
+}
+
+
+/* =====================================================
+   INSURANCE
+===================================================== */
+
+function payInsurance(event){
+
+    event.preventDefault();
+
+    const insuranceType =
+        document.getElementById(
+            "insuranceType"
+        ).value;
+
+    const provider =
+        document.getElementById(
+            "insuranceProvider"
+        ).value;
+
+    const policy =
+        document.getElementById(
+            "insurancePolicy"
+        ).value.trim();
+
+    const mobile =
+        document.getElementById(
+            "insuranceMobile"
+        ).value.trim();
+
+    const name =
+        document.getElementById(
+            "insuranceName"
+        ).value.trim();
+
+    const amount =
+        Number(
+            document.getElementById(
+                "insuranceAmount"
+            ).value
+        );
+
+    if(!/^[0-9]{10}$/.test(mobile)){
+
+        showToast(
+            "Enter valid 10 digit mobile number."
+        );
+
+        return;
+    }
+
+    processPayment(amount,()=>{
+
+        saveTransaction({
+
+            type:"Insurance Premium",
+
+            amount:amount,
+
+            transactionType:"debit",
+
+            icon:"🛡️",
+
+            details:
+                insuranceType +
+                " / " +
+                provider +
+                " / " +
+                policy +
+                " / " +
+                name,
+
+            date:
+                new Date().toLocaleString()
+
+        });
+
+        showToast(
+            "Insurance premium paid successfully."
+        );
+
+    });
+
+}
+
+
+/* =====================================================
+   OTHER BILLS
+===================================================== */
+
+function payOther(event){
+
+    event.preventDefault();
+
+    const type =
+        document.getElementById(
+            "otherType"
+        ).value;
+
+    const number =
+        document.getElementById(
+            "otherNumber"
+        ).value.trim();
+
+    const name =
+        document.getElementById(
+            "otherName"
+        ).value.trim();
+
+    const amount =
+        Number(
+            document.getElementById(
+                "otherAmount"
+            ).value
+        );
+
+    processPayment(amount,()=>{
+
+        saveTransaction({
+
+            type:"Other Bill",
+
+            amount:amount,
+
+            transactionType:"debit",
+
+            icon:"🧾",
+
+            details:
+                type +
+                " / " +
+                number +
+                " / " +
+                name,
+
+            date:
+                new Date().toLocaleString()
+
+        });
+
+        showToast(
+            "Bill payment successful."
+        );
+
+    });
+
+}
+
+
+/* =====================================================
+   THEME
+===================================================== */
+
+function toggleTheme(){
+
+    document.body.classList.toggle("dark");
+
+    const isDark =
+        document.body.classList.contains("dark");
+
+    localStorage.setItem(
+        "finzoTheme",
+        isDark ? "dark" : "light"
+    );
+
+    updateThemeButton();
+
+}
+
+
+function updateThemeButton(){
+
+    const button =
+        document.getElementById("themeButton");
+
+    if(!button) return;
+
+    if(document.body.classList.contains("dark")){
+
+        button.textContent =
+            "☀️ Change";
+
+    }else{
+
+        button.textContent =
+            "🌙 Change";
+
+    }
+
+}
+
+
+if(
+    localStorage.getItem("finzoTheme")
+    === "dark"
+){
+
+    document.body.classList.add("dark");
+
+}
+
+updateThemeButton();
+
+
+/* =====================================================
+   NOTIFICATIONS
+===================================================== */
+
+function toggleNotifications(){
+
+    const panel =
+        document.getElementById(
+            "notificationPanel"
+        );
+
+    panel.classList.toggle("show");
+
+}
+
+
+function markNotificationsRead(){
+
+    const badge =
+        document.getElementById(
+            "notificationBadge"
+        );
+
+    badge.style.display = "none";
+
+    showToast(
+        "All notifications marked as read."
+    );
+
+}
+
+
+document.addEventListener("click",function(event){
+
+    const panel =
+        document.getElementById(
+            "notificationPanel"
+        );
+
+    const button =
+        event.target.closest(
+            ".nav-btn"
+        );
+
+    if(
+        panel &&
+        !panel.contains(event.target) &&
+        !button
+    ){
+
+        panel.classList.remove("show");
+
+    }
+
+});
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+function showToast(message){
+
+    const toast =
+        document.getElementById("toast");
+
+    toast.textContent = message;
+
+    toast.classList.add("show");
+
+    setTimeout(()=>{
+
+        toast.classList.remove("show");
+
+    },3000);
+
+}
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+function logout(){
+
+    const confirmLogout =
+        confirm(
+            "Are you sure you want to logout?"
+        );
+
+    if(!confirmLogout){
+        return;
+    }
+
+    localStorage.removeItem(
+        "finzoLoggedIn"
+    );
+
+    window.location.href =
+        "login.html";
+
+}
+
+</script>
 
 </body>
 </html>

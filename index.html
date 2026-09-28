@@ -1,1240 +1,1440 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>FINZO - Smart Digital Wallet</title>
 
 <style>
 
-•⁠  ⁠{
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+/* ================= RESET ================= */
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
 
-html {
-  scroll-behavior: smooth;
+html{
+    scroll-behavior:smooth;
 }
 
-body {
-  font-family: Arial, sans-serif;
-  background: #f5f7fa;
-  color: #172033;
-  min-height: 100vh;
+body{
+    font-family:Arial,sans-serif;
+    background:#f5f7fa;
+    color:#172033;
+    min-height:100vh;
 }
 
-body.dark {
-  background: #0f172a;
-  color: #f8fafc;
+body.dark{
+    background:#0f172a;
+    color:#f8fafc;
 }
 
+/* ================= HEADER ================= */
 
-/* HEADER */
-
-header {
-  background: #111827;
-  color: white;
-  padding: 15px 5%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  box-shadow: 0 3px 15px rgba(0,0,0,.15);
+header{
+    background:#111827;
+    color:white;
+    padding:15px 5%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    position:sticky;
+    top:0;
+    z-index:1000;
+    box-shadow:0 3px 15px rgba(0,0,0,.15);
 }
 
-.logo {
-  font-size: 27px;
-  font-weight: bold;
-  cursor: pointer;
-  letter-spacing: 1px;
+.logo{
+    font-size:27px;
+    font-weight:bold;
+    cursor:pointer;
+    letter-spacing:1px;
 }
 
-.demo {
-  font-size: 10px;
-  background: #dc2626;
-  padding: 4px 7px;
-  border-radius: 5px;
-  margin-left: 5px;
-  vertical-align: middle;
+.demo{
+    font-size:10px;
+    background:#dc2626;
+    padding:4px 7px;
+    border-radius:5px;
+    margin-left:5px;
+    vertical-align:middle;
 }
 
-.menu-btn {
-  display: none;
-  background: transparent;
-  border: 0;
-  color: white;
-  font-size: 26px;
-  cursor: pointer;
+.menu-btn{
+    display:none;
+    background:transparent;
+    border:0;
+    color:white;
+    font-size:26px;
+    cursor:pointer;
 }
 
-nav {
-  display: flex;
-  align-items: center;
-  gap: 6px;
+nav{
+    display:flex;
+    align-items:center;
+    gap:6px;
 }
 
 nav a,
-nav button {
-  color: white;
-  background: transparent;
-  border: 0;
-  text-decoration: none;
-  padding: 9px 11px;
-  border-radius: 7px;
-  cursor: pointer;
-  font-size: 14px;
+nav button{
+    color:white;
+    background:transparent;
+    border:0;
+    text-decoration:none;
+    padding:9px 11px;
+    border-radius:7px;
+    cursor:pointer;
+    font-size:14px;
 }
 
 nav a:hover,
-nav button:hover {
-  background: #374151;
+nav button:hover{
+    background:#374151;
 }
 
+/* ================= HERO ================= */
 
-/* HERO */
-
-.hero {
-  width: 92%;
-  max-width: 1150px;
-  margin: 45px auto;
-  display: grid;
-  grid-template-columns: 1.1fr .9fr;
-  gap: 35px;
-  align-items: center;
+.hero{
+    width:92%;
+    max-width:1150px;
+    margin:45px auto;
+    display:grid;
+    grid-template-columns:1.1fr .9fr;
+    gap:35px;
+    align-items:center;
 }
 
-.hero-content h1 {
-  font-size: 52px;
-  line-height: 1.08;
-  margin-bottom: 18px;
+.hero-content h1{
+    font-size:52px;
+    line-height:1.08;
+    margin-bottom:18px;
 }
 
-.hero-content h1 span {
-  color: #dc2626;
+.hero-content h1 span{
+    color:#dc2626;
 }
 
-.hero-content p {
-  font-size: 17px;
-  color: #64748b;
-  line-height: 1.7;
-  max-width: 620px;
-  margin-bottom: 25px;
+.hero-content p{
+    font-size:17px;
+    color:#64748b;
+    line-height:1.7;
+    max-width:620px;
+    margin-bottom:25px;
 }
 
-.dark .hero-content p {
-  color: #94a3b8;
+.dark .hero-content p{
+    color:#94a3b8;
 }
 
-.buttons {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
+.buttons{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
 }
 
-.btn {
-  border: 0;
-  border-radius: 9px;
-  padding: 13px 20px;
-  font-weight: bold;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
+.btn{
+    border:0;
+    border-radius:9px;
+    padding:13px 20px;
+    font-weight:bold;
+    cursor:pointer;
+    text-decoration:none;
+    display:inline-block;
 }
 
-.primary {
-  background: #dc2626;
-  color: white;
+.primary{
+    background:#dc2626;
+    color:white;
 }
 
-.primary:hover {
-  background: #b91c1c;
+.primary:hover{
+    background:#b91c1c;
 }
 
-.secondary {
-  background: #e5e7eb;
-  color: #111827;
+.secondary{
+    background:#e5e7eb;
+    color:#111827;
 }
 
-.dark .secondary {
-  background: #334155;
-  color: white;
+.dark .secondary{
+    background:#334155;
+    color:white;
 }
 
+/* ================= WALLET ================= */
 
-/* WALLET CARD */
+.wallet{
+    background:linear-gradient(
+        145deg,
+        #111827,
+        #1f2937
+    );
 
-.wallet {
-  background: linear-gradient(
-    145deg,
-    #111827,
-    #1f2937
-  );
+    color:white;
+    border-radius:22px;
+    padding:27px;
+    min-height:300px;
 
-  color: white;
-  border-radius: 22px;
-  padding: 27px;
-  min-height: 300px;
-  box-shadow:
-    0 18px 40px rgba(0,0,0,.22);
+    box-shadow:
+        0 18px 40px rgba(0,0,0,.22);
 
-  position: relative;
-  overflow: hidden;
+    position:relative;
+    overflow:hidden;
 }
 
-.wallet::before {
-  content: "";
-  position: absolute;
-  width: 220px;
-  height: 220px;
-  border-radius: 50%;
-  background: rgba(220,38,38,.15);
-  right: -70px;
-  top: -80px;
+.wallet::before{
+    content:"";
+    position:absolute;
+    width:220px;
+    height:220px;
+    border-radius:50%;
+    background:rgba(220,38,38,.15);
+    right:-70px;
+    top:-80px;
 }
 
-.wallet::after {
-  content: "";
-  position: absolute;
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  background: rgba(255,255,255,.05);
-  left: -70px;
-  bottom: -70px;
+.wallet::after{
+    content:"";
+    position:absolute;
+    width:150px;
+    height:150px;
+    border-radius:50%;
+    background:rgba(255,255,255,.05);
+    left:-70px;
+    bottom:-70px;
 }
 
-.wallet-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-  z-index: 2;
+.wallet-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    position:relative;
+    z-index:2;
 }
 
-.wallet-brand {
-  font-size: 18px;
-  font-weight: bold;
+.wallet-brand{
+    font-size:18px;
+    font-weight:bold;
 }
 
-.wallet-chip {
-  font-size: 28px;
+.wallet-chip{
+    font-size:28px;
 }
 
-.wallet-balance {
-  margin-top: 45px;
-  position: relative;
-  z-index: 2;
+.public-wallet-message{
+    position:relative;
+    z-index:2;
+    text-align:center;
+    margin-top:32px;
 }
 
-.wallet-balance small {
-  color: #cbd5e1;
+.lock-icon{
+    font-size:42px;
+    margin-bottom:10px;
 }
 
-.wallet-balance h2 {
-  font-size: 38px;
-  margin-top: 7px;
+.public-wallet-message h2{
+    font-size:22px;
+    margin-bottom:10px;
 }
 
-.wallet-bottom {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 45px;
-  position: relative;
-  z-index: 2;
+.public-wallet-message p{
+    color:#cbd5e1;
+    font-size:14px;
+    line-height:1.6;
+    max-width:340px;
+    margin:0 auto 20px;
 }
 
-.wallet-bottom small {
-  color: #94a3b8;
-  display: block;
-  margin-bottom: 4px;
+.public-wallet-message .btn{
+    margin:4px;
 }
 
+/* ================= TRUST ================= */
 
-/* TRUST */
-
-.trust {
-  width: 92%;
-  max-width: 1150px;
-  margin: 20px auto 55px;
-  display: grid;
-  grid-template-columns:
-    repeat(3, 1fr);
-  gap: 15px;
+.trust{
+    width:92%;
+    max-width:1150px;
+    margin:20px auto 55px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
 }
 
-.trust-card {
-  background: white;
-  padding: 20px;
-  border-radius: 13px;
-  text-align: center;
-  box-shadow: 0 5px 18px rgba(0,0,0,.06);
+.trust-card{
+    background:white;
+    padding:20px;
+    border-radius:13px;
+    text-align:center;
+    box-shadow:0 5px 18px rgba(0,0,0,.06);
 }
 
-.dark .trust-card {
-  background: #1e293b;
+.dark .trust-card{
+    background:#1e293b;
 }
 
-.trust-icon {
-  font-size: 28px;
-  margin-bottom: 9px;
+.trust-icon{
+    font-size:28px;
+    margin-bottom:9px;
 }
 
-.trust-card h3 {
-  margin-bottom: 5px;
+.trust-card h3{
+    margin-bottom:5px;
 }
 
-.trust-card p {
-  color: #64748b;
-  font-size: 13px;
+.trust-card p{
+    color:#64748b;
+    font-size:13px;
 }
 
-.dark .trust-card p {
-  color: #94a3b8;
+.dark .trust-card p{
+    color:#94a3b8;
 }
 
+/* ================= SECTIONS ================= */
 
-/* SECTIONS */
-
-.section {
-  width: 92%;
-  max-width: 1150px;
-  margin: 80px auto;
+.section{
+    width:92%;
+    max-width:1150px;
+    margin:80px auto;
 }
 
-.section-heading {
-  text-align: center;
-  margin-bottom: 35px;
+.section-heading{
+    text-align:center;
+    margin-bottom:35px;
 }
 
-.section-heading h2 {
-  font-size: 32px;
-  margin-bottom: 10px;
+.section-heading h2{
+    font-size:32px;
+    margin-bottom:10px;
 }
 
-.section-heading p {
-  color: #64748b;
+.section-heading p{
+    color:#64748b;
 }
 
-.dark .section-heading p {
-  color: #94a3b8;
+.dark .section-heading p{
+    color:#94a3b8;
 }
 
+/* ================= FEATURES ================= */
 
-/* FEATURES */
-
-.features {
-  display: grid;
-  grid-template-columns:
-    repeat(3, 1fr);
-  gap: 18px;
+.features{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
 }
 
-.feature {
-  background: white;
-  padding: 25px;
-  border-radius: 15px;
-  box-shadow: 0 5px 18px rgba(0,0,0,.06);
-  transition: transform .2s;
+.feature{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 5px 18px rgba(0,0,0,.06);
+    transition:transform .2s;
 }
 
-.feature:hover {
-  transform: translateY(-4px);
+.feature:hover{
+    transform:translateY(-4px);
 }
 
-.dark .feature {
-  background: #1e293b;
+.dark .feature{
+    background:#1e293b;
 }
 
-.feature-icon {
-  width: 52px;
-  height: 52px;
-  border-radius: 13px;
-  background: #fee2e2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 25px;
-  margin-bottom: 17px;
+.feature-icon{
+    width:52px;
+    height:52px;
+    border-radius:13px;
+    background:#fee2e2;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:25px;
+    margin-bottom:17px;
 }
 
-.dark .feature-icon {
-  background: #3f1d1d;
+.dark .feature-icon{
+    background:#3f1d1d;
 }
 
-.feature h3 {
-  margin-bottom: 9px;
+.feature h3{
+    margin-bottom:9px;
 }
 
-.feature p {
-  color: #64748b;
-  font-size: 14px;
-  line-height: 1.6;
+.feature p{
+    color:#64748b;
+    font-size:14px;
+    line-height:1.6;
 }
 
-.dark .feature p {
-  color: #94a3b8;
+.dark .feature p{
+    color:#94a3b8;
 }
 
+/* ================= HOW IT WORKS ================= */
 
-/* HOW IT WORKS */
-
-.steps {
-  display: grid;
-  grid-template-columns:
-    repeat(3, 1fr);
-  gap: 20px;
+.steps{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
 }
 
-.step {
-  text-align: center;
-  padding: 25px;
+.step{
+    text-align:center;
+    padding:25px;
 }
 
-.step-number {
-  width: 55px;
-  height: 55px;
-  border-radius: 50%;
-  background: #dc2626;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 17px;
-  font-size: 20px;
-  font-weight: bold;
+.step-number{
+    width:55px;
+    height:55px;
+    border-radius:50%;
+    background:#dc2626;
+    color:white;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    margin:0 auto 17px;
+
+    font-size:20px;
+    font-weight:bold;
 }
 
-.step h3 {
-  margin-bottom: 9px;
+.step h3{
+    margin-bottom:9px;
 }
 
-.step p {
-  color: #64748b;
-  font-size: 14px;
-  line-height: 1.6;
+.step p{
+    color:#64748b;
+    font-size:14px;
+    line-height:1.6;
 }
 
-.dark .step p {
-  color: #94a3b8;
+.dark .step p{
+    color:#94a3b8;
 }
 
+/* ================= ABOUT ================= */
 
-/* CTA */
-
-.cta {
-  width: 92%;
-  max-width: 1150px;
-  margin: 80px auto;
-  background: #111827;
-  color: white;
-  padding: 45px;
-  border-radius: 20px;
-  text-align: center;
-}
-
-.cta h2 {
-  font-size: 32px;
-  margin-bottom: 12px;
-}
-
-.cta p {
-  color: #cbd5e1;
-  margin-bottom: 23px;
-  line-height: 1.6;
-}
-
-
-/* FOOTER */
-
-footer {
-  background: #111827;
-  color: #94a3b8;
-  text-align: center;
-  padding: 35px 15px;
-  font-size: 12px;
-  line-height: 1.8;
-}
-
-footer strong {
-  color: white;
-}
-
-
-/* MOBILE */
-
-@media (max-width: 850px) {
-
-  .menu-btn {
-    display: block;
-  }
-
-  nav {
-    display: none;
-    position: absolute;
-    top: 64px;
-    left: 0;
-    width: 100%;
-    background: #111827;
-    flex-direction: column;
-    align-items: stretch;
-    padding: 10px;
-  }
-
-  nav.show {
-    display: flex;
-  }
-
-  nav a,
-  nav button {
-    text-align: left;
-    padding: 13px;
-  }
-
-  .hero {
-    grid-template-columns: 1fr;
-    margin-top: 30px;
-  }
-
-  .hero-content h1 {
-    font-size: 40px;
-  }
-
-  .features {
-    grid-template-columns:
-      1fr 1fr;
-  }
-
-  .steps {
-    grid-template-columns:
-      1fr;
-  }
-
-}
-
-@media (max-width: 550px) {
-
-  .hero-content h1 {
-    font-size: 34px;
-  }
-
-  .hero-content p {
-    font-size: 15px;
-  }
-
-  .wallet {
-    padding: 22px;
-  }
-
-  .wallet-balance h2 {
-    font-size: 31px;
-  }
-
-  .wallet-bottom {
-    margin-top: 35px;
-  }
-
-  .trust {
-    grid-template-columns:
-      1fr;
-  }
-
-  .features {
-    grid-template-columns:
-      1fr;
-  }
-
-  .section {
-    margin: 60px auto;
-  }
-
-  .cta {
-    padding: 32px 20px;
-  }
-
-  .cta h2 {
-    font-size: 26px;
-  }
-
-}
-
-</style>
-
-</head>
-
-
-<body>
-
-
-<header>
-
-  <div
-    class="logo"
-    onclick="goHome()"
-  >
-    FINZO
-    <span class="demo">
-      DEMO
-    </span>
-  </div>
-
-
-  <button
-    class="menu-btn"
-    id="menuButton"
-    onclick="toggleMenu()"
-  >
-    ☰
-  </button>
-
-
-  <nav id="mainNav">
-
-    <a href="#features">
-      Features
-    </a>
-
-    <a href="#how">
-      How It Works
-    </a>
-
-    <a href="#about">
-      About
-    </a>
-
-    <button onclick="toggleTheme()">
-      🌙 Theme
-    </button>
-
-    <a href="login.html">
-      Login
-    </a>
-
-    <a
-      href="signup.html"
-      class="primary"
-    >
-      Sign Up
-    </a>
-
-  </nav>
-
-</header>
-
-
-<!-- HERO -->
-
-<section class="hero">
-
-
-  <div class="hero-content">
-
-    <h1>
-      Your Money.<br>
-      <span>Your Control.</span>
-    </h1>
-
-
-    <p>
-      Welcome to FINZO — a modern digital wallet
-      experience designed to make your money
-      management simple, fast and easy to understand.
-    </p>
-
-
-    <div class="buttons">
-
-      <a
-        href="signup.html"
-        class="btn primary"
-      >
-        🚀 Get Started
-      </a>
-
-      <a
-        href="login.html"
-        class="btn secondary"
-      >
-        🔐 Login
-      </a>
-
-    </div>
-
-  </div>
-
-
-  <div class="wallet">
-
-    <div class="wallet-top">
-
-      <div class="wallet-brand">
-        FINZO
-      </div>
-
-      <div class="wallet-chip">
-        💳
-      </div>
-
-    </div>
-
-
-    <div class="wallet-balance">
-
-      <small>
-        Available Balance
-      </small>
-
-      <h2>
-        ₹25,000.00
-      </h2>
-
-    </div>
-
-
-    <div class="wallet-bottom">
-
-      <div>
-
-        <small>
-          ACCOUNT
-        </small>
-
-        <span>
-          •••• 4821
-        </span>
-
-      </div>
-
-
-      <div>
-
-        <small>
-          STATUS
-        </small>
-
-        <span>
-          Active
-        </span>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- TRUST -->
-
-<section class="trust">
-
-  <div class="trust-card">
-
-    <div class="trust-icon">
-      🔐
-    </div>
-
-    <h3>
-      Secure Demo
-    </h3>
-
-    <p>
-      Designed for safe learning and testing.
-    </p>
-
-  </div>
-
-
-  <div class="trust-card">
-
-    <div class="trust-icon">
-      ⚡
-    </div>
-
-    <h3>
-      Fast Experience
-    </h3>
-
-    <p>
-      Simple navigation and instant demo updates.
-    </p>
-
-  </div>
-
-
-  <div class="trust-card">
-
-    <div class="trust-icon">
-      📱
-    </div>
-
-    <h3>
-      Mobile Ready
-    </h3>
-
-    <p>
-      Responsive design for phone, tablet and desktop.
-    </p>
-
-  </div>
-
-</section>
-
-
-<!-- FEATURES -->
-
-<section
-  class="section"
-  id="features"
->
-
-  <div class="section-heading">
-
-    <h2>
-      Everything You Need
-    </h2>
-
-    <p>
-      Explore the main features available in FINZO.
-    </p>
-
-  </div>
-
-
-  <div class="features">
-
-
-    <div class="feature">
-
-      <div class="feature-icon">
-        💰
-      </div>
-
-      <h3>
-        Add Money
-      </h3>
-
-      <p>
-        Add demo funds to your wallet and
-        instantly see your balance update.
-      </p>
-
-    </div>
-
-
-    <div class="feature">
-
-      <div class="feature-icon">
-        💸
-      </div>
-
-      <h3>
-        Send Money
-      </h3>
-
-      <p>
-        Send demo money to a recipient and
-        automatically record the transaction.
-      </p>
-
-    </div>
-
-
-    <div class="feature">
-
-      <div class="feature-icon">
-        📜
-      </div>
-
-      <h3>
-        Transactions
-      </h3>
-
-      <p>
-        Search, filter, sort and export your
-        demo transaction history.
-      </p>
-
-    </div>
-
-
-    <div class="feature">
-
-      <div class="feature-icon">
-        📊
-      </div>
-
-      <h3>
-        Analytics
-      </h3>
-
-      <p>
-        Understand your demo money flow with
-        simple visual analytics.
-      </p>
-
-    </div>
-
-
-    <div class="feature">
-
-      <div class="feature-icon">
-        🔔
-      </div>
-
-      <h3>
-        Notifications
-      </h3>
-
-      <p>
-        Stay updated with wallet activity and
-        account notifications.
-      </p>
-
-    </div>
-
-
-    <div class="feature">
-
-      <div class="feature-icon">
-        🪪
-      </div>
-
-      <h3>
-        KYC Demo
-      </h3>
-
-      <p>
-        Experience a simulated KYC workflow
-        using dummy information.
-      </p>
-
-    </div>
-
-
-  </div>
-
-</section>
-
-
-<!-- HOW IT WORKS -->
-
-<section
-  class="section"
-  id="how"
->
-
-  <div class="section-heading">
-
-    <h2>
-      How FINZO Works
-    </h2>
-
-    <p>
-      Three simple steps to explore the demo wallet.
-    </p>
-
-  </div>
-
-
-  <div class="steps">
-
-
-    <div class="step">
-
-      <div class="step-number">
-        1
-      </div>
-
-      <h3>
-        Create Account
-      </h3>
-
-      <p>
-        Create your FINZO demo account
-        using dummy information.
-      </p>
-
-    </div>
-
-
-    <div class="step">
-
-      <div class="step-number">
-        2
-      </div>
-
-      <h3>
-        Manage Money
-      </h3>
-
-      <p>
-        Add or send demo money and
-        explore your transaction history.
-      </p>
-
-    </div>
-
-
-    <div class="step">
-
-      <div class="step-number">
-        3
-      </div>
-
-      <h3>
-        Track Everything
-      </h3>
-
-      <p>
-        Use analytics, notifications,
-        profile and KYC demo features.
-      </p>
-
-    </div>
-
-
-  </div>
-
-</section>
-
-
-<!-- ABOUT -->
-
-<section
-  class="section"
-  id="about"
->
-
-  <div class="section-heading">
-
-    <h2>
-      About FINZO
-    </h2>
-
-    <p>
-      A beginner-friendly fintech learning project.
-    </p>
-
-  </div>
-
-
-  <div
-    style="
+.about-box{
     max-width:800px;
     margin:auto;
     text-align:center;
     line-height:1.8;
     color:#64748b;
-    "
-  >
+}
 
-    FINZO is a browser-based fintech demo created
-    for learning web development and understanding
-    digital-wallet style user experiences.
+.dark .about-box{
+    color:#94a3b8;
+}
 
-    <br><br>
+/* ================= CTA ================= */
 
-    All wallet balances, transactions and account
-    information are demo data stored locally in
-    your browser.
+.cta{
+    width:92%;
+    max-width:1150px;
+    margin:80px auto;
+    background:#111827;
+    color:white;
+    padding:45px;
+    border-radius:20px;
+    text-align:center;
+}
 
-  </div>
+.cta h2{
+    font-size:32px;
+    margin-bottom:12px;
+}
+
+.cta p{
+    color:#cbd5e1;
+    margin-bottom:23px;
+    line-height:1.6;
+}
+
+/* ================= FOOTER ================= */
+
+footer{
+    background:#111827;
+    color:#94a3b8;
+    text-align:center;
+    padding:35px 15px;
+    font-size:12px;
+    line-height:1.8;
+}
+
+footer strong{
+    color:white;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:850px){
+
+    .menu-btn{
+        display:block;
+    }
+
+    nav{
+        display:none;
+        position:absolute;
+        top:64px;
+        left:0;
+        width:100%;
+        background:#111827;
+        flex-direction:column;
+        align-items:stretch;
+        padding:10px;
+    }
+
+    nav.show{
+        display:flex;
+    }
+
+    nav a,
+    nav button{
+        text-align:left;
+        padding:13px;
+    }
+
+    .hero{
+        grid-template-columns:1fr;
+        margin-top:30px;
+    }
+
+    .hero-content h1{
+        font-size:40px;
+    }
+
+    .features{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .steps{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:550px){
+
+    .hero-content h1{
+        font-size:34px;
+    }
+
+    .hero-content p{
+        font-size:15px;
+    }
+
+    .wallet{
+        padding:22px;
+    }
+
+    .trust{
+        grid-template-columns:1fr;
+    }
+
+    .features{
+        grid-template-columns:1fr;
+    }
+
+    .section{
+        margin:60px auto;
+    }
+
+    .cta{
+        padding:32px 20px;
+    }
+
+    .cta h2{
+        font-size:26px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+
+<header>
+
+    <div
+        class="logo"
+        onclick="goHome()"
+    >
+        FINZO
+        <span class="demo">
+            DEMO
+        </span>
+    </div>
+
+    <button
+        class="menu-btn"
+        id="menuButton"
+        onclick="toggleMenu()"
+    >
+        ☰
+    </button>
+
+    <nav id="mainNav">
+
+        <a href="#features">
+            Features
+        </a>
+
+        <a href="#how">
+            How It Works
+        </a>
+
+        <a href="#about">
+            About
+        </a>
+
+        <button onclick="toggleTheme()">
+            🌙 Theme
+        </button>
+
+        <!-- LOGIN USER NOT LOGGED IN -->
+
+        <a
+            href="login.html"
+            id="loginNav"
+        >
+            Login
+        </a>
+
+        <a
+            href="signup.html"
+            class="primary"
+            id="signupNav"
+        >
+            Sign Up
+        </a>
+
+        <!-- LOGIN USER -->
+
+        <a
+            href="dashboard.html"
+            id="dashboardNav"
+            style="display:none;"
+        >
+            📊 Dashboard
+        </a>
+
+        <button
+            onclick="logout()"
+            id="logoutNav"
+            style="display:none;"
+        >
+            🚪 Logout
+        </button>
+
+    </nav>
+
+</header>
+
+
+<!-- ================= HERO ================= -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <h1>
+            Your Money.<br>
+            <span>Your Control.</span>
+        </h1>
+
+        <p>
+            Welcome to FINZO — a modern digital wallet
+            experience designed to make your money
+            management simple, fast and easy to understand.
+        </p>
+
+        <div class="buttons">
+
+            <a
+                href="signup.html"
+                class="btn primary"
+                id="getStartedBtn"
+            >
+                🚀 Get Started
+            </a>
+
+            <a
+                href="login.html"
+                class="btn secondary"
+                id="heroLoginBtn"
+            >
+                🔐 Login
+            </a>
+
+            <a
+                href="dashboard.html"
+                class="btn primary"
+                id="heroDashboardBtn"
+                style="display:none;"
+            >
+                📊 Go to Dashboard
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- WALLET -->
+
+    <div class="wallet">
+
+        <div class="wallet-top">
+
+            <div class="wallet-brand">
+                FINZO
+            </div>
+
+            <div class="wallet-chip">
+                💳
+            </div>
+
+        </div>
+
+        <div class="public-wallet-message">
+
+            <div class="lock-icon">
+                🔐
+            </div>
+
+            <h2>
+                Login to View Your Account
+            </h2>
+
+            <p>
+                Your balance, account number and
+                account status will be available
+                after you sign in.
+            </p>
+
+            <a
+                href="login.html"
+                class="btn primary"
+                id="walletLoginBtn"
+            >
+                🔐 Login to FINZO
+            </a>
+
+            <a
+                href="signup.html"
+                class="btn secondary"
+                id="walletSignupBtn"
+            >
+                Create Account
+            </a>
+
+        </div>
+
+    </div>
 
 </section>
 
 
-<!-- CTA -->
+<!-- ================= TRUST ================= -->
+
+<section class="trust">
+
+    <div class="trust-card">
+
+        <div class="trust-icon">
+            🔐
+        </div>
+
+        <h3>
+            Secure Demo
+        </h3>
+
+        <p>
+            Designed for safe learning and testing.
+        </p>
+
+    </div>
+
+
+    <div class="trust-card">
+
+        <div class="trust-icon">
+            ⚡
+        </div>
+
+        <h3>
+            Fast Experience
+        </h3>
+
+        <p>
+            Simple navigation and instant demo updates.
+        </p>
+
+    </div>
+
+
+    <div class="trust-card">
+
+        <div class="trust-icon">
+            📱
+        </div>
+
+        <h3>
+            Mobile Ready
+        </h3>
+
+        <p>
+            Responsive design for phone, tablet and desktop.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ================= FEATURES ================= -->
+
+<section
+    class="section"
+    id="features"
+>
+
+    <div class="section-heading">
+
+        <h2>
+            Everything You Need
+        </h2>
+
+        <p>
+            Explore the main features available in FINZO.
+        </p>
+
+    </div>
+
+
+    <div class="features">
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                💰
+            </div>
+
+            <h3>
+                Add Money
+            </h3>
+
+            <p>
+                Add demo funds to your wallet and
+                instantly see your balance update
+                after login.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                💸
+            </div>
+
+            <h3>
+                Send Money
+            </h3>
+
+            <p>
+                Send demo money to a recipient and
+                automatically record the transaction
+                after login.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                📜
+            </div>
+
+            <h3>
+                Transactions
+            </h3>
+
+            <p>
+                Search, filter, sort and export your
+                demo transaction history.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                📊
+            </div>
+
+            <h3>
+                Analytics
+            </h3>
+
+            <p>
+                Understand your demo money flow with
+                simple visual analytics.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                🔔
+            </div>
+
+            <h3>
+                Notifications
+            </h3>
+
+            <p>
+                Stay updated with wallet activity and
+                account notifications.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                🪪
+            </div>
+
+            <h3>
+                KYC Demo
+            </h3>
+
+            <p>
+                Experience a simulated KYC workflow
+                using dummy information.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= HOW IT WORKS ================= -->
+
+<section
+    class="section"
+    id="how"
+>
+
+    <div class="section-heading">
+
+        <h2>
+            How FINZO Works
+        </h2>
+
+        <p>
+            Three simple steps to explore the demo wallet.
+        </p>
+
+    </div>
+
+
+    <div class="steps">
+
+        <div class="step">
+
+            <div class="step-number">
+                1
+            </div>
+
+            <h3>
+                Create Account
+            </h3>
+
+            <p>
+                Create your FINZO demo account
+                using dummy information.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                2
+            </div>
+
+            <h3>
+                Manage Money
+            </h3>
+
+            <p>
+                Add or send demo money and
+                explore your transaction history.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                3
+            </div>
+
+            <h3>
+                Track Everything
+            </h3>
+
+            <p>
+                Use analytics, notifications,
+                profile and KYC demo features.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= ABOUT ================= -->
+
+<section
+    class="section"
+    id="about"
+>
+
+    <div class="section-heading">
+
+        <h2>
+            About FINZO
+        </h2>
+
+        <p>
+            A beginner-friendly fintech learning project.
+        </p>
+
+    </div>
+
+    <div class="about-box">
+
+        FINZO is a browser-based fintech demo created
+        for learning web development and understanding
+        digital-wallet style user experiences.
+
+        <br><br>
+
+        All wallet balances, transactions and account
+        information are demo data stored locally in
+        your browser.
+
+    </div>
+
+</section>
+
+
+<!-- ================= CTA ================= -->
 
 <section class="cta">
 
-  <h2>
-    Ready to Explore FINZO?
-  </h2>
+    <h2>
+        Ready to Explore FINZO?
+    </h2>
 
-  <p>
-    Create your demo account and start exploring
-    the FINZO wallet experience.
-  </p>
+    <p>
+        Create your demo account and start exploring
+        the FINZO wallet experience.
+    </p>
 
+    <a
+        href="signup.html"
+        class="btn primary"
+        id="ctaSignupBtn"
+    >
+        🚀 Create Demo Account
+    </a>
 
-  <a
-    href="signup.html"
-    class="btn primary"
-  >
-    🚀 Create Demo Account
-  </a>
+    <a
+        href="dashboard.html"
+        class="btn primary"
+        id="ctaDashboardBtn"
+        style="display:none;"
+    >
+        📊 Open Dashboard
+    </a>
 
 </section>
 
 
+<!-- ================= FOOTER ================= -->
+
 <footer>
 
-  <strong>
-    FINZO
-  </strong>
-  — Smart Digital Wallet Demo
+    <strong>
+        FINZO
+    </strong>
 
-  <br>
+    — Smart Digital Wallet Demo
 
-  For learning purposes only.
+    <br>
 
-  <br>
+    For learning purposes only.
 
-  No real payments, banking or financial transactions
-  are performed.
+    <br>
 
-  <br>
+    No real payments, banking or financial transactions
+    are performed.
 
-  Do not enter real banking, Aadhaar, PAN, card
-  or other sensitive information.
+    <br>
+
+    Do not enter real banking, Aadhaar, PAN, card
+    or other sensitive information.
 
 </footer>
 
 
 <script>
 
+/* =====================================================
+   CHECK LOGIN STATUS
+===================================================== */
 
-function goHome() {
+function isLoggedIn(){
 
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
-
-}
-
-
-function toggleMenu() {
-
-  const nav =
-    document.getElementById(
-      "mainNav"
-    );
-
-
-  const button =
-    document.getElementById(
-      "menuButton"
-    );
-
-
-  nav.classList.toggle(
-    "show"
-  );
-
-
-  button.textContent =
-    nav.classList.contains(
-      "show"
-    )
-      ? "✕"
-      : "☰";
+    return localStorage.getItem(
+        "finzoLoggedIn"
+    ) === "true";
 
 }
 
 
-function closeMenu() {
+/* =====================================================
+   GO HOME
+===================================================== */
 
-  const nav =
-    document.getElementById(
-      "mainNav"
-    );
+function goHome(){
 
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
 
-  const button =
-    document.getElementById(
-      "menuButton"
-    );
-
-
-  nav.classList.remove(
-    "show"
-  );
-
-
-  button.textContent =
-    "☰";
+    closeMenu();
 
 }
 
 
-function toggleTheme() {
+/* =====================================================
+   MOBILE MENU
+===================================================== */
 
-  const dark =
-    document.body.classList.toggle(
-      "dark"
-    );
+function toggleMenu(){
+
+    const nav =
+        document.getElementById("mainNav");
+
+    const button =
+        document.getElementById("menuButton");
+
+    nav.classList.toggle("show");
+
+    button.textContent =
+        nav.classList.contains("show")
+            ? "✕"
+            : "☰";
+
+}
 
 
-  localStorage.setItem(
-    "finzoTheme",
-    dark
-      ? "dark"
-      : "light"
-  );
+function closeMenu(){
+
+    const nav =
+        document.getElementById("mainNav");
+
+    const button =
+        document.getElementById("menuButton");
+
+    nav.classList.remove("show");
+
+    button.textContent =
+        "☰";
 
 }
 
 
-function applyTheme() {
+/* =====================================================
+   THEME
+===================================================== */
 
-  const theme =
-    localStorage.getItem(
-      "finzoTheme"
+function toggleTheme(){
+
+    const dark =
+        document.body.classList.toggle("dark");
+
+    localStorage.setItem(
+        "finzoTheme",
+        dark ? "dark" : "light"
     );
-
-
-  if (
-    theme === "dark"
-  ) {
-
-    document.body.classList.add(
-      "dark"
-    );
-
-  }
 
 }
 
+
+function applyTheme(){
+
+    const theme =
+        localStorage.getItem("finzoTheme");
+
+    if(theme === "dark"){
+
+        document.body.classList.add("dark");
+
+    }
+
+}
+
+
+/* =====================================================
+   UPDATE HOME PAGE FOR LOGIN STATE
+===================================================== */
+
+function updateLoginState(){
+
+    const loggedIn =
+        isLoggedIn();
+
+
+    const loginNav =
+        document.getElementById("loginNav");
+
+    const signupNav =
+        document.getElementById("signupNav");
+
+    const dashboardNav =
+        document.getElementById("dashboardNav");
+
+    const logoutNav =
+        document.getElementById("logoutNav");
+
+
+    const getStartedBtn =
+        document.getElementById("getStartedBtn");
+
+    const heroLoginBtn =
+        document.getElementById("heroLoginBtn");
+
+    const heroDashboardBtn =
+        document.getElementById("heroDashboardBtn");
+
+
+    const walletLoginBtn =
+        document.getElementById("walletLoginBtn");
+
+    const walletSignupBtn =
+        document.getElementById("walletSignupBtn");
+
+
+    const ctaSignupBtn =
+        document.getElementById("ctaSignupBtn");
+
+    const ctaDashboardBtn =
+        document.getElementById("ctaDashboardBtn");
+
+
+    if(loggedIn){
+
+        /* HEADER */
+
+        loginNav.style.display =
+            "none";
+
+        signupNav.style.display =
+            "none";
+
+        dashboardNav.style.display =
+            "block";
+
+        logoutNav.style.display =
+            "block";
+
+
+        /* HERO */
+
+        getStartedBtn.style.display =
+            "none";
+
+        heroLoginBtn.style.display =
+            "none";
+
+        heroDashboardBtn.style.display =
+            "inline-block";
+
+
+        /* WALLET */
+
+        walletLoginBtn.style.display =
+            "none";
+
+        walletSignupBtn.style.display =
+            "none";
+
+
+        /* CTA */
+
+        ctaSignupBtn.style.display =
+            "none";
+
+        ctaDashboardBtn.style.display =
+            "inline-block";
+
+
+    }else{
+
+        /* HEADER */
+
+        loginNav.style.display =
+            "block";
+
+        signupNav.style.display =
+            "block";
+
+        dashboardNav.style.display =
+            "none";
+
+        logoutNav.style.display =
+            "none";
+
+
+        /* HERO */
+
+        getStartedBtn.style.display =
+            "inline-block";
+
+        heroLoginBtn.style.display =
+            "inline-block";
+
+        heroDashboardBtn.style.display =
+            "none";
+
+
+        /* WALLET */
+
+        walletLoginBtn.style.display =
+            "inline-block";
+
+        walletSignupBtn.style.display =
+            "inline-block";
+
+
+        /* CTA */
+
+        ctaSignupBtn.style.display =
+            "inline-block";
+
+        ctaDashboardBtn.style.display =
+            "none";
+
+    }
+
+}
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+function logout(){
+
+    const confirmLogout =
+        confirm(
+            "Are you sure you want to logout?"
+        );
+
+    if(!confirmLogout){
+        return;
+    }
+
+
+    localStorage.removeItem(
+        "finzoLoggedIn"
+    );
+
+
+    /*
+       Wallet balance and transactions
+       are intentionally NOT deleted.
+       So demo data remains available.
+    */
+
+
+    updateLoginState();
+
+    closeMenu();
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+
+/* =====================================================
+   CLOSE MOBILE MENU AFTER LINK CLICK
+===================================================== */
 
 document.querySelectorAll(
-  "nav a"
-).forEach(
-  function(link) {
+    "nav a"
+).forEach(function(link){
 
     link.addEventListener(
-      "click",
-      function() {
+        "click",
+        function(){
 
-        closeMenu();
+            closeMenu();
 
-      }
+        }
     );
 
-  }
-);
+});
 
+
+/* =====================================================
+   START
+===================================================== */
 
 document.addEventListener(
-  "DOMContentLoaded",
-  function() {
+    "DOMContentLoaded",
+    function(){
 
-    applyTheme();
+        applyTheme();
 
-  }
+        updateLoginState();
+
+    }
 );
 
 </script>
 
-
 </body>
-
 </html>

@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FINZO - Mobile Recharge</title>
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial, sans-serif;
+}
+body{
+    background:#f5f5f5;
+    color:#222;
+}
+/* HEADER */
+.header{
+    background:#101010;
+    color:white;
+    padding:18px 25px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+.logo{
+    font-size:25px;
+    font-weight:bold;
+    color:#fff;
+}
+.back-btn{
+    color:white;
+    text-decoration:none;
+    background:#b91c1c;
+    padding:10px 16px;
+    border-radius:8px;
+    font-size:14px;
+}
+/* CONTAINER */
+.container{
+    max-width:600px;
+    margin:35px auto;
+    padding:20px;
+}
+/* CARD */
+.card{
+    background:white;
+    border-radius:18px;
+    padding:28px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.08);
+}
+h1{
+    font-size:27px;
+    margin-bottom:8px;
+}
+.subtitle{
+    color:#777;
+    margin-bottom:25px;
+    font-size:14px;
+}
+/* LABEL */
+label{
+    display:block;
+    margin:18px 0 8px;
+    font-weight:bold;
+    font-size:14px;
+}
+/* INPUT */
+input,
+select{
+    width:100%;
+    padding:14px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    font-size:16px;
+    outline:none;
+}
+input:focus,
+select:focus{
+    border-color:#b91c1c;
+}
+/* QUICK PLANS */
+.plans{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin-top:12px;
+}
+.plan{
+    border:1px solid #ddd;
+    border-radius:10px;
+    padding:12px 5px;
+    text-align:center;
+    cursor:pointer;
+    background:#fff;
+}
+.plan:hover{
+    border-color:#b91c1c;
+    background:#fff5f5;
+}
+.plan strong{
+    display:block;
+    font-size:16px;
+}
+.plan span{
+    color:#777;
+    font-size:11px;
+}
+/* RECHARGE BUTTON */
+.recharge-btn{
+    width:100%;
+    margin-top:25px;
+    padding:15px;
+    border:none;
+    border-radius:10px;
+    background:#b91c1c;
+    color:white;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+}
+.recharge-btn:hover{
+    background:#991b1b;
+}
+/* MESSAGE */
+.message{
+    display:none;
+    margin-top:18px;
+    padding:14px;
+    border-radius:10px;
+    text-align:center;
+    font-size:14px;
+}
+/* SUCCESS MESSAGE */
+.message.success{
+    background:#dcfce7;
+    color:#166534;
+}
+/* ERROR MESSAGE */
+.message.error{
+    background:#fee2e2;
+    color:#991b1b;
+}
+/* FOOTER */
+.footer{
+    text-align:center;
+    color:#888;
+    font-size:12px;
+    margin-top:25px;
+}
+/* MOBILE */
+@media (max-width:600px){
+    .container{
+        margin:20px auto;
+        padding:15px;
+    }
+    .card{
+        padding:22px;
+    }
+    .plans{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+</style>
+</head>
+<body>
+<!-- HEADER -->
+<div class="header">
+<div class="logo">
+    FINZO
+</div>
+<a
+    href="dashboard.html"
+    class="back-btn">
+    ← Dashboard
+</a>
+</div>
+<!-- MAIN -->
+<div class="container">
+<div class="card">
+    <h1>
+        📱 Mobile Recharge
+    </h1>
+    <p class="subtitle">
+        Recharge your mobile number quickly and securely.
+    </p>
+    <!-- MOBILE NUMBER -->
+    <label for="mobile">
+        Mobile Number
+    </label>
+    <input
+        type="tel"
+        id="mobile"
+        placeholder="Enter 10-digit mobile number"
+        maxlength="10"
+    >
+    <!-- OPERATOR -->
+    <label for="operator">
+        Select Operator
+    </label>
+    <select id="operator">
+        <option value="">
+            Select Operator
+        </option>
+        <option value="Jio">
+            Jio
+        </option>
+        <option value="Airtel">
+            Airtel
+        </option>
+        <option value="Vi">
+            Vi
+        </option>
+        <option value="BSNL">
+            BSNL
+        </option>
+    </select>
+    <!-- QUICK RECHARGE -->
+    <label>
+        Quick Recharge
+    </label>
+    <div class="plans">
+        <div
+            class="plan"
+            onclick="selectAmount(199)">
+            <strong>
+                ₹199
+            </strong>
+            <span>
+                Plan
+            </span>
+        </div>
+        <div
+            class="plan"
+            onclick="selectAmount(299)">
+            <strong>
+                ₹299
+            </strong>
+            <span>
+                Plan
+            </span>
+        </div>
+        <div
+            class="plan"
+            onclick="selectAmount(399)">
+            <strong>
+                ₹399
+            </strong>
+            <span>
+                Plan
+            </span>
+        </div>
+        <div
+            class="plan"
+            onclick="selectAmount(499)">
+            <strong>
+                ₹499
+            </strong>
+            <span>
+                Plan
+            </span>
+        </div>
+        <div
+            class="plan"
+            onclick="selectAmount(599)">
+            <strong>
+                ₹599
+            </strong>
+            <span>
+                Plan
+            </span>
+        </div>
+        <div
+            class="plan"
+            onclick="selectAmount(799)">
+            <strong>
+                ₹799
+            </strong>
+            <span>
+                Plan
+            </span>
+        </div>
+    </div>
+    <!-- AMOUNT -->
+    <label for="amount">
+        Recharge Amount
+    </label>
+    <input
+        type="number"
+        id="amount"
+        placeholder="Enter amount"
+        min="1"
+    >
+    <!-- BUTTON -->
+    <button
+        class="recharge-btn"
+        onclick="recharge()">
+        Proceed to Recharge
+    </button>
+    <!-- MESSAGE -->
+    <div
+        class="message"
+        id="message">
+    </div>
+</div>
+<div class="footer">
+    ©️ 2026 FINZO. Demo payment service.
+</div>
+</div>
+<script>
+/* ================================
+   LOGIN PROTECTION
+================================ */
+if(
+    localStorage.getItem("finzoLoggedIn") !== "true"
+){
+    window.location.href = "login.html";
+}
+/* ================================
+   QUICK AMOUNT
+================================ */
+function selectAmount(amount){
+    document.getElementById("amount").value =
+        amount;
+}
+/* ================================
+   MOBILE RECHARGE
+================================ */
+function recharge(){
+    const mobile =
+        document.getElementById("mobile")
+        .value
+        .trim();
+    const operator =
+        document.getElementById("operator")
+        .value;
+    const amount =
+        document.getElementById("amount")
+        .value;
+    const message =
+        document.getElementById("message");
+    /* RESET MESSAGE */
+    message.className = "message";
+    message.style.display = "block";
+    /* MOBILE VALIDATION */
+    if(
+        !/^[6-9][0-9]{9}$/.test(mobile)
+    ){
+        message.classList.add("error");
+        message.innerText =
+            "Please enter a valid 10-digit mobile number.";
+        return;
+    }
+    /* OPERATOR VALIDATION */
+    if(operator === ""){
+        message.classList.add("error");
+        message.innerText =
+            "Please select your mobile operator.";
+        return;
+    }
+    /* AMOUNT VALIDATION */
+    if(
+        amount === "" ||
+        Number(amount) <= 0
+    ){
+        message.classList.add("error");
+        message.innerText =
+            "Please enter a valid recharge amount.";
+        return;
+    }
+    /* ================================
+       SAVE TRANSACTION
+    ================================= */
+    let transactions =
+        JSON.parse(
+            localStorage.getItem(
+                "finzoTransactions"
+            ) || "[]"
+        );
+    const transaction = {
+        type: "Mobile Recharge",
+        method: "Demo Payment",
+        amount: Number(amount),
+        date:
+            new Date().toLocaleString("en-IN"),
+        status: "Success",
+        details:
+            "Mobile: " +
+            mobile +
+            " | Operator: " +
+            operator
+    };
+    /* ADD NEW TRANSACTION */
+    transactions.unshift(
+        transaction
+    );
+    /* SAVE */
+    localStorage.setItem(
+        "finzoTransactions",
+        JSON.stringify(transactions)
+    );
+    /* SUCCESS MESSAGE */
+    message.classList.add("success");
+    message.innerText =
+        "✅ Mobile recharge successful! Transaction saved to Transaction History.";
+}
+</script>
+</body>
+</html>

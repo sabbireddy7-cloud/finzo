@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>FINZO - Bank Transfer</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f5f5f5;
+    color:#222;
+}
+
+header{
+    background:#101010;
+    color:white;
+    padding:16px 22px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    font-size:26px;
+    font-weight:bold;
+}
+
+.dashboard-btn{
+    background:#b91c1c;
+    color:white;
+    text-decoration:none;
+    padding:10px 16px;
+    border-radius:8px;
+    font-size:14px;
+}
+
+.container{
+    max-width:600px;
+    margin:30px auto;
+    padding:20px;
+}
+
+.card{
+    background:white;
+    padding:25px;
+    border-radius:16px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.08);
+}
+
+h1{
+    font-size:25px;
+    margin-bottom:8px;
+}
+
+.subtitle{
+    color:#777;
+    font-size:14px;
+    margin-bottom:25px;
+}
+
+label{
+    display:block;
+    margin-top:16px;
+    margin-bottom:7px;
+    font-weight:bold;
+    font-size:14px;
+}
+
+select,
+input{
+    width:100%;
+    padding:13px;
+    border:1px solid #ddd;
+    border-radius:9px;
+    font-size:15px;
+    outline:none;
+}
+
+select:focus,
+input:focus{
+    border-color:#b91c1c;
+}
+
+.customer-box{
+    display:none;
+    margin-top:15px;
+    background:#f0fdf4;
+    border:1px solid #bbf7d0;
+    padding:14px;
+    border-radius:10px;
+}
+
+.customer-row{
+    display:flex;
+    justify-content:space-between;
+    padding:5px 0;
+    font-size:14px;
+}
+
+.customer-row strong{
+    color:#166534;
+}
+
+.amount-box{
+    margin-top:18px;
+}
+
+.transfer-btn{
+    width:100%;
+    margin-top:22px;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:#b91c1c;
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.transfer-btn:hover{
+    background:#991b1b;
+}
+
+#message{
+    display:none;
+    margin-top:18px;
+    padding:13px;
+    border-radius:9px;
+    font-size:14px;
+    line-height:1.5;
+}
+
+.success{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.error{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.history-btn{
+    display:block;
+    text-align:center;
+    margin-top:15px;
+    padding:12px;
+    border:1px solid #b91c1c;
+    color:#b91c1c;
+    text-decoration:none;
+    border-radius:9px;
+    font-weight:bold;
+}
+
+.history-btn:hover{
+    background:#b91c1c;
+    color:white;
+}
+
+.demo-note{
+    margin-top:20px;
+    padding:12px;
+    background:#fff7ed;
+    border:1px solid #fed7aa;
+    border-radius:8px;
+    color:#9a3412;
+    font-size:12px;
+    line-height:1.5;
+}
+
+@media(max-width:500px){
+    .container{
+        margin:15px auto;
+        padding:12px;
+    }
+
+    .card{
+        padding:20px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        FINZO
+    </div>
+
+    <a href="dashboard.html" class="dashboard-btn">
+        Dashboard
+    </a>
+
+</header>
+
+
+<div class="container">
+
+<div class="card">
+
+    <h1>Bank Transfer</h1>
+
+    <p class="subtitle">
+        Transfer money to a bank account
+    </p>
+
+
+    <!-- BANK NAME -->
+
+    <label for="bank">
+        Bank Name
+    </label>
+
+    <select id="bank">
+
+        <option value="">
+            Select Bank
+        </option>
+
+        <option>State Bank of India</option>
+        <option>HDFC Bank</option>
+        <option>ICICI Bank</option>
+        <option>Axis Bank</option>
+        <option>Kotak Mahindra Bank</option>
+        <option>IndusInd Bank</option>
+        <option>YES Bank</option>
+        <option>IDFC FIRST Bank</option>
+        <option>Bank of Baroda</option>
+        <option>Punjab National Bank</option>
+        <option>Canara Bank</option>
+        <option>Indian Bank</option>
+        <option>Other</option>
+
+    </select>
+
+
+    <!-- ACCOUNT NUMBER -->
+
+    <label for="account">
+        Account Number
+    </label>
+
+    <input
+        type="text"
+        id="account"
+        maxlength="18"
+        inputmode="numeric"
+        placeholder="Enter account number"
+    >
+
+
+    <!-- IFSC -->
+
+    <label for="ifsc">
+        IFSC Code
+    </label>
+
+    <input
+        type="text"
+        id="ifsc"
+        maxlength="11"
+        style="text-transform:uppercase"
+        placeholder="Example: SBIN0001234"
+    >
+
+
+    <!-- CUSTOMER DETAILS -->
+
+    <div id="customerBox" class="customer-box">
+
+        <div class="customer-row">
+
+            <span>Account Holder</span>
+
+            <strong id="customerName">
+                -
+            </strong>
+
+        </div>
+
+        <div class="customer-row">
+
+            <span>Bank</span>
+
+            <strong id="customerBank">
+                -
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- AMOUNT -->
+
+    <div class="amount-box">
+
+        <label for="amount">
+            Enter Amount
+        </label>
+
+        <input
+            type="number"
+            id="amount"
+            min="1"
+            placeholder="Enter transfer amount"
+        >
+
+    </div>
+
+
+    <!-- TRANSFER BUTTON -->
+
+    <button
+        class="transfer-btn"
+        onclick="transferMoney()"
+    >
+        Proceed to Transfer
+    </button>
+
+
+    <!-- MESSAGE -->
+
+    <div id="message"></div>
+
+
+    <!-- HISTORY -->
+
+    <a
+        href="transactions.html"
+        class="history-btn"
+    >
+        View Transaction History
+    </a>
+
+
+    <!-- DEMO NOTE -->
+
+    <div class="demo-note">
+
+        <strong>Demo Mode:</strong><br>
+
+        This is a demo bank transfer.
+        No real money will be transferred.
+        Demo account details are used only for testing.
+
+    </div>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =================================
+   LOGIN PROTECTION
+================================= */
+
+if(localStorage.getItem("finzoLoggedIn") !== "true"){
+
+    window.location.href = "login.html";
+
+}
+
+
+/* =================================
+   DEMO DATABASE
+================================= */
+
+const demoCustomers = {
+
+    "1234567890|SBIN0001234": {
+
+        name:"Rahul Kumar",
+
+        bank:"State Bank of India"
+
+    },
+
+    "9876543210|HDFC0001234": {
+
+        name:"Arun Reddy",
+
+        bank:"HDFC Bank"
+
+    },
+
+    "111122223333|ICIC0001234": {
+
+        name:"Suresh Kumar",
+
+        bank:"ICICI Bank"
+
+    }
+
+};
+
+
+/* =================================
+   FIND CUSTOMER
+================================= */
+
+function findCustomer(){
+
+    const account =
+        document.getElementById("account")
+        .value
+        .trim();
+
+    const ifsc =
+        document.getElementById("ifsc")
+        .value
+        .trim()
+        .toUpperCase();
+
+    const customerBox =
+        document.getElementById("customerBox");
+
+    const customerName =
+        document.getElementById("customerName");
+
+    const customerBank =
+        document.getElementById("customerBank");
+
+
+    if(account === "" || ifsc === ""){
+
+        customerBox.style.display = "none";
+
+        return;
+
+    }
+
+
+    const key =
+        account + "|" + ifsc;
+
+
+    if(demoCustomers[key]){
+
+        customerName.innerText =
+            demoCustomers[key].name;
+
+        customerBank.innerText =
+            demoCustomers[key].bank;
+
+        customerBox.style.display =
+            "block";
+
+    }
+    else{
+
+        customerBox.style.display =
+            "none";
+
+    }
+
+}
+
+
+/* =================================
+   AUTO CHECK ACCOUNT + IFSC
+================================= */
+
+document.getElementById("account")
+.addEventListener("input",findCustomer);
+
+
+document.getElementById("ifsc")
+.addEventListener("input",findCustomer);
+
+
+/* =================================
+   TRANSFER MONEY
+================================= */
+
+function transferMoney(){
+
+    const bank =
+        document.getElementById("bank")
+        .value
+        .trim();
+
+    const account =
+        document.getElementById("account")
+        .value
+        .trim();
+
+    const ifsc =
+        document.getElementById("ifsc")
+        .value
+        .trim()
+        .toUpperCase();
+
+    const amount =
+        Number(
+            document.getElementById("amount")
+            .value
+        );
+
+    const message =
+        document.getElementById("message");
+
+
+    message.style.display = "none";
+
+
+    /* BANK */
+
+    if(bank === ""){
+
+        showError(
+            "Please select the bank name."
+        );
+
+        return;
+
+    }
+
+
+    /* ACCOUNT NUMBER */
+
+    if(!/^[0-9]{9,18}$/.test(account)){
+
+        showError(
+            "Please enter a valid account number (9-18 digits)."
+        );
+
+        return;
+
+    }
+
+
+    /* IFSC */
+
+    if(!/^[A-Z]{4}0[A-Z0-9]{6}$/.test(ifsc)){
+
+        showError(
+            "Please enter a valid IFSC code."
+        );
+
+        return;
+
+    }
+
+
+    /* DEMO CUSTOMER CHECK */
+
+    const key =
+        account + "|" + ifsc;
+
+
+    if(!demoCustomers[key]){
+
+        showError(
+            "Demo account not found. Please use one of the demo account details shown below."
+        );
+
+        return;
+
+    }
+
+
+    /* AMOUNT */
+
+    if(!amount || amount <= 0){
+
+        showError(
+            "Please enter a valid transfer amount."
+        );
+
+        return;
+
+    }
+
+
+    /* CUSTOMER */
+
+    const customer =
+        demoCustomers[key];
+
+
+    /* =================================
+       SAVE TRANSACTION
+    ================================= */
+
+    let transactions =
+        JSON.parse(
+            localStorage.getItem(
+                "finzoTransactions"
+            ) || "[]"
+        );
+
+
+    const transaction = {
+
+        type:"Bank Transfer",
+
+        method:"Demo Transfer",
+
+        amount:Number(amount),
+
+        date:new Date().toLocaleString("en-IN"),
+
+        status:"Success",
+
+        details:
+            "Bank: " +
+            customer.bank +
+            " | Account: **" +
+            account.slice(-4) +
+            " | IFSC: " +
+            ifsc +
+            " | Name: " +
+            customer.name
+
+    };
+
+
+    transactions.unshift(transaction);
+
+
+    localStorage.setItem(
+        "finzoTransactions",
+        JSON.stringify(transactions)
+    );
+
+
+    /* =================================
+       SUCCESS MESSAGE
+    ================================= */
+
+    message.className = "success";
+
+    message.innerHTML =
+
+        "✅ <strong>Transfer Successful!</strong><br><br>" +
+
+        "Account Holder: " +
+        customer.name +
+        "<br>" +
+
+        "Bank: " +
+        customer.bank +
+        "<br>" +
+
+        "Account: **" +
+        account.slice(-4) +
+        "<br>" +
+
+        "IFSC: " +
+        ifsc +
+        "<br>" +
+
+        "Amount Transferred: ₹" +
+        amount.toLocaleString("en-IN") +
+
+        "<br><br>" +
+
+        "Transaction saved successfully in Transaction History.";
+
+
+    message.style.display = "block";
+
+
+    /* CLEAR AMOUNT */
+
+    document.getElementById("amount").value = "";
+
+}
+
+
+/* =================================
+   ERROR
+================================= */
+
+function showError(text){
+
+    const message =
+        document.getElementById("message");
+
+
+    message.className =
+        "error";
+
+
+    message.innerHTML =
+        "❌ " + text;
+
+
+    message.style.display =
+        "block";
+
+}
+
+</script>
+
+</body>
+</html>

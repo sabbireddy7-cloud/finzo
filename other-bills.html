@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>FINZO - Other Bills</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f5f5f5;
+    color:#222;
+}
+
+.header{
+    background:#101010;
+    color:white;
+    padding:18px 25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    font-size:28px;
+    font-weight:bold;
+    color:#ff3333;
+}
+
+.dashboard-btn{
+    text-decoration:none;
+    color:white;
+    background:#b91c1c;
+    padding:10px 18px;
+    border-radius:8px;
+    font-size:14px;
+}
+
+.container{
+    max-width:650px;
+    margin:35px auto;
+    padding:0 15px;
+}
+
+.card{
+    background:white;
+    padding:28px;
+    border-radius:16px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.08);
+}
+
+h1{
+    text-align:center;
+    margin-bottom:8px;
+}
+
+.subtitle{
+    text-align:center;
+    color:#777;
+    margin-bottom:25px;
+    font-size:14px;
+}
+
+label{
+    display:block;
+    font-weight:bold;
+    margin-bottom:7px;
+    margin-top:17px;
+}
+
+input,
+select{
+    width:100%;
+    padding:13px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:15px;
+    outline:none;
+}
+
+input:focus,
+select:focus{
+    border-color:#b91c1c;
+}
+
+.bill-box{
+    display:none;
+    margin-top:20px;
+    padding:18px;
+    background:#f8f8f8;
+    border-left:5px solid #b91c1c;
+    border-radius:10px;
+}
+
+.bill-row{
+    display:flex;
+    justify-content:space-between;
+    padding:8px 0;
+    border-bottom:1px solid #ddd;
+}
+
+.bill-row:last-child{
+    border-bottom:none;
+}
+
+.bill-row span:first-child{
+    color:#666;
+}
+
+.bill-row span:last-child{
+    font-weight:bold;
+}
+
+.pay-btn{
+    width:100%;
+    margin-top:25px;
+    padding:14px;
+    background:#b91c1c;
+    color:white;
+    border:none;
+    border-radius:9px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.pay-btn:hover{
+    background:#991b1b;
+}
+
+.message{
+    margin-top:18px;
+    padding:12px;
+    border-radius:8px;
+    text-align:center;
+    display:none;
+    font-size:14px;
+}
+
+.success{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.error{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.history-btn{
+    display:block;
+    text-align:center;
+    margin-top:18px;
+    padding:12px;
+    background:#222;
+    color:white;
+    text-decoration:none;
+    border-radius:8px;
+}
+
+.demo-note{
+    margin-top:22px;
+    padding:15px;
+    background:#fff7ed;
+    border:1px solid #fed7aa;
+    border-radius:10px;
+    color:#9a3412;
+    font-size:13px;
+    line-height:1.6;
+}
+
+.demo-title{
+    font-weight:bold;
+    margin-bottom:8px;
+}
+
+@media(max-width:600px){
+    .header{
+        padding:15px;
+    }
+
+    .logo{
+        font-size:24px;
+    }
+
+    .container{
+        margin:20px auto;
+    }
+
+    .card{
+        padding:20px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+
+    <div class="logo">
+        FINZO
+    </div>
+
+    <a href="dashboard.html" class="dashboard-btn">
+        Dashboard
+    </a>
+
+</div>
+
+
+<div class="container">
+
+<div class="card">
+
+<h1>Other Bills</h1>
+
+<p class="subtitle">
+Pay your other utility and service bills easily
+</p>
+
+
+<!-- CATEGORY -->
+<label for="category">
+Bill Category
+</label>
+
+<select id="category">
+    <option value="">Select Bill Category</option>
+    <option value="Mobile Postpaid">Mobile Postpaid</option>
+    <option value="Broadband / Internet">Broadband / Internet</option>
+    <option value="Cable TV">Cable TV</option>
+    <option value="Maintenance">Maintenance</option>
+    <option value="Municipal Tax">Municipal Tax</option>
+    <option value="Other Bills">Other Bills</option>
+</select>
+
+
+<!-- PROVIDER -->
+<label for="provider">
+Biller / Provider Name
+</label>
+
+<input
+    type="text"
+    id="provider"
+    placeholder="Enter biller or provider name"
+/>
+
+
+<!-- CONSUMER NUMBER -->
+<label for="consumer">
+Consumer / Account Number
+</label>
+
+<input
+    type="text"
+    id="consumer"
+    placeholder="Enter consumer or account number"
+/>
+
+
+<!-- BILL DETAILS -->
+<div class="bill-box" id="billBox">
+
+    <div class="bill-row">
+        <span>Customer Name</span>
+        <span id="customerName">-</span>
+    </div>
+
+    <div class="bill-row">
+        <span>Bill Amount</span>
+        <span id="billAmount">₹0</span>
+    </div>
+
+    <div class="bill-row">
+        <span>Due Date</span>
+        <span id="dueDate">-</span>
+    </div>
+
+</div>
+
+
+<!-- PAYMENT AMOUNT -->
+<label for="paymentAmount">
+Enter Payment Amount
+</label>
+
+<input
+    type="number"
+    id="paymentAmount"
+    placeholder="Enter amount"
+    min="1"
+/>
+
+
+<!-- PAY BUTTON -->
+<button class="pay-btn" onclick="payBill()">
+    Proceed to Pay
+</button>
+
+
+<!-- MESSAGE -->
+<div id="message" class="message"></div>
+
+
+<!-- TRANSACTION HISTORY -->
+<a
+    href="transactions.html"
+    class="history-btn"
+>
+    View Transaction History
+</a>
+
+
+<!-- DEMO NOTE -->
+<div class="demo-note">
+
+    <div class="demo-title">
+        Demo Mode
+    </div>
+
+    This is a demo bill payment page.
+    No real money or real bill payment will be processed.
+
+    <br><br>
+
+    <strong>Demo Consumer Numbers:</strong>
+
+    <br>
+    400001 → Ravi Kumar → ₹599
+
+    <br>
+    400002 → Arun Reddy → ₹899
+
+    <br>
+    400003 → Suresh Kumar → ₹1,250
+
+    <br>
+    123456 → Rahul Kumar → ₹450
+
+</div>
+
+</div>
+</div>
+
+
+<script>
+
+/* LOGIN PROTECTION */
+
+if(localStorage.getItem("finzoLoggedIn") !== "true"){
+    window.location.href = "login.html";
+}
+
+
+/* DEMO CUSTOMER DATABASE */
+
+const otherBillCustomers = {
+
+    "400001": {
+        name:"Ravi Kumar",
+        amount:599,
+        due:"30 Sep 2026"
+    },
+
+    "400002": {
+        name:"Arun Reddy",
+        amount:899,
+        due:"03 Oct 2026"
+    },
+
+    "400003": {
+        name:"Suresh Kumar",
+        amount:1250,
+        due:"06 Oct 2026"
+    },
+
+    "123456": {
+        name:"Rahul Kumar",
+        amount:450,
+        due:"10 Oct 2026"
+    }
+
+};
+
+
+/* ELEMENTS */
+
+const consumerInput =
+    document.getElementById("consumer");
+
+const billBox =
+    document.getElementById("billBox");
+
+const customerName =
+    document.getElementById("customerName");
+
+const billAmount =
+    document.getElementById("billAmount");
+
+const dueDate =
+    document.getElementById("dueDate");
+
+const paymentAmount =
+    document.getElementById("paymentAmount");
+
+
+/* AUTO LOAD BILL DETAILS */
+
+consumerInput.addEventListener("input", function(){
+
+    const consumer =
+        consumerInput.value.trim();
+
+    const customer =
+        otherBillCustomers[consumer];
+
+    if(customer){
+
+        billBox.style.display = "block";
+
+        customerName.textContent =
+            customer.name;
+
+        billAmount.textContent =
+            "₹" + customer.amount.toLocaleString("en-IN");
+
+        dueDate.textContent =
+            customer.due;
+
+        paymentAmount.value =
+            customer.amount;
+
+    }else{
+
+        billBox.style.display = "none";
+
+        customerName.textContent = "-";
+
+        billAmount.textContent = "₹0";
+
+        dueDate.textContent = "-";
+
+        paymentAmount.value = "";
+
+    }
+
+});
+
+
+/* MESSAGE FUNCTION */
+
+function showMessage(text,type){
+
+    const message =
+        document.getElementById("message");
+
+    message.textContent = text;
+
+    message.className =
+        "message " + type;
+
+    message.style.display = "block";
+
+}
+
+
+/* PAY BILL */
+
+function payBill(){
+
+    const category =
+        document.getElementById("category").value.trim();
+
+    const provider =
+        document.getElementById("provider").value.trim();
+
+    const consumer =
+        consumerInput.value.trim();
+
+    const amount =
+        Number(paymentAmount.value);
+
+    /* VALIDATION */
+
+    if(category === ""){
+
+        showMessage(
+            "Please select bill category.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    if(provider === ""){
+
+        showMessage(
+            "Please enter biller / provider name.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    if(consumer === ""){
+
+        showMessage(
+            "Please enter consumer / account number.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    const customer =
+        otherBillCustomers[consumer];
+
+
+    if(!customer){
+
+        showMessage(
+            "Demo customer not found. Please use a valid demo consumer number.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    if(amount <= 0){
+
+        showMessage(
+            "Please enter a valid payment amount.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    if(amount > customer.amount){
+
+        showMessage(
+            "Payment amount cannot be greater than the bill amount.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    /* GET EXISTING TRANSACTIONS */
+
+    let transactions =
+        JSON.parse(
+            localStorage.getItem("finzoTransactions") || "[]"
+        );
+
+
+    /* CREATE TRANSACTION */
+
+    const transaction = {
+
+        type:"Other Bill",
+
+        method:"Demo Payment",
+
+        amount:Number(amount),
+
+        date:new Date().toLocaleString("en-IN"),
+
+        status:"Success",
+
+        details:
+            "Category: " + category +
+            " | Provider: " + provider +
+            " | Consumer No: " + consumer +
+            " | Customer: " + customer.name
+
+    };
+
+
+    /* ADD TRANSACTION */
+
+    transactions.unshift(transaction);
+
+
+    /* SAVE TRANSACTION */
+
+    localStorage.setItem(
+        "finzoTransactions",
+        JSON.stringify(transactions)
+    );
+
+
+    /* SUCCESS MESSAGE */
+
+    showMessage(
+        "Payment successful! Transaction saved in Transaction History.",
+        "success"
+    );
+
+
+    /* DISABLE BUTTON AFTER SUCCESS */
+
+    const payButton =
+        document.querySelector(".pay-btn");
+
+    payButton.disabled = true;
+
+    payButton.style.opacity = "0.6";
+
+    payButton.textContent =
+        "Payment Successful";
+
+
+    /* REFRESH DASHBOARD DATA WHEN RETURNING */
+
+    setTimeout(function(){
+
+        window.location.href =
+            "transactions.html";
+
+    },1500);
+
+}
+
+</script>
+
+</body>
+</html>

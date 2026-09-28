@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FINZO - DTH Recharge</title>
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,sans-serif;
+}
+body{
+    background:#f5f5f5;
+    color:#222;
+}
+/* HEADER */
+.header{
+    background:#101010;
+    color:white;
+    padding:18px 25px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+.logo{
+    font-size:25px;
+    font-weight:bold;
+}
+.back-btn{
+    color:white;
+    text-decoration:none;
+    background:#b91c1c;
+    padding:10px 16px;
+    border-radius:8px;
+    font-size:14px;
+}
+/* CONTAINER */
+.container{
+    max-width:600px;
+    margin:35px auto;
+    padding:20px;
+}
+/* CARD */
+.card{
+    background:white;
+    border-radius:18px;
+    padding:28px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.08);
+}
+h1{
+    font-size:27px;
+    margin-bottom:8px;
+}
+.subtitle{
+    color:#777;
+    margin-bottom:25px;
+    font-size:14px;
+}
+/* LABEL */
+label{
+    display:block;
+    margin:18px 0 8px;
+    font-weight:bold;
+    font-size:14px;
+}
+/* INPUT */
+input,
+select{
+    width:100%;
+    padding:14px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    font-size:16px;
+    outline:none;
+}
+input:focus,
+select:focus{
+    border-color:#b91c1c;
+}
+/* QUICK PLANS */
+.plans{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin-top:12px;
+}
+.plan{
+    border:1px solid #ddd;
+    border-radius:10px;
+    padding:12px 5px;
+    text-align:center;
+    cursor:pointer;
+    background:white;
+}
+.plan:hover{
+    border-color:#b91c1c;
+    background:#fff5f5;
+}
+.plan strong{
+    display:block;
+    font-size:16px;
+}
+.plan span{
+    color:#777;
+    font-size:11px;
+}
+/* BUTTON */
+.recharge-btn{
+    width:100%;
+    margin-top:25px;
+    padding:15px;
+    border:none;
+    border-radius:10px;
+    background:#b91c1c;
+    color:white;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+}
+.recharge-btn:hover{
+    background:#991b1b;
+}
+/* MESSAGE */
+.message{
+    display:none;
+    margin-top:18px;
+    padding:14px;
+    border-radius:10px;
+    text-align:center;
+    font-size:14px;
+}
+.message.success{
+    background:#dcfce7;
+    color:#166534;
+}
+.message.error{
+    background:#fee2e2;
+    color:#991b1b;
+}
+/* FOOTER */
+.footer{
+    text-align:center;
+    color:#888;
+    font-size:12px;
+    margin-top:25px;
+}
+/* MOBILE */
+@media(max-width:600px){
+    .container{
+        margin:20px auto;
+        padding:15px;
+    }
+    .card{
+        padding:22px;
+    }
+    .plans{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+</style>
+</head>
+<body>
+<!-- HEADER -->
+<div class="header">
+<div class="logo">
+    FINZO
+</div>
+<a
+    href="dashboard.html"
+    class="back-btn">
+    ← Dashboard
+</a>
+</div>
+<!-- MAIN -->
+<div class="container">
+<div class="card">
+    <h1>
+        📺 DTH Recharge
+    </h1>
+    <p class="subtitle">
+        Recharge your DTH connection quickly and securely.
+    </p>
+    <!-- DTH OPERATOR -->
+    <label for="operator">
+        Select DTH Operator
+    </label>
+    <select id="operator">
+        <option value="">
+            Select Operator
+        </option>
+        <option value="Tata Play">
+            Tata Play
+        </option>
+        <option value="Airtel Digital TV">
+            Airtel Digital TV
+        </option>
+        <option value="Dish TV">
+            Dish TV
+        </option>
+        <option value="d2h">
+            d2h
+        </option>
+        <option value="Sun Direct">
+            Sun Direct
+        </option>
+    </select>
+    <!-- CUSTOMER ID -->
+    <label for="customerId">
+        Customer ID / Subscriber ID
+    </label>
+    <input
+        type="text"
+        id="customerId"
+        placeholder="Enter Customer ID"
+        maxlength="20"
+    >
+    <!-- QUICK RECHARGE -->
+    <label>
+        Quick Recharge
+    </label>
+    <div class="plans">
+        <div
+            class="plan"
+            onclick="selectAmount(199)">
+            <strong>
+                ₹199
+            </strong>
+            <span>
+                Plan
+            </span>
+        </div>
+        <div
+            class="plan"
+            onclick="selectAmount(299)">
+            <strong>
+                ₹299
+            </strong>
+            <span>
+                Plan
+            </span>
+        </div>
+        <div
+            class="plan"
+            onclick="selectAmount(399)">
+            <strong>
+                ₹399
+            </strong>
+            <span>
+                Plan
+            </span>
+        </div>
+        <div
+            class="plan"
+            onclick="selectAmount(499)">
+            <strong>
+                ₹499
+            </strong>
+            <span>
+                Plan
+            </span>
+        </div>
+        <div
+            class="plan"
+            onclick="selectAmount(599)">
+            <strong>
+                ₹599
+            </strong>
+            <span>
+                Plan
+            </span>
+        </div>
+        <div
+            class="plan"
+            onclick="selectAmount(799)">
+            <strong>
+                ₹799
+            </strong>
+            <span>
+                Plan
+            </span>
+        </div>
+    </div>
+    <!-- AMOUNT -->
+    <label for="amount">
+        Recharge Amount
+    </label>
+    <input
+        type="number"
+        id="amount"
+        placeholder="Enter amount"
+        min="1"
+    >
+    <!-- BUTTON -->
+    <button
+        class="recharge-btn"
+        onclick="recharge()">
+        Proceed to Recharge
+    </button>
+    <!-- MESSAGE -->
+    <div
+        class="message"
+        id="message">
+    </div>
+</div>
+<div class="footer">
+    ©️ 2026 FINZO. Demo payment service.
+</div>
+</div>
+<script>
+/* ================================
+   LOGIN PROTECTION
+================================ */
+if(
+    localStorage.getItem("finzoLoggedIn") !== "true"
+){
+    window.location.href = "login.html";
+}
+/* ================================
+   QUICK AMOUNT
+================================ */
+function selectAmount(amount){
+    document.getElementById("amount").value =
+        amount;
+}
+/* ================================
+   DTH RECHARGE
+================================ */
+function recharge(){
+    const operator =
+        document.getElementById("operator")
+        .value;
+    const customerId =
+        document.getElementById("customerId")
+        .value
+        .trim();
+    const amount =
+        document.getElementById("amount")
+        .value;
+    const message =
+        document.getElementById("message");
+    /* RESET MESSAGE */
+    message.className = "message";
+    message.style.display = "block";
+    /* OPERATOR VALIDATION */
+    if(operator === ""){
+        message.classList.add("error");
+        message.innerText =
+            "Please select your DTH operator.";
+        return;
+    }
+    /* CUSTOMER ID VALIDATION */
+    if(
+        customerId === "" ||
+        customerId.length < 5
+    ){
+        message.classList.add("error");
+        message.innerText =
+            "Please enter a valid Customer ID / Subscriber ID.";
+        return;
+    }
+    /* AMOUNT VALIDATION */
+    if(
+        amount === "" ||
+        Number(amount) <= 0
+    ){
+        message.classList.add("error");
+        message.innerText =
+            "Please enter a valid recharge amount.";
+        return;
+    }
+    /* ================================
+       SAVE TRANSACTION
+    ================================= */
+    let transactions =
+        JSON.parse(
+            localStorage.getItem(
+                "finzoTransactions"
+            ) || "[]"
+        );
+    const transaction = {
+        type: "DTH Recharge",
+        method: "Demo Payment",
+        amount: Number(amount),
+        date:
+            new Date().toLocaleString("en-IN"),
+        status: "Success",
+        details:
+            "Customer ID: " +
+            customerId +
+            " | Operator: " +
+            operator
+    };
+    /* ADD TRANSACTION */
+    transactions.unshift(
+        transaction
+    );
+    /* SAVE */
+    localStorage.setItem(
+        "finzoTransactions",
+        JSON.stringify(transactions)
+    );
+    /* SUCCESS */
+    message.classList.add("success");
+    message.innerText =
+        "✅ DTH recharge successful! Transaction saved to Transaction History.";
+}
+</script>
+</body>
+</html>
